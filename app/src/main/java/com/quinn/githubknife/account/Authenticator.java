@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+
 /**
  * Created by Quinn on 7/10/15.
  */
@@ -37,7 +38,6 @@ public class Authenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
-
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(ARG_ACCOUNT_TYPE, accountType);
         intent.putExtra(ARG_AUTH_TYPE, authTokenType);
@@ -62,7 +62,9 @@ public class Authenticator extends AbstractAccountAuthenticator {
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
-                authToken = LoginActivity.getToken("22", "33");
+                //Github github = new GithubImpl(context);
+                //github.createToken()
+                 authToken = "sdddddd";
             }
         }
 

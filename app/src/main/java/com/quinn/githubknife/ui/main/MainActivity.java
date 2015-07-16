@@ -3,36 +3,56 @@ package com.quinn.githubknife.ui.main;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.utils.L;
 
-public class MainActivity extends BaseActivity implements DrawerFragment.NavigationDrawerSelectCallbacks,DrawerFragment.NaviagtionDawerCloseCallbacks {
+import java.util.ArrayList;
+import java.util.List;
 
-    private Toolbar toolbar;
-    private DrawerLayout mDrawerLayout;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @Bind(R.id.nav_view)
+    NavigationView navigationVIew;
+    @Bind(R.id.viewpager)
+    ViewPager viewpager;
+    @Bind(R.id.tabs)
+    TabLayout tab;
+
+    private Adapter adapter;
+
     private ActionBarDrawerToggle mDrawerToggle;
-    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ButterKnife.bind(this);
         toolbar.setTitle("Github");
         setSupportActionBar(toolbar);
-        toolbar.setPopupTheme(R.color.theme_color);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //tv = (TextView) findViewById(R.id.token);
@@ -49,20 +69,40 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
                 R.string.app_name);
         toggle.syncState();
         mDrawerLayout.setDrawerListener(toggle);
+        navigationVIew.setNavigationItemSelectedListener(this);
+        adapter = new Adapter(getSupportFragmentManager());
+        viewpager.setAdapter(adapter);
+        tab.setupWithViewPager(viewpager);
+        setUpTab(R.id.nav_home);
+        //tab.set
+        viewpager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Account account = new Account("Leaking", "com.githubknife");
+                getExistingAccountAuthToken(account, "ah");
+            }
+        });
+
+//        AccountManager mAccountManager = AccountManager.get(getBaseContext());
+//        GitHubAccount gitHubAccount = new GitHubAccount(account,mAccountManager);
+//        String token = gitHubAccount.getAuthToken();
+        //L.i("FollowerFragment token = " + token);
 
 
     }
 
-    private void getExistingAccountAuthToken(Account account, String authTokenType) {
+    private void getExistingAccountAuthToken(final Account account, final String authTokenType) {
         System.out.println("try to get token in MainActivyt");
 
-        AccountManager mAccountManager = AccountManager.get(getBaseContext());
-        final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account, authTokenType, null, this, null, null);
+        final AccountManager mAccountManager = AccountManager.get(this);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account, authTokenType, null, MainActivity.this, null, null);
+
+                    L.i("herher");
                     Bundle bnd = future.getResult();
 
                     final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
@@ -97,39 +137,79 @@ public class MainActivity extends BaseActivity implements DrawerFragment.Navigat
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        L.i("You click NavigationDrawerItem : " + position);
-        Fragment fragment = null;
-        if(position == 0){
-            /**
-             * jump to user info acitivity
-             */
-
-            return;
-        }
-
-        switch (position){
-            case 1:
-                fragment = new HomeFragment();
-                break;
-            case 2:
-                fragment = new RepoFragment();
-                break;
-            case 3:
-                fragment = new FriendFragment();
-                break;
-            default:
-                fragment = new HomeFragment();
-                break;
-        }
-
-        android.app.FragmentManager manager = getFragmentManager();
-        manager.beginTransaction().replace(R.id.container, fragment).commit();
-    }
 
     @Override
-    public void onNavigationDrawerClose() {
-        mDrawerLayout.closeDrawer(findViewById(R.id.drawerWrap));
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        menuItem.setChecked(true);
+        mDrawerLayout.closeDrawers();
+        L.i("navigation item select = " + menuItem.getItemId());
+        TextView tv = (TextView)mDrawerLayout.findViewById(R.id.headerText);
+        L.i("header text = " + tv.getText().toString());
+
+
+        setUpTab(menuItem.getItemId());
+
+        return true;
     }
+
+    public void setUpTab(int id){
+        adapter.clear();
+        switch (id){
+            case R.id.nav_home:
+                adapter.addFragment(new EventFragment(),"Events");
+                adapter.addFragment(new OwnRepoFragment(),"Repository");
+                adapter.addFragment(new ContributeRepoFragment(),"Contribute");
+                break;
+            case R.id.nav_friends:
+                adapter.addFragment(new FollowerFragment(),"Follower");
+                adapter.addFragment(new FollowingFragment(),"Following");
+                break;
+            case R.id.nav_gist:
+                break;
+            case R.id.nav_setting:
+                break;
+            case R.id.nav_about:
+                break;
+        }
+        adapter.notifyDataSetChanged();
+        tab.setupWithViewPager(viewpager);
+
+    }
+
+    static class Adapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragments = new ArrayList<>();
+        private final List<String> mFragmentTitles = new ArrayList<>();
+
+        public Adapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragments.add(fragment);
+            mFragmentTitles.add(title);
+        }
+        public void clear(){
+            mFragments.clear();;
+            mFragmentTitles.clear();;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitles.get(position);
+        }
+    }
+
+
+
 }

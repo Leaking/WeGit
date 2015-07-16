@@ -1,6 +1,6 @@
 package com.quinn.githubknife.ui.main;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import com.quinn.githubknife.R;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FriendFragment extends Fragment {
+public class ContributeRepoFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();

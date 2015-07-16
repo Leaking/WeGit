@@ -1,8 +1,8 @@
 package com.quinn.githubknife.ui.main;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.bean.User;
+import com.quinn.httpknife.github.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

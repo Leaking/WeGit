@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.bean.User;
+import com.quinn.httpknife.github.User;
 
 import java.util.Arrays;
 import java.util.List;

@@ -6,7 +6,6 @@ import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubImpl;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
 
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
@@ -32,10 +34,12 @@ public class LoginActivity extends AppCompatActivity {
     private String accountType;
     private AccountManager mAccountManager;
 
+    private Github github;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        github = new GithubImpl(this);
         mAccountAuthenticatorResponse =
                 getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
@@ -155,8 +159,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public static String getToken(String username,String password){
-        return "0f7d54c808684c0ad9a7c217b63b1c017bdae217";
+    public String getToken(String username,String password){
+        String token = github.createToken(username,password);
+        return token;
+       // return "0f7d54c808684c0ad9a7c217b63b1c017bdae217";
     }
 
     /**

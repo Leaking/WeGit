@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 22
     buildToolsVersion "23.0.0 rc2"
 
     defaultConfig {
-        applicationId "com.quinn.githubknife"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -13,21 +12,15 @@ android {
     }
     buildTypes {
         release {
-            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile project(':httpknife')
+
 }
