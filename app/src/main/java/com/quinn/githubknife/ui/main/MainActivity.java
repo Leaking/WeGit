@@ -8,7 +8,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -156,11 +157,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         adapter.clear();
         switch (id){
             case R.id.nav_home:
+                viewpager.setOffscreenPageLimit(3);
                 adapter.addFragment(new EventFragment(),"Events");
                 adapter.addFragment(new OwnRepoFragment(),"Repository");
                 adapter.addFragment(new ContributeRepoFragment(),"Contribute");
                 break;
             case R.id.nav_friends:
+                viewpager.setOffscreenPageLimit(2);
                 adapter.addFragment(new FollowerFragment(),"Follower");
                 adapter.addFragment(new FollowingFragment(),"Following");
                 break;
@@ -176,21 +179,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    static class Adapter extends FragmentStatePagerAdapter {
+
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
+        private FragmentManager fm;
+
 
         public Adapter(FragmentManager fm) {
             super(fm);
+            this.fm = fm;
+            this.saveState();
         }
 
         public void addFragment(Fragment fragment, String title) {
             mFragments.add(fragment);
+
+
             mFragmentTitles.add(title);
         }
         public void clear(){
-            mFragments.clear();;
             mFragmentTitles.clear();;
+            mFragments.clear();
+            notifyDataSetChanged();
         }
 
 
@@ -207,6 +218,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
+        }
+
+        @Override
+        public int getItemPosition(Object object){
+            return PagerAdapter.POSITION_NONE;
         }
     }
 

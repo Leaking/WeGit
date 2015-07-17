@@ -1,7 +1,5 @@
 package com.quinn.githubknife.ui.main;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,13 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
-import com.quinn.httpknife.github.User;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,25 +33,29 @@ public class EventFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Account account = new Account("Leaking", "com.githubknife");
-        AccountManager accountManager = AccountManager.get(this.getActivity());
-        final GitHubAccount gitHubAccount = new GitHubAccount(account,accountManager,this.getActivity());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                L.i("token === " + token);
-                List<User> fos = github.myFollwers(token);
 
-                L.i("ffff users = " + fos);
-            }
-        }).start();
+        L.i("onResume EventFragment");
+
+
+//        Account account = new Account("Leaking", "com.githubknife");
+//        AccountManager accountManager = AccountManager.get(this.getActivity());
+//        final GitHubAccount gitHubAccount = new GitHubAccount(account,accountManager,this.getActivity());
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String token = gitHubAccount.getAuthToken();
+//                L.i("token === " + token);
+//                List<User> fos = github.myFollwers(token);
+//
+//                L.i("ffff users = " + fos);
+//            }
+//        }).start();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i("come onCreate FollowerFragment");
+        L.i("onCreate EventFragment");
 
         github = new GithubImpl(this.getActivity());
 
@@ -74,7 +72,7 @@ public class EventFragment extends Fragment {
 
             }
         });
-        L.i("come into FollowerFragment");
+        L.i("onCreateView EventFragment");
 
         return view;
     }
