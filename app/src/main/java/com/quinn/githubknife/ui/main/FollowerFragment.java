@@ -1,16 +1,12 @@
 package com.quinn.githubknife.ui.main;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
@@ -24,7 +20,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowerFragment extends Fragment {
+public class FollowerFragment extends BaseFragment {
 
     Github github;
 
@@ -49,9 +45,6 @@ public class FollowerFragment extends Fragment {
         L.i("onCreate FollowerFragment");
 
         github = new GithubImpl(this.getActivity());
-        Account account = new Account("Leaking", "com.githubknife");
-        AccountManager accountManager = AccountManager.get(this.getActivity());
-        final GitHubAccount gitHubAccount = new GitHubAccount(account,accountManager,this.getActivity());
         new Thread(new Runnable() {
             @Override
             public void run() {

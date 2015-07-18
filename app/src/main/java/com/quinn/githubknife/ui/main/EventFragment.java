@@ -65,6 +65,11 @@ public class EventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, view);
+        Bundle bundle = getArguments();
+        String org = null;
+        if(bundle != null) {
+             org = bundle.getString("org");
+        }
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +77,7 @@ public class EventFragment extends Fragment {
 
             }
         });
-        L.i("onCreateView EventFragment");
+        L.i("onCreateView EventFragment org = " + org);
 
         return view;
     }

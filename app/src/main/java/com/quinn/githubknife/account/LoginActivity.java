@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
 
@@ -58,13 +59,9 @@ public class LoginActivity extends BaseActivity {
         accountName = getIntent().getStringExtra(Authenticator.ARG_ACCOUNT_NAME);
         mAuthTokenType = getIntent().getStringExtra(Authenticator.ARG_AUTH_TYPE);
         accountType = getIntent().getStringExtra(Authenticator.ARG_ACCOUNT_TYPE);
-        System.out.println("accountName == " + accountName);
-        System.out.println("mAuthTokenType == " + mAuthTokenType);
-        System.out.println("accountType == " + accountType);
 
 //        if (mAuthTokenType == null)
         mAuthTokenType = Authenticator.AUTHTOKEN_TYPE_FULL_ACCESS;
-        System.out.println("change mAuthTokenType = " + mAuthTokenType);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +119,7 @@ public class LoginActivity extends BaseActivity {
     public void finishLogin(Intent intent){
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(Authenticator.PARAM_USER_PASS);
+        PreferenceUtils.putString(this,PreferenceUtils.Key.ACCOUNT,accountName);
         final Account account = new Account(accountName, accountType);
         if (getIntent().getBooleanExtra(Authenticator.ARG_IS_ADDING_NEW_ACCOUNT, true)) {
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);

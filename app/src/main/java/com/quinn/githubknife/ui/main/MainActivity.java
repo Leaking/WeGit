@@ -21,8 +21,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements BaseFragment.GithubAccountCallBack,NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -158,7 +160,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (id){
             case R.id.nav_home:
                 viewpager.setOffscreenPageLimit(3);
-                adapter.addFragment(new EventFragment(),"Events");
+                EventFragment eventFragment = new EventFragment();
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("arg","event");
+                eventFragment.setArguments(bundle);
+                adapter.addFragment(new EventFragment(), "Events");
                 adapter.addFragment(new OwnRepoFragment(),"Repository");
                 adapter.addFragment(new ContributeRepoFragment(),"Contribute");
                 break;
@@ -177,6 +183,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         adapter.notifyDataSetChanged();
         tab.setupWithViewPager(viewpager);
 
+    }
+
+    @Override
+    public GitHubAccount getGithubAccount() {
+        String name = PreferenceUtils.getString(this,PreferenceUtils.Key.ACCOUNT);
+        if(name.isEmpty())
+            name = "NO_ACCOUNT";
+        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
+        AccountManager accountManager = AccountManager.get(this);
+        GitHubAccount githubAccount = new GitHubAccount(account,accountManager,this);
+        return githubAccount;
     }
 
     static class Adapter extends FragmentStatePagerAdapter {
@@ -225,6 +242,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return PagerAdapter.POSITION_NONE;
         }
     }
+
 
 
 
