@@ -1,29 +1,19 @@
 package com.quinn.githubknife.ui.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.quinn.githubknife.R;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by Quinn on 7/16/15.
  */
-public class EventFragment extends Fragment {
+public class EventFragment extends BaseFragment {
 
     Github github;
 
-    @Bind(R.id.friend)
-    TextView txt;
+
 
     @Override
     public void onStart() {
@@ -61,24 +51,5 @@ public class EventFragment extends Fragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friends, container, false);
-        ButterKnife.bind(this, view);
-        Bundle bundle = getArguments();
-        String org = null;
-        if(bundle != null) {
-             org = bundle.getString("org");
-        }
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                L.i("===============0000");
 
-            }
-        });
-        L.i("onCreateView EventFragment org = " + org);
-
-        return view;
-    }
 }
