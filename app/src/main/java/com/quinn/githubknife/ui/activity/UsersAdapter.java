@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
 import com.quinn.httpknife.github.User;
 
@@ -22,10 +24,15 @@ public class UsersAdapter extends
 
     private List<User> dataItems;
     private ImageLoader imageLoader;
+    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+    private DisplayImageOptions option;
+
 
     public UsersAdapter(List<User> dataItems){
         this.dataItems = dataItems;
         imageLoader = ImageLoader.getInstance();
+        option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
+                .considerExifParams(true).build();
     }
 
 
@@ -42,7 +49,7 @@ public class UsersAdapter extends
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(dataItems.get(position).getLogin());
         holder.avatar.setImageResource(R.mipmap.ic_headset);
-        imageLoader.displayImage(dataItems.get(position).getAvatar_url(),holder.avatar);
+        imageLoader.displayImage(dataItems.get(position).getAvatar_url(),holder.avatar,option,animateFirstListener);
     }
 
     @Override
@@ -61,7 +68,6 @@ public class UsersAdapter extends
             super(view);
             avatar = (CircleImageView) view.findViewById(R.id.avatar);
             name = (TextView) view.findViewById(R.id.name);
-
         }
 
 

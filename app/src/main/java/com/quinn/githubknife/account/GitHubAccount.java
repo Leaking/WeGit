@@ -31,6 +31,7 @@ import java.io.IOException;
  */
 public class GitHubAccount {
 
+
     private static final String TAG = "GitHubAccount";
 
     public static final String ACCOUNT_TYPE = "com.githubknife";
@@ -44,11 +45,10 @@ public class GitHubAccount {
      * Create account wrapper
      *
      * @param account
-     * @param manager
      */
-    public GitHubAccount(final Account account, final AccountManager manager,Context context) {
+    public GitHubAccount(final Account account,Context context) {
         this.account = account;
-        this.manager = manager;
+        this.manager = AccountManager.get(context);
         this.context = context;
     }
 

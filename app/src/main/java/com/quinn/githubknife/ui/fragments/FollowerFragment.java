@@ -1,16 +1,14 @@
 package com.quinn.githubknife.ui.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.quinn.githubknife.presenter.MyFollowerPresenter;
+import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
 import com.quinn.githubknife.utils.L;
-import com.quinn.httpknife.github.Github;
-import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
@@ -19,12 +17,11 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowerFragment extends BaseFragment {
+public class FollowerFragment extends BaseFragment implements ListFragmentView{
 
-    private Github github;
     private UsersAdapter adapter;
     private List<User> follwers = new ArrayList<User>();
-
+    private MyFollowerPresenter presenter;
 
     @Override
     public void onStart() {
@@ -35,6 +32,8 @@ public class FollowerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         L.i("onResume FollowerFragment");
+        if(follwers.isEmpty())
+            presenter.onResume();
     }
 
 
@@ -43,7 +42,7 @@ public class FollowerFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.i("onCreate FollowerFragment");
-        github = new GithubImpl(this.getActivity());
+        presenter = new MyFollowerPresenter(this.getActivity(),this);
     }
 
 
@@ -53,32 +52,34 @@ public class FollowerFragment extends BaseFragment {
         adapter = new UsersAdapter(follwers);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
-
-        final Handler handler = new Handler() {
-
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                adapter.notifyDataSetChanged();
-            }
-        };
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    List<User> fol = github.myFollwers(gitHubAccount.getAuthToken());
-                    for(User user: fol){
-                        follwers.add(user);
-                    }
-                    handler.sendEmptyMessage(1);
-                    L.i("followers = " + follwers);
-                }catch (IllegalStateException e){
-                    L.i("internet error");
-                }
-            }
-        }).start();;
-
         return view;
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void setItems(List items) {
+        for(Object user:items){
+            follwers.add((User)user);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void intoItem(int position) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
     }
 }

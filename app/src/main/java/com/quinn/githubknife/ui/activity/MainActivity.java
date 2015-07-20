@@ -197,8 +197,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
         if(name.isEmpty())
             name = "NO_ACCOUNT";
         Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
-        AccountManager accountManager = AccountManager.get(this);
-        GitHubAccount githubAccount = new GitHubAccount(account,accountManager,this);
+        GitHubAccount githubAccount = new GitHubAccount(account,this);
         return githubAccount;
     }
 

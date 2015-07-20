@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui;
+package com.quinn.githubknife.ui.view;
 
 import java.util.List;
 
@@ -12,6 +12,8 @@ public interface ListFragmentView {
     public void hideProgress();
 
     public void setItems(List<?> items);
+
+    public void intoItem(int position);
 
     public void showMessage(String message);
 
