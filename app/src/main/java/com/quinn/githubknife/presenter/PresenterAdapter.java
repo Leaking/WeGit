@@ -22,7 +22,7 @@ public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserLisst
     }
 
     @Override
-    public void onResume() {
+    public void onPageLoad(int page) {
 
     }
 

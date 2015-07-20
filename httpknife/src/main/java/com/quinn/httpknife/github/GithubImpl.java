@@ -34,8 +34,10 @@ public class GithubImpl implements Github {
 	public final static String MY_FOLLOWERS = API_HOST +"user/followers";
 	public final static String MY_FOLLOWERSINGS = API_HOST +"user/following";
 	
-	
-	
+	public final static int DEFAULT_PAGE_SIZE = 10;
+	public final static String PAGE = "page";
+	public final static String PER_PAGE = "per_page";
+
 
 	private HttpKnife http;
 
@@ -125,8 +127,11 @@ public class GithubImpl implements Github {
 
 
 	@Override
-	public List<User> myFollwers(String token) throws IllegalStateException {
-		Response response = http.get(MY_FOLLOWERS).headers(configreHttpHeader()).tokenAuthorization(token).response();
+	public List<User> myFollwers(String token, int page) throws IllegalStateException {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
+		Response response = http.get(MY_FOLLOWERS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
 		Gson gson = new Gson();

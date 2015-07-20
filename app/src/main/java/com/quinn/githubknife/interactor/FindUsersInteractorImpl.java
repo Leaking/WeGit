@@ -34,12 +34,12 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
     }
 
     @Override
-    public void loadMyFollowings() {
+    public void loadMyFollowings(int page) {
 
     }
 
     @Override
-    public void loadMyFollwers() {
+    public void loadMyFollwers(final int page) {
         final Handler handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -53,7 +53,7 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
             public void run() {
                 String token = gitHubAccount.getAuthToken();
                 L.i("token == " + token);
-                List<User> users = github.myFollwers(token);
+                List<User> users = github.myFollwers(token,page);
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = users;
@@ -64,12 +64,12 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
     }
 
     @Override
-    public void loadFollowerings(String account) {
+    public void loadFollowerings(String account,int page) {
 
     }
 
     @Override
-    public void loadFollwers(String account) {
+    public void loadFollwers(String account, int page) {
 
     }
 }

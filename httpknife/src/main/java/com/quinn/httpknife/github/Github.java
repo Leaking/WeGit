@@ -39,7 +39,7 @@ public interface Github {
 	public void loginUser(String token) throws IllegalStateException;
 	
 
-	public List<User> myFollwers(String token) throws IllegalStateException;
+	public List<User> myFollwers(String token, int page) throws IllegalStateException;
 	
 	public List<User> myFollwerings(String token) throws IllegalStateException;
 	

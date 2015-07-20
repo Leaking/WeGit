@@ -5,10 +5,10 @@ package com.quinn.githubknife.interactor;
  */
 public interface FindUsersInteractor {
 
-    public void loadMyFollowings();
-    public void loadMyFollwers();
-    public void loadFollowerings(String account);
-    public void loadFollwers(String account);
+    public void loadMyFollowings(int page);
+    public void loadMyFollwers(int page);
+    public void loadFollowerings(String account,int page);
+    public void loadFollwers(String account,int page);
 
 
 }

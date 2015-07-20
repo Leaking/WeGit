@@ -31,7 +31,9 @@ public class DefaultUriRewriter implements UrlRewriter {
 			Entry<?, ?> entry;
 			for(Iterator<?> iterator = params.entrySet().iterator();iterator.hasNext();){
 				entry = (Entry<?, ?>) iterator.next();
+				format(finalUrl.toString(),finalUrl);
 				addParam(entry.getKey().toString(), entry.getValue(), finalUrl);
+
 			}
 			System.out.println("add params url ===== ");
 			System.out.println(finalUrl);

@@ -19,8 +19,8 @@ public class MyFolloweringPresenter extends PresenterAdapter{
     }
 
     @Override
-    public void onResume(){
-        interactor.loadMyFollowings();
+    public void onPageLoad(int page){
+        interactor.loadMyFollowings(page);
     }
 
 
