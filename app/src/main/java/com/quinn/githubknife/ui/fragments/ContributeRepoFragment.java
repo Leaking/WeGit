@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.main;
+package com.quinn.githubknife.ui.fragments;
 
 import android.os.Bundle;
 

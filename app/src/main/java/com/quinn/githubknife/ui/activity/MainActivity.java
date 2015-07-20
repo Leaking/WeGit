@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.main;
+package com.quinn.githubknife.ui.activity;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -23,6 +23,12 @@ import android.widget.TextView;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.BaseFragment;
+import com.quinn.githubknife.ui.fragments.ContributeRepoFragment;
+import com.quinn.githubknife.ui.fragments.EventFragment;
+import com.quinn.githubknife.ui.fragments.FollowerFragment;
+import com.quinn.githubknife.ui.fragments.FollowingFragment;
+import com.quinn.githubknife.ui.fragments.OwnRepoFragment;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 

@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.main;
+package com.quinn.githubknife.ui.activity;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.quinn.githubknife.R;
 import com.quinn.httpknife.github.User;
 
@@ -20,10 +21,11 @@ public class UsersAdapter extends
         RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
     private List<User> dataItems;
-
+    private ImageLoader imageLoader;
 
     public UsersAdapter(List<User> dataItems){
         this.dataItems = dataItems;
+        imageLoader = ImageLoader.getInstance();
     }
 
 
@@ -38,14 +40,14 @@ public class UsersAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText("Job Steve");
+        holder.name.setText(dataItems.get(position).getLogin());
         holder.avatar.setImageResource(R.mipmap.ic_headset);
+        imageLoader.displayImage(dataItems.get(position).getAvatar_url(),holder.avatar);
     }
 
     @Override
     public int getItemCount() {
-        //return dataItems.size();
-        return 10;
+        return dataItems.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

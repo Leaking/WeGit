@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.main;
+package com.quinn.githubknife.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
