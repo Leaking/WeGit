@@ -106,11 +106,13 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public void loginUser(String token) throws IllegalStateException {
+	public User authUser(String token) throws IllegalStateException {
 		Response response = http.get(LOGIN_USER).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
-		testResult(response);
+		Gson gson = new Gson();
+		User user = gson.fromJson(response.body(), User.class);
+		return user;
 	}
 
 	
@@ -143,8 +145,11 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public List<User> myFollwerings(String token) throws IllegalStateException {
-		Response response = http.get(MY_FOLLOWERSINGS).headers(configreHttpHeader()).tokenAuthorization(token).response();
+	public List<User> myFollwerings(String token, int page) throws IllegalStateException {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
+		Response response = http.get(MY_FOLLOWERSINGS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
 		Gson gson = new Gson();

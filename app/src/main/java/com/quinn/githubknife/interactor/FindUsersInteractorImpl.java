@@ -21,9 +21,9 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
 
     private GitHubAccount gitHubAccount;
     private Github github;
-    private OnFinishUserLisstener listener;
+    private OnFinishUserListener listener;
 
-    public FindUsersInteractorImpl(Context context, OnFinishUserLisstener listener){
+    public FindUsersInteractorImpl(Context context, OnFinishUserListener listener){
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
         if(name.isEmpty())
             name = "NO_ACCOUNT";
@@ -34,8 +34,27 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
     }
 
     @Override
-    public void loadMyFollowings(int page) {
-
+    public void loadMyFollowings(final int page) {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                List<User> users = (List<User>) msg.obj;
+                listener.onFinished(users);
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                L.i("token == " + token);
+                List<User> users = github.myFollwerings(token,page);
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = users;
+                handler.sendMessage(msg);
+            }
+        }).start();;
     }
 
     @Override

@@ -36,12 +36,12 @@ public interface Github {
 	/**
 	 * login 
 	 */
-	public void loginUser(String token) throws IllegalStateException;
+	public User authUser(String token) throws IllegalStateException;
 	
 
 	public List<User> myFollwers(String token, int page) throws IllegalStateException;
 	
-	public List<User> myFollwerings(String token) throws IllegalStateException;
+	public List<User> myFollwerings(String token, int page) throws IllegalStateException;
 	
 	public List<User> follwerings(String user) throws IllegalStateException;
 	

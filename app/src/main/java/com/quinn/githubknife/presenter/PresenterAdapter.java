@@ -1,6 +1,6 @@
 package com.quinn.githubknife.presenter;
 
-import com.quinn.githubknife.interactor.OnFinishUserLisstener;
+import com.quinn.githubknife.interactor.OnFinishUserListener;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/20/15.
  */
-public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserLisstener {
+public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserListener {
 
     protected ListFragmentView view;
 
@@ -29,5 +29,10 @@ public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserLisst
     @Override
     public void onFinished(List items) {
         view.setItems(items);
+    }
+
+    @Override
+    public void onError() {
+
     }
 }

@@ -9,6 +9,7 @@ import com.quinn.githubknife.presenter.MyFollowerPresenter;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
 import com.quinn.githubknife.utils.L;
+import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
         super.onResume();
         L.i("onResume FollowerFragment");
         if(follwers.isEmpty())
-            presenter.onPageLoad(1);
+            presenter.onPageLoad(currPage++);
     }
 
 
@@ -70,6 +71,9 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
         for(Object user:items){
             follwers.add((User)user);
         }
+        loading = false;
+        if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
+            haveMore = false;
         adapter.notifyDataSetChanged();
     }
 
@@ -81,5 +85,11 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
     @Override
     public void showMessage(String message) {
 
+    }
+
+    @Override
+    public void loadMore() {
+        super.loadMore();
+        presenter.onPageLoad(currPage++);
     }
 }
