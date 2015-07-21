@@ -4,6 +4,8 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
@@ -31,6 +32,8 @@ import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.OwnRepoFragment;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +55,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
     TabLayout tab;
 
     private Adapter adapter;
-
+    private Github github;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         toolbar.setTitle("Github");
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,16 +85,38 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
         navigationVIew.setNavigationItemSelectedListener(this);
         adapter = new Adapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
-        tab.setupWithViewPager(viewpager);
-        setUpTab(R.id.nav_home);
-        //tab.set
-        viewpager.setOnClickListener(new View.OnClickListener() {
+        github = new GithubImpl(this);
+        String name = PreferenceUtils.getString(this,PreferenceUtils.Key.ACCOUNT);
+        if(name.isEmpty())
+            name = "NO_ACCOUNT";
+        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
+        final GitHubAccount githubAccount = new GitHubAccount(account,this);
+
+
+        final Handler handler = new Handler(){
             @Override
-            public void onClick(View v) {
-                Account account = new Account("Leaking", "com.githubknife");
-                getExistingAccountAuthToken(account, "ah");
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String token = (String)msg.obj;
+                L.i("token lll = " + token);
+                tab.setupWithViewPager(viewpager);
+                setUpTab(R.id.nav_home);
+
             }
-        });
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = githubAccount.getAuthToken();
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = token;
+                handler.sendMessage(msg);
+            }
+        }).start();
+
+        //tab.set
+
 
 //        AccountManager mAccountManager = AccountManager.get(getBaseContext());
 //        GitHubAccount gitHubAccount = new GitHubAccount(account,mAccountManager);

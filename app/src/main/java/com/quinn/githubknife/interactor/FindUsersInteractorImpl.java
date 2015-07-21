@@ -12,6 +12,7 @@ import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,7 +73,12 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
             public void run() {
                 String token = gitHubAccount.getAuthToken();
                 L.i("token == " + token);
-                List<User> users = github.myFollwers(token,page);
+                List<User> users = new ArrayList<User>();
+                try{
+                    users = github.myFollwers(token,page);
+                }catch (IllegalStateException e){
+                    L.i("网络问题 loadMyFollwers");
+                }
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = users;

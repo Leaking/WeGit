@@ -136,11 +136,13 @@ public class GithubImpl implements Github {
 		Response response = http.get(MY_FOLLOWERS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
+		testResult(response);
 		Gson gson = new Gson();
 		List<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
 				}.getType());
 		System.out.println("tuserlis = " + tokenList);
+
 		return tokenList;
 	}
 

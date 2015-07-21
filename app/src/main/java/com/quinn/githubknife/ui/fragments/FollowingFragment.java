@@ -34,8 +34,8 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     public void onResume() {
         super.onResume();
         L.i("onResume FollowerFragment");
-        if(follwering.isEmpty())
-            presenter.onPageLoad(currPage++);
+//        if(follwering.isEmpty())
+//            presenter.onPageLoad(currPage++);
     }
 
 

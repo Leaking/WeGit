@@ -33,8 +33,9 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
     public void onResume() {
         super.onResume();
         L.i("onResume FollowerFragment");
-        if(follwers.isEmpty())
-            presenter.onPageLoad(currPage++);
+        if(follwers.isEmpty()) {
+            //presenter.onPageLoad(currPage);
+        }
     }
 
 
@@ -74,6 +75,7 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
+        currPage = currPage + 1;
         adapter.notifyDataSetChanged();
     }
 
@@ -90,6 +92,6 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
     @Override
     public void loadMore() {
         super.loadMore();
-        presenter.onPageLoad(currPage++);
+        presenter.onPageLoad(currPage);
     }
 }
