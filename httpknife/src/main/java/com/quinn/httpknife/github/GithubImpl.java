@@ -162,9 +162,13 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public List<User> follwerings(String user) throws IllegalStateException {
-		String url = API_HOST + "users/" + user + "/followering";
-		Response response = http.get(url).headers(configreHttpHeader()).response();
+	public List<User> follwerings(String user,int page) throws IllegalStateException {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
+		String url = API_HOST + "users/" + user + "/following";
+		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		testResult(response);
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
 		Gson gson = new Gson();
@@ -174,9 +178,13 @@ public class GithubImpl implements Github {
 		return tokenList;	}
 
 	@Override
-	public List<User> followers(String user) throws IllegalStateException {
+	public List<User> followers(String user,int page) throws IllegalStateException {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/followers";
-		Response response = http.get(url).headers(configreHttpHeader()).response();
+		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		testResult(response);
 		if (response.isSuccess() == false)
 			throw new IllegalStateException("网络链接有问题");
 		Gson gson = new Gson();

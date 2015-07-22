@@ -1,11 +1,7 @@
 package com.quinn.githubknife.ui.activity;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,13 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
+import com.quinn.githubknife.presenter.AuthPresenter;
+import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.BaseFragment;
 import com.quinn.githubknife.ui.fragments.ContributeRepoFragment;
@@ -30,18 +30,17 @@ import com.quinn.githubknife.ui.fragments.EventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.OwnRepoFragment;
-import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.ui.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
-import com.quinn.httpknife.github.Github;
-import com.quinn.httpknife.github.GithubImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements BaseFragment.GithubAccountCallBack,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainAuthView,BaseFragment.GithubAccountCallBack,NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -54,29 +53,31 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
     @Bind(R.id.tabs)
     TabLayout tab;
 
+    private TextView txt_user;
+    private CircleImageView img_avatar;
+
     private Adapter adapter;
-    private Github github;
     private ActionBarDrawerToggle mDrawerToggle;
+    private ImageLoader imageLoader;
+    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+    private DisplayImageOptions option;
+    private AuthPresenter presenter;
+    private String loginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
+        txt_user = (TextView)navigationVIew.findViewById(R.id.headerText);
+        imageLoader = ImageLoader.getInstance();
+        option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
+                .considerExifParams(true).build();
         toolbar.setTitle("Github");
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //tv = (TextView) findViewById(R.id.token);
-//        tv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Account account = new Account("Leaking", "com.githubknife");
-//                getExistingAccountAuthToken(account,"ah");
-//            }
-//        });
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
                 mDrawerLayout, toolbar, R.string.app_name,
                 R.string.app_name);
@@ -85,69 +86,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
         navigationVIew.setNavigationItemSelectedListener(this);
         adapter = new Adapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
-        github = new GithubImpl(this);
-        String name = PreferenceUtils.getString(this,PreferenceUtils.Key.ACCOUNT);
-        if(name.isEmpty())
-            name = "NO_ACCOUNT";
-        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
-        final GitHubAccount githubAccount = new GitHubAccount(account,this);
-
-
-        final Handler handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                String token = (String)msg.obj;
-                L.i("token lll = " + token);
-                tab.setupWithViewPager(viewpager);
-                setUpTab(R.id.nav_home);
-
-            }
-        };
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = githubAccount.getAuthToken();
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = token;
-                handler.sendMessage(msg);
-            }
-        }).start();
-
-        //tab.set
-
-
-//        AccountManager mAccountManager = AccountManager.get(getBaseContext());
-//        GitHubAccount gitHubAccount = new GitHubAccount(account,mAccountManager);
-//        String token = gitHubAccount.getAuthToken();
-        //L.i("FollowerFragment token = " + token);
-
+        presenter = new AuthPresenterImpl(this,this);
+        presenter.auth();
 
     }
 
-    private void getExistingAccountAuthToken(final Account account, final String authTokenType) {
-        System.out.println("try to get token in MainActivyt");
-
-        final AccountManager mAccountManager = AccountManager.get(this);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final AccountManagerFuture<Bundle> future = mAccountManager.getAuthToken(account, authTokenType, null, MainActivity.this, null, null);
-
-                    L.i("herher");
-                    Bundle bnd = future.getResult();
-
-                    final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                    Log.d("udinic", "GetToken Bundle is " + bnd);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
 
     @Override
@@ -177,13 +120,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         menuItem.setChecked(true);
         mDrawerLayout.closeDrawers();
-        L.i("navigation item select = " + menuItem.getItemId());
-        TextView tv = (TextView)mDrawerLayout.findViewById(R.id.headerText);
-        L.i("header text = " + tv.getText().toString());
-
-
         setUpTab(menuItem.getItemId());
-
         return true;
     }
 
@@ -194,7 +131,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
                 viewpager.setOffscreenPageLimit(3);
                 EventFragment eventFragment = new EventFragment();
                 Bundle bundle = new Bundle();
-                bundle.putCharSequence("arg","event");
+                bundle.putCharSequence("user",loginUser);
                 eventFragment.setArguments(bundle);
                 adapter.addFragment(new EventFragment(), "Events");
                 adapter.addFragment(new OwnRepoFragment(),"Repository");
@@ -202,8 +139,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
                 break;
             case R.id.nav_friends:
                 viewpager.setOffscreenPageLimit(2);
-                adapter.addFragment(new FollowerFragment(),"Follower");
-                adapter.addFragment(new FollowingFragment(),"Following");
+                adapter.addFragment(FollowerFragment.getInstance(loginUser),"Follower");
+                adapter.addFragment(FollowingFragment.getInstance(loginUser),"Following");
                 break;
             case R.id.nav_gist:
                 break;
@@ -225,6 +162,20 @@ public class MainActivity extends BaseActivity implements BaseFragment.GithubAcc
         Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
         GitHubAccount githubAccount = new GitHubAccount(account,this);
         return githubAccount;
+    }
+
+    @Override
+    public void doneAuth(String avatar) {
+        if(avatar.isEmpty() == false)
+            PreferenceUtils.putString(this, PreferenceUtils.Key.AVATAR,avatar);
+        else{
+            avatar = PreferenceUtils.getString(this, PreferenceUtils.Key.AVATAR);
+        }
+        loginUser = PreferenceUtils.getString(this, PreferenceUtils.Key.ACCOUNT);
+        txt_user.setText(loginUser);
+        imageLoader.displayImage(avatar,img_avatar,option,animateFirstListener);
+        tab.setupWithViewPager(viewpager);
+        setUpTab(R.id.nav_home);
     }
 
     static class Adapter extends FragmentStatePagerAdapter {

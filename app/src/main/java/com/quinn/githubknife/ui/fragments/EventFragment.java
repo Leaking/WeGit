@@ -11,6 +11,14 @@ import com.quinn.httpknife.github.GithubImpl;
 public class EventFragment extends BaseFragment {
 
 
+    public static EventFragment getInstance(String user){
+        EventFragment eventFragment = new EventFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user);
+        eventFragment.setArguments(bundle);
+        return eventFragment;
+    }
+
     @Override
     public void onResume() {
         super.onResume();

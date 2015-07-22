@@ -43,9 +43,9 @@ public interface Github {
 	
 	public List<User> myFollwerings(String token, int page) throws IllegalStateException;
 	
-	public List<User> follwerings(String user) throws IllegalStateException;
+	public List<User> follwerings(String user,int page) throws IllegalStateException;
 	
-	public List<User> followers(String user) throws IllegalStateException;
+	public List<User> followers(String user,int page) throws IllegalStateException;
 
 	
 	

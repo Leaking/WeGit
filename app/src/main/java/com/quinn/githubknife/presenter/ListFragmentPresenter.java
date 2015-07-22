@@ -7,6 +7,6 @@ public interface ListFragmentPresenter {
 
     public void onItemClicked(int position);
 
-    public void onPageLoad(int page);
+    public void onPageLoad(int page, String user);
 
 }

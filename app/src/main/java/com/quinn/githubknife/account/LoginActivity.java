@@ -19,17 +19,26 @@ import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.User;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class LoginActivity extends BaseActivity {
 
+    private final static String AVATAR = "AVATAR";
 
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
-    private EditText username;
-    private EditText password;
-    private Button submit;
+    @Bind(R.id.username)
+    EditText username;
+    @Bind(R.id.password)
+    EditText password;
+    @Bind(R.id.submit)
+    Button submit;
+
     private String accountName;
     private String mAuthTokenType;
     private String accountType;
@@ -40,40 +49,36 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+        Intent intent = getIntent();
         github = new GithubImpl(this);
+        mAccountManager = AccountManager.get(getBaseContext());
+
+
         mAccountAuthenticatorResponse =
-                getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
+                intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
         if (mAccountAuthenticatorResponse != null) {
             mAccountAuthenticatorResponse.onRequestContinued();
         }
 
-        setContentView(R.layout.activity_login);
-        mAccountManager = AccountManager.get(getBaseContext());
+        accountName = intent.getStringExtra(Authenticator.ARG_ACCOUNT_NAME);
+        mAuthTokenType = intent.getStringExtra(Authenticator.ARG_AUTH_TYPE);
+        accountType = intent.getStringExtra(Authenticator.ARG_ACCOUNT_TYPE);
 
-
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        submit = (Button) findViewById(R.id.submit);
-
-        accountName = getIntent().getStringExtra(Authenticator.ARG_ACCOUNT_NAME);
-        mAuthTokenType = getIntent().getStringExtra(Authenticator.ARG_AUTH_TYPE);
-        accountType = getIntent().getStringExtra(Authenticator.ARG_ACCOUNT_TYPE);
-
-//        if (mAuthTokenType == null)
         mAuthTokenType = Authenticator.AUTHTOKEN_TYPE_FULL_ACCESS;
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sumbit(username.getText().toString(),password.getText().toString());
-
             }
         });
 
     }
 
-    public void sumbit(final String username,final String password) {
 
+    public void sumbit(final String username,final String password) {
 
         new AsyncTask<String, Void, Intent>() {
 
@@ -86,14 +91,17 @@ public class LoginActivity extends BaseActivity {
                 Bundle data = new Bundle();
                 try {
                     authtoken = getToken(username, password);
-                    System.out.println("token == " + authtoken);
+                    User user = github.authUser(authtoken);
 
+                    System.out.println("token == " + authtoken);
+                    data.putString(AVATAR,user.getAvatar_url());
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, username);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
                     data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
                     data.putString(Authenticator.PARAM_USER_PASS, password);
 
                 } catch (Exception e) {
+                    //
                     data.putString("KEY_ERROR_MESSAGE", e.getMessage());
                 }
 
@@ -119,7 +127,9 @@ public class LoginActivity extends BaseActivity {
     public void finishLogin(Intent intent){
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(Authenticator.PARAM_USER_PASS);
+        String avatar_url = intent.getStringExtra(AVATAR);
         PreferenceUtils.putString(this,PreferenceUtils.Key.ACCOUNT,accountName);
+        PreferenceUtils.putString(this,PreferenceUtils.Key.AVATAR,avatar_url);
         final Account account = new Account(accountName, accountType);
         if (getIntent().getBooleanExtra(Authenticator.ARG_IS_ADDING_NEW_ACCOUNT, true)) {
             String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);

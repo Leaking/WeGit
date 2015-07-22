@@ -12,8 +12,9 @@ import android.preference.PreferenceManager;
  */
 public class PreferenceUtils {
 	
-	public static  class Key{
+	public static class Key{
 		public static final String ACCOUNT = "ACCOUNT";
+		public static final String AVATAR = "AVATAR";
 	}
 	
 	public static final String DEFAULT_STRING = "";

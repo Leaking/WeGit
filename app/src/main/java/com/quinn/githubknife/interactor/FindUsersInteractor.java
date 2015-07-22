@@ -9,6 +9,5 @@ public interface FindUsersInteractor {
     public void loadMyFollwers(int page);
     public void loadFollowerings(String account,int page);
     public void loadFollwers(String account,int page);
-
-
+    public void loadAuthUser();
 }

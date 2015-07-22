@@ -24,6 +24,14 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
     private List<User> follwers = new ArrayList<User>();
     private MyFollowerPresenter presenter;
 
+    public static FollowerFragment getInstance(String user){
+        FollowerFragment followerFragment = new FollowerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user);
+        followerFragment.setArguments(bundle);
+        return followerFragment;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -34,7 +42,7 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
         super.onResume();
         L.i("onResume FollowerFragment");
         if(follwers.isEmpty()) {
-            //presenter.onPageLoad(currPage);
+            presenter.onPageLoad(currPage,user);
         }
     }
 
@@ -92,6 +100,6 @@ public class FollowerFragment extends BaseFragment implements ListFragmentView{
     @Override
     public void loadMore() {
         super.loadMore();
-        presenter.onPageLoad(currPage);
+        presenter.onPageLoad(currPage,user);
     }
 }

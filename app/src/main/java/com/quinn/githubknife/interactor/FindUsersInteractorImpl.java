@@ -89,12 +89,66 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
     }
 
     @Override
-    public void loadFollowerings(String account,int page) {
-
+    public void loadFollowerings(final String user,final int page) {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                List<User> users = (List<User>) msg.obj;
+                listener.onFinished(users);
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                L.i("token == " + token);
+                List<User> users = new ArrayList<User>();
+                try{
+                    users = github.follwerings(user,page);
+                }catch (IllegalStateException e){
+                    L.i("网络问题 loadMyFollwers");
+                }
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = users;
+                handler.sendMessage(msg);
+            }
+        }).start();;
     }
 
     @Override
-    public void loadFollwers(String account, int page) {
+    public void loadFollwers(final String user,final int page) {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                List<User> users = (List<User>) msg.obj;
+                listener.onFinished(users);
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                L.i("token == " + token);
+                List<User> users = new ArrayList<User>();
+                try{
+                    users = github.followers(user,page);
+                }catch (IllegalStateException e){
+                    L.i("网络问题 loadMyFollwers");
+                }
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = users;
+                handler.sendMessage(msg);
+            }
+        }).start();;
+    }
+
+    @Override
+    public void loadAuthUser(){
 
     }
+
 }

@@ -22,7 +22,7 @@ public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserListe
     }
 
     @Override
-    public void onPageLoad(int page) {
+    public void onPageLoad(int page, String user) {
 
     }
 

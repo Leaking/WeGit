@@ -40,7 +40,7 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
     protected boolean haveMore;
     protected int currPage;
     private LinearLayoutManager layoutManager;
-
+    protected String user;
 
 
     public interface GithubAccountCallBack{
@@ -71,6 +71,9 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
         swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
                 R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, swipeRefreshLayout);
+        Bundle bundle = getArguments();
+        if(bundle != null)
+            user = bundle.getString("user");
         layoutManager = new LinearLayoutManager(this.getActivity());
         loading = false;
         haveMore = true;

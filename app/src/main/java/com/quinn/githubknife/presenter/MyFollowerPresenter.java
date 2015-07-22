@@ -19,8 +19,8 @@ public class MyFollowerPresenter extends PresenterAdapter{
     }
 
     @Override
-    public void onPageLoad(int page) {
-        interactor.loadMyFollwers(page);
+    public void onPageLoad(int page, String user) {
+        interactor.loadFollwers(user,page);
     }
 
 

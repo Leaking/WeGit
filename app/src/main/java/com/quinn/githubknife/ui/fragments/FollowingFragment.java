@@ -25,6 +25,15 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     private List<User> follwering = new ArrayList<User>();
     private ListFragmentPresenter presenter;
 
+
+    public static FollowingFragment getInstance(String user){
+        FollowingFragment followingFragment = new FollowingFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("user", user);
+        followingFragment.setArguments(bundle);
+        return followingFragment;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -34,8 +43,8 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     public void onResume() {
         super.onResume();
         L.i("onResume FollowerFragment");
-//        if(follwering.isEmpty())
-//            presenter.onPageLoad(currPage++);
+        if(follwering.isEmpty())
+            presenter.onPageLoad(currPage++,user);
     }
 
 
@@ -92,7 +101,7 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     public void loadMore() {
         super.loadMore();
         L.i("loading page = " + currPage);
-        presenter.onPageLoad(currPage++);
+        presenter.onPageLoad(currPage++,user);
     }
 
     @Override

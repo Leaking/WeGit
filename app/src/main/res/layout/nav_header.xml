@@ -24,6 +24,12 @@
     android:orientation="vertical"
     android:gravity="bottom">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_marginBottom="5dip"/>
+    
     <TextView
         android:id="@+id/headerText"
         android:layout_width="match_parent"
