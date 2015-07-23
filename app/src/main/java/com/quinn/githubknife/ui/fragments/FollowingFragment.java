@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.ListFragmentPresenter;
-import com.quinn.githubknife.presenter.MyFolloweringPresenter;
+import com.quinn.githubknife.presenter.FolloweringPresenterImpl;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
@@ -23,7 +22,6 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
 
     private UsersAdapter adapter;
     private List<User> follwering = new ArrayList<User>();
-    private ListFragmentPresenter presenter;
 
 
     public static FollowingFragment getInstance(String user){
@@ -53,7 +51,7 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.i("onCreate FollowerFragment");
-        presenter = new MyFolloweringPresenter(this.getActivity(),this);
+        presenter = new FolloweringPresenterImpl(this.getActivity(),this);
     }
 
 
@@ -100,8 +98,7 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
     @Override
     public void loadMore() {
         super.loadMore();
-        L.i("loading page = " + currPage);
-        presenter.onPageLoad(currPage++,user);
+
     }
 
     @Override

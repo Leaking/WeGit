@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
+import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Github;
 
@@ -41,6 +42,7 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
     protected int currPage;
     private LinearLayoutManager layoutManager;
     protected String user;
+    protected ListFragmentPresenter presenter;
 
 
     public interface GithubAccountCallBack{
@@ -109,6 +111,7 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
     @Override
     public void loadMore() {
         loading = true;
+        presenter.onPageLoad(currPage++,user);
     }
 
 

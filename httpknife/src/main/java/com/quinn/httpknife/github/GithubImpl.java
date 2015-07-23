@@ -194,8 +194,26 @@ public class GithubImpl implements Github {
 		return tokenList;
 	}
 
-	
-	
+	@Override
+	public List<Repository> repo(String user, int page) throws IllegalStateException {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
+		String url = API_HOST + "users/" + user + "/repos";
+		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		testResult(response);
+		if (response.isSuccess() == false)
+			throw new IllegalStateException("网络链接有问题");
+		Gson gson = new Gson();
+		ArrayList<Repository> repoList = gson.fromJson(response.body(),
+				new TypeToken<List<Repository>>() {
+				}.getType());
+		System.out.println("reposlist = " + repoList);
+		return repoList;
+
+	}
+
+
 	public void testResult(Response response) {
 		System.out.println(response.statusCode());
 		System.out.println(response.headers());

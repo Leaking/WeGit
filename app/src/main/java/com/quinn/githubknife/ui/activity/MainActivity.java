@@ -29,7 +29,7 @@ import com.quinn.githubknife.ui.fragments.ContributeRepoFragment;
 import com.quinn.githubknife.ui.fragments.EventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
-import com.quinn.githubknife.ui.fragments.OwnRepoFragment;
+import com.quinn.githubknife.ui.fragments.RepoFragment;
 import com.quinn.githubknife.ui.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
 
@@ -134,7 +134,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,BaseFragm
                 bundle.putCharSequence("user",loginUser);
                 eventFragment.setArguments(bundle);
                 adapter.addFragment(new EventFragment(), "Events");
-                adapter.addFragment(new OwnRepoFragment(),"Repository");
+                adapter.addFragment(RepoFragment.getInstance(loginUser),"Repository");
                 adapter.addFragment(new ContributeRepoFragment(),"Contribute");
                 break;
             case R.id.nav_friends:

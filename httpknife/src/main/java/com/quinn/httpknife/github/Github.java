@@ -47,7 +47,7 @@ public interface Github {
 	
 	public List<User> followers(String user,int page) throws IllegalStateException;
 
-	
+	public List<Repository> repo(String user,int page) throws IllegalStateException;
 	
 
 }

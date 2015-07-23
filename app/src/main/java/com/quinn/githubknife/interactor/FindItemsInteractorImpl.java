@@ -10,6 +10,7 @@ import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ import java.util.List;
 /**
  * Created by Quinn on 7/20/15.
  */
-public class FindUsersInteractorImpl implements FindUsersInteractor {
+public class FindItemsInteractorImpl implements FindItemsInteractor {
 
     private GitHubAccount gitHubAccount;
     private Github github;
     private OnFinishUserListener listener;
 
-    public FindUsersInteractorImpl(Context context, OnFinishUserListener listener){
+    public FindItemsInteractorImpl(Context context, OnFinishUserListener listener){
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
         if(name.isEmpty())
             name = "NO_ACCOUNT";
@@ -149,6 +150,40 @@ public class FindUsersInteractorImpl implements FindUsersInteractor {
     @Override
     public void loadAuthUser(){
 
+    }
+
+    @Override
+    public void loadAuthRepos() {
+
+    }
+
+    @Override
+    public void loadRepo(final String user, final int page) {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                List<Repository> repos = (List<Repository>) msg.obj;
+                listener.onFinished(repos);
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                L.i("token == " + token);
+                List<Repository> repos = new ArrayList<Repository>();
+                try{
+                    repos = github.repo(user, page);
+                }catch (IllegalStateException e){
+                    L.i("网络问题 loadMyFollwers");
+                }
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = repos;
+                handler.sendMessage(msg);
+            }
+        }).start();;
     }
 
 }
