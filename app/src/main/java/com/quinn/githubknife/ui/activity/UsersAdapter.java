@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.User;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class UsersAdapter extends
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
-
+    private RecycleItemClickListener itemClickListener;
 
     public UsersAdapter(List<User> dataItems){
         this.dataItems = dataItems;
@@ -42,7 +43,7 @@ public class UsersAdapter extends
                 .getContext());
         final View sView = mInflater.inflate(R.layout.item_userslist, parent,
                 false);
-        return new ViewHolder(sView);
+        return new ViewHolder(sView,itemClickListener);
     }
 
     @Override
@@ -57,20 +58,32 @@ public class UsersAdapter extends
         return dataItems.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private RecycleItemClickListener mItemClickListener;
 
         public CircleImageView avatar;
         public TextView name;
 
 
-        public ViewHolder(View view){
+        public ViewHolder(View view,RecycleItemClickListener itemClickListener){
             super(view);
             avatar = (CircleImageView) view.findViewById(R.id.avatar);
             name = (TextView) view.findViewById(R.id.name);
+            mItemClickListener = itemClickListener;
+            view.setOnClickListener(this);
         }
 
 
+        @Override
+        public void onClick(View v) {
+            if(mItemClickListener != null){
+                mItemClickListener.onItemClick(v,getPosition());
+            }
+        }
+    }
+
+    public void setOnItemClickListener(RecycleItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 
 

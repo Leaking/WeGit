@@ -16,6 +16,7 @@
         <item>Friends</item>
 
     </string-array>
+    <string name="title_activity_user_info">UserInfoActivity</string>
 
 
 

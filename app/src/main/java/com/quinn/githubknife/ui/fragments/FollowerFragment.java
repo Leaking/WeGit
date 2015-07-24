@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.FollowerPresenterImpl;
+import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowerFragment extends BaseFragment {
+public class FollowerFragment extends BaseFragment implements RecycleItemClickListener {
 
     private UsersAdapter adapter;
 
@@ -37,14 +39,15 @@ public class FollowerFragment extends BaseFragment {
         L.i("onCreate FollowerFragment");
         dataItems = new ArrayList<User>();
         presenter = new FollowerPresenterImpl(this.getActivity(),this);
+        adapter = new UsersAdapter(dataItems);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new UsersAdapter(dataItems);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
         L.i("onCreateView FollowerFragment");
         return view;
     }
@@ -65,6 +68,17 @@ public class FollowerFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void intoItem(int position) {
+        super.intoItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",(User)dataItems.get(position));
+        UserInfoActivity.launch(this.getActivity(),bundle);
 
+    }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        intoItem(position);
+    }
 }
