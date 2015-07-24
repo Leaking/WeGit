@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.FolloweringPresenterImpl;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
-import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowingFragment extends BaseFragment implements ListFragmentView {
+public class FollowingFragment extends BaseFragment {
 
     private UsersAdapter adapter;
     private List<User> follwering = new ArrayList<User>();
@@ -95,14 +94,9 @@ public class FollowingFragment extends BaseFragment implements ListFragmentView 
 
     }
 
-    @Override
-    public void loadMore() {
-        super.loadMore();
 
-    }
 
     @Override
     public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

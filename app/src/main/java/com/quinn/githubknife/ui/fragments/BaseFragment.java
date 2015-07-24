@@ -10,12 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
+import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.httpknife.github.Github;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Quinn on 7/16/15.
  */
-public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment extends Fragment implements ListFragmentView, onLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
 
     protected Github github;
     protected GitHubAccount gitHubAccount;
@@ -31,7 +36,10 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
 
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
-    protected SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.failTxt)
+    TextView failTxt;
     protected int page = 1;
 
     private int visibleItemCount;
@@ -43,6 +51,8 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
     private LinearLayoutManager layoutManager;
     protected String user;
     protected ListFragmentPresenter presenter;
+
+
 
 
     public interface GithubAccountCallBack{
@@ -70,7 +80,7 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        swipeRefreshLayout = (SwipeRefreshLayout) inflater.inflate(
+        View view  =  inflater.inflate(
                 R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, swipeRefreshLayout);
         Bundle bundle = getArguments();
@@ -104,7 +114,7 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
         });
         //setupRecyclerView(rv);
 
-        return swipeRefreshLayout;
+        return view;
     }
 
 
@@ -117,7 +127,37 @@ public class BaseFragment extends Fragment implements onLoadMoreListener,SwipeRe
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    @Override
+    public void showProgress() {
 
     }
 
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void setItems(List<?> items) {
+
+    }
+
+    @Override
+    public void intoItem(int position) {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void showErrorHint() {
+        UIUtils.crossfade(swipeRefreshLayout,failTxt);
+    }
 }

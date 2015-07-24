@@ -47,7 +47,7 @@ public class GithubImpl implements Github {
 
 	@Override
 	public String createToken(String username, String password)
-			throws IllegalStateException {
+			throws GithubError {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("note", TOKEN_NOTE);
@@ -59,7 +59,7 @@ public class GithubImpl implements Github {
 				.headers(configreHttpHeader())
 				.basicAuthorization(username, password).json(json).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		if(response.statusCode() == 401){
 			//账号密码错误
 		}
@@ -75,11 +75,11 @@ public class GithubImpl implements Github {
 
 	@Override
 	public String findCertainTokenID(String username, String password)
-			throws IllegalStateException {
+			throws GithubError {
 		Response response = http.get(LIST_TOKENS).headers(configreHttpHeader())
 				.basicAuthorization(username, password).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		ArrayList<Token> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<Token>>() {
@@ -95,21 +95,21 @@ public class GithubImpl implements Github {
 
 	@Override
 	public void removeToken(String username, String password)
-			throws IllegalStateException {
+			throws GithubError {
 		String id = findCertainTokenID(username, password);
 		Response response = http.delete(REMOVE_TOKEN + id)
 				.headers(configreHttpHeader())
 				.basicAuthorization(username, password).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		testResult(response);
 	}
 
 	@Override
-	public User authUser(String token) throws IllegalStateException {
+	public User authUser(String token) throws GithubError {
 		Response response = http.get(LOGIN_USER).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		User user = gson.fromJson(response.body(), User.class);
 		return user;
@@ -129,13 +129,13 @@ public class GithubImpl implements Github {
 
 
 	@Override
-	public List<User> myFollwers(String token, int page) throws IllegalStateException {
+	public List<User> myFollwers(String token, int page) throws GithubError {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		Response response = http.get(MY_FOLLOWERS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		testResult(response);
 		Gson gson = new Gson();
 		List<User> tokenList = gson.fromJson(response.body(),
@@ -147,13 +147,13 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public List<User> myFollwerings(String token, int page) throws IllegalStateException {
+	public List<User> myFollwerings(String token, int page) throws GithubError {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		Response response = http.get(MY_FOLLOWERSINGS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -162,7 +162,7 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public List<User> follwerings(String user,int page) throws IllegalStateException {
+	public List<User> follwerings(String user,int page) throws GithubError {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
@@ -170,7 +170,7 @@ public class GithubImpl implements Github {
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
 		testResult(response);
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -178,7 +178,7 @@ public class GithubImpl implements Github {
 		return tokenList;	}
 
 	@Override
-	public List<User> followers(String user,int page) throws IllegalStateException {
+	public List<User> followers(String user,int page) throws GithubError {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
@@ -186,7 +186,7 @@ public class GithubImpl implements Github {
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
 		testResult(response);
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -195,7 +195,7 @@ public class GithubImpl implements Github {
 	}
 
 	@Override
-	public List<Repository> repo(String user, int page) throws IllegalStateException {
+	public List<Repository> repo(String user, int page) throws GithubError {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
@@ -203,7 +203,7 @@ public class GithubImpl implements Github {
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
 		testResult(response);
 		if (response.isSuccess() == false)
-			throw new IllegalStateException("网络链接有问题");
+			throw new GithubError("网络链接有问题");
 		Gson gson = new Gson();
 		ArrayList<Repository> repoList = gson.fromJson(response.body(),
 				new TypeToken<List<Repository>>() {
@@ -212,6 +212,27 @@ public class GithubImpl implements Github {
 		return repoList;
 
 	}
+
+	@Override
+	public List<Repository> starred(String user, int page) throws GithubError {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
+		String url = API_HOST + "users/" + user + "/starred";
+		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		testResult(response);
+		if (response.isSuccess() == false)
+			throw new GithubError("网络链接有问题");
+		Gson gson = new Gson();
+		ArrayList<Repository> repoList = gson.fromJson(response.body(),
+				new TypeToken<List<Repository>>() {
+				}.getType());
+		System.out.println("reposlist = " + repoList);
+		return repoList;
+	}
+
+
+
 
 
 	public void testResult(Response response) {

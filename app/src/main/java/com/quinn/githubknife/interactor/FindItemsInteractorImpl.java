@@ -9,6 +9,7 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
@@ -50,7 +51,17 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
             public void run() {
                 String token = gitHubAccount.getAuthToken();
                 L.i("token == " + token);
-                List<User> users = github.myFollwerings(token,page);
+                List<User> users = new ArrayList<User>();
+                try {
+                    users = github.myFollwerings(token,page);
+                } catch (GithubError githubError) {
+                    githubError.printStackTrace();
+                    /*
+
+                     */
+
+
+                }
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = users;
@@ -77,7 +88,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<User> users = new ArrayList<User>();
                 try{
                     users = github.myFollwers(token,page);
-                }catch (IllegalStateException e){
+                }catch (GithubError e){
                     L.i("网络问题 loadMyFollwers");
                 }
                 Message msg = new Message();
@@ -107,7 +118,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<User> users = new ArrayList<User>();
                 try{
                     users = github.follwerings(user,page);
-                }catch (IllegalStateException e){
+                }catch (GithubError e){
                     L.i("网络问题 loadMyFollwers");
                 }
                 Message msg = new Message();
@@ -136,7 +147,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<User> users = new ArrayList<User>();
                 try{
                     users = github.followers(user,page);
-                }catch (IllegalStateException e){
+                }catch (GithubError e){
                     L.i("网络问题 loadMyFollwers");
                 }
                 Message msg = new Message();
@@ -175,7 +186,36 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<Repository> repos = new ArrayList<Repository>();
                 try{
                     repos = github.repo(user, page);
-                }catch (IllegalStateException e){
+                }catch (GithubError e){
+                    L.i("网络问题 loadMyFollwers");
+                }
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = repos;
+                handler.sendMessage(msg);
+            }
+        }).start();;
+    }
+
+    @Override
+    public void loadStarredRepo(final String user, final int page) {
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                List<Repository> repos = (List<Repository>) msg.obj;
+                listener.onFinished(repos);
+            }
+        };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                L.i("token == " + token);
+                List<Repository> repos = new ArrayList<Repository>();
+                try{
+                    repos = github.starred(user, page);
+                }catch (GithubError e){
                     L.i("网络问题 loadMyFollwers");
                 }
                 Message msg = new Message();

@@ -25,11 +25,11 @@ import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.BaseFragment;
-import com.quinn.githubknife.ui.fragments.ContributeRepoFragment;
+import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.EventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
-import com.quinn.githubknife.ui.fragments.RepoFragment;
+import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
 
@@ -134,8 +134,8 @@ public class MainActivity extends BaseActivity implements MainAuthView,BaseFragm
                 bundle.putCharSequence("user",loginUser);
                 eventFragment.setArguments(bundle);
                 adapter.addFragment(new EventFragment(), "Events");
-                adapter.addFragment(RepoFragment.getInstance(loginUser),"Repository");
-                adapter.addFragment(new ContributeRepoFragment(),"Contribute");
+                adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
+                adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
                 break;
             case R.id.nav_friends:
                 viewpager.setOffscreenPageLimit(2);

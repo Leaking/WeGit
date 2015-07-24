@@ -17,4 +17,7 @@ public interface ListFragmentView {
 
     public void showMessage(String message);
 
+    public void showErrorHint();
+
+
 }

@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.FollowerPresenterImpl;
-import com.quinn.githubknife.ui.activity.UsersAdapter;
+import com.quinn.githubknife.presenter.StarRepoPresenterImpl;
+import com.quinn.githubknife.ui.activity.RepoAdapter;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
-import com.quinn.httpknife.github.User;
+import com.quinn.httpknife.github.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,63 +17,64 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowerFragment extends BaseFragment {
+public class StarredRepoFragment extends BaseFragment {
 
-    private UsersAdapter adapter;
-    private List<User> follwers = new ArrayList<User>();
+    private RepoAdapter adapter;
 
-    public static FollowerFragment getInstance(String user){
-        FollowerFragment followerFragment = new FollowerFragment();
+    private List<Repository> repos = new ArrayList<Repository>();
+
+
+    public static StarredRepoFragment getInstance(String user){
+        StarredRepoFragment starredRepoFragment = new StarredRepoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
-        followerFragment.setArguments(bundle);
-        return followerFragment;
+        starredRepoFragment.setArguments(bundle);
+        return starredRepoFragment;
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        L.i("onResume FollowerFragment");
-        if(follwers.isEmpty()) {
-            presenter.onPageLoad(currPage,user);
-        }
-    }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i("onCreate FollowerFragment");
-        presenter = new FollowerPresenterImpl(this.getActivity(),this);
+        presenter = new StarRepoPresenterImpl(this.getActivity(),this);
+        adapter = new RepoAdapter(repos);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new UsersAdapter(follwers);
+        adapter = new RepoAdapter(repos);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(repos.isEmpty())
+            presenter.onPageLoad(currPage++,user);
 
+    }
 
     @Override
-    public void setItems(List items) {
-        for(Object user:items){
-            follwers.add((User)user);
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void setItems(List<?> items) {
+        for(Object repo:items){
+            repos.add((Repository)repo);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
-        currPage = currPage + 1;
         adapter.notifyDataSetChanged();
     }
 
