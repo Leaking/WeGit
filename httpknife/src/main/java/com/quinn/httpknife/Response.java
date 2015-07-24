@@ -1,11 +1,5 @@
 package com.quinn.httpknife;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -13,6 +7,12 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Response {
 	
@@ -119,6 +119,10 @@ public class Response {
 			throw new IllegalStateException("You have parse charset");
 		}
 		try {
+			if(this == null)
+				System.out.println("this == null");
+			if(this.contentBytes == null)
+				System.out.println("contentBytes == null");
 			this.contentString = new String(this.contentBytes,this.charset);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

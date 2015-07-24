@@ -20,7 +20,6 @@ import java.util.List;
 public class FollowerFragment extends BaseFragment {
 
     private UsersAdapter adapter;
-    private List<User> follwers = new ArrayList<User>();
 
     public static FollowerFragment getInstance(String user){
         FollowerFragment followerFragment = new FollowerFragment();
@@ -30,26 +29,13 @@ public class FollowerFragment extends BaseFragment {
         return followerFragment;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        L.i("onResume FollowerFragment");
-        if(follwers.isEmpty()) {
-            presenter.onPageLoad(currPage,user);
-        }
-    }
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.i("onCreate FollowerFragment");
+        dataItems = new ArrayList<User>();
         presenter = new FollowerPresenterImpl(this.getActivity(),this);
     }
 
@@ -57,7 +43,7 @@ public class FollowerFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new UsersAdapter(follwers);
+        adapter = new UsersAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
         return view;
@@ -67,8 +53,10 @@ public class FollowerFragment extends BaseFragment {
 
     @Override
     public void setItems(List items) {
+        super.setItems(items);
+
         for(Object user:items){
-            follwers.add((User)user);
+            dataItems.add((User)user);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
@@ -77,18 +65,6 @@ public class FollowerFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void intoItem(int position) {
 
-    }
 
-    @Override
-    public void showMessage(String message) {
-
-    }
-
-    @Override
-    public void loadMore() {
-        super.loadMore();
-    }
 }

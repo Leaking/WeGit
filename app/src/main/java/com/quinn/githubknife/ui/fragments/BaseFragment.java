@@ -17,6 +17,7 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.httpknife.github.Github;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Quinn on 7/16/15.
@@ -33,6 +35,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     protected Github github;
     protected GitHubAccount gitHubAccount;
     private GithubAccountCallBack callBack;
+    protected List dataItems;
 
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
@@ -40,7 +43,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.failTxt)
     TextView failTxt;
-    protected int page = 1;
 
     private int visibleItemCount;
     private int firstVisibleItem;
@@ -75,6 +77,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     public void onResume() {
         super.onResume();
         gitHubAccount = callBack.getGithubAccount();
+        if(dataItems.isEmpty())
+            presenter.onPageLoad(currPage,user);
     }
 
     @Nullable
@@ -82,7 +86,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view  =  inflater.inflate(
                 R.layout.fragment_friends, container, false);
-        ButterKnife.bind(this, swipeRefreshLayout);
+        ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if(bundle != null)
             user = bundle.getString("user");
@@ -121,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void loadMore() {
         loading = true;
-        presenter.onPageLoad(currPage++,user);
+        presenter.onPageLoad(currPage,user);
     }
 
 
@@ -143,7 +147,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
     @Override
     public void setItems(List<?> items) {
-
+        L.i("request items successfully");
+        currPage++;
     }
 
     @Override
@@ -152,12 +157,28 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     }
 
     @Override
-    public void showMessage(String message) {
-
+    public void failToLoadMore() {
+        L.i("request more items fail");
+        ToastUtils.showMsg(this.getActivity(),R.string.fail_load);
     }
 
     @Override
-    public void showErrorHint() {
+    public void failToLoadFirst() {
+        L.i("request items first fail");
+
         UIUtils.crossfade(swipeRefreshLayout,failTxt);
     }
+
+    @Override
+    public void reLoad(){
+        UIUtils.crossfade(failTxt,swipeRefreshLayout);
+        presenter.onPageLoad(currPage, user);
+    }
+
+    @OnClick(R.id.failTxt)
+    void failTxt(){
+        reLoad();
+    }
+
+
 }

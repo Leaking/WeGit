@@ -15,9 +15,9 @@ public interface ListFragmentView {
 
     public void intoItem(int position);
 
-    public void showMessage(String message);
+    public void failToLoadMore();
 
-    public void showErrorHint();
+    public void failToLoadFirst();
 
-
+    public void reLoad();
 }

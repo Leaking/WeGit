@@ -21,9 +21,6 @@ public class StarredRepoFragment extends BaseFragment {
 
     private RepoAdapter adapter;
 
-    private List<Repository> repos = new ArrayList<Repository>();
-
-
     public static StarredRepoFragment getInstance(String user){
         StarredRepoFragment starredRepoFragment = new StarredRepoFragment();
         Bundle bundle = new Bundle();
@@ -35,27 +32,21 @@ public class StarredRepoFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dataItems = new ArrayList<Repository>();
         presenter = new StarRepoPresenterImpl(this.getActivity(),this);
-        adapter = new RepoAdapter(repos);
+        adapter = new RepoAdapter(dataItems);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new RepoAdapter(repos);
+        adapter = new RepoAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
         return view;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        if(repos.isEmpty())
-            presenter.onPageLoad(currPage++,user);
-
-    }
 
     @Override
     public void showProgress() {
@@ -69,8 +60,9 @@ public class StarredRepoFragment extends BaseFragment {
 
     @Override
     public void setItems(List<?> items) {
+        super.setItems(items);
         for(Object repo:items){
-            repos.add((Repository)repo);
+            dataItems.add((Repository)repo);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
@@ -84,7 +76,7 @@ public class StarredRepoFragment extends BaseFragment {
     }
 
     @Override
-    public void showMessage(String message) {
+    public void failToLoadMore() {
 
     }
 

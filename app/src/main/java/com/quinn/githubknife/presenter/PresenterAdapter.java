@@ -32,7 +32,11 @@ public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserListe
     }
 
     @Override
-    public void onError() {
-
+    public void onError(boolean first) {
+        if(first)
+            view.failToLoadFirst();
+        else{
+            view.failToLoadMore();
+        }
     }
 }

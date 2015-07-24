@@ -18,6 +18,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
@@ -90,7 +91,7 @@ public class LoginActivity extends BaseActivity {
                 String authtoken = null;
                 Bundle data = new Bundle();
                 try {
-                    authtoken = getToken(username, password);
+                    authtoken = github.createToken(username, password);;
                     User user = github.authUser(authtoken);
 
                     System.out.println("token == " + authtoken);
@@ -100,7 +101,7 @@ public class LoginActivity extends BaseActivity {
                     data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
                     data.putString(Authenticator.PARAM_USER_PASS, password);
 
-                } catch (Exception e) {
+                } catch (GithubError e) {
                     //
                     data.putString("KEY_ERROR_MESSAGE", e.getMessage());
                 }
@@ -167,11 +168,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    public String getToken(String username,String password){
-        String token = github.createToken(username,password);
-        return token;
-       // return "0f7d54c808684c0ad9a7c217b63b1c017bdae217";
-    }
 
     /**
      * Set the result that is to be sent as the result of the request that caused this

@@ -38,12 +38,14 @@ public class GithubImpl implements Github {
 	public final static String PAGE = "page";
 	public final static String PER_PAGE = "per_page";
 
-
+	private String token = null;
 	private HttpKnife http;
 
 	public GithubImpl(Context context) {
 		http = new HttpKnife(context);
 	}
+
+
 
 	@Override
 	public String createToken(String username, String password)
@@ -110,30 +112,40 @@ public class GithubImpl implements Github {
 		Response response = http.get(LOGIN_USER).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		testResult(response);
 		Gson gson = new Gson();
 		User user = gson.fromJson(response.body(), User.class);
 		return user;
 	}
 
-	
-	
-	
+
+	@Override
+	public void makeAuthRequest(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public Map<String, String> configreHttpHeader() {
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Accept", ACCEPT);
 		headers.put("User-Agent", AGENT_USER);
+		if(token != null){
+			headers.put(HttpKnife.RequestHeader.AUTHORIZATION,
+					"Token " + token);
+		}
 		return headers;
 	}
 
-
-
-	@Override
-	public List<User> myFollwers(String token, int page) throws GithubError {
+	public Map<String,String> pagination(int page){
 		Map<String,String> params = new HashMap<String,String>();
 		params.put(PAGE,String.valueOf(page));
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
-		Response response = http.get(MY_FOLLOWERS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
+		return params;
+	}
+
+	@Override
+	public List<User> myFollwers(String token, int page) throws GithubError {
+		Response response = http.get(MY_FOLLOWERS,pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
 		testResult(response);
@@ -154,6 +166,9 @@ public class GithubImpl implements Github {
 		Response response = http.get(MY_FOLLOWERSINGS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		else{
+			testResult(response);
+		}
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -171,6 +186,9 @@ public class GithubImpl implements Github {
 		testResult(response);
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		else{
+			testResult(response);
+		}
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -184,9 +202,11 @@ public class GithubImpl implements Github {
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/followers";
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
-		testResult(response);
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		else{
+			testResult(response);
+		}
 		Gson gson = new Gson();
 		ArrayList<User> tokenList = gson.fromJson(response.body(),
 				new TypeToken<List<User>>() {
@@ -201,9 +221,11 @@ public class GithubImpl implements Github {
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/repos";
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
-		testResult(response);
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		else{
+			testResult(response);
+		}
 		Gson gson = new Gson();
 		ArrayList<Repository> repoList = gson.fromJson(response.body(),
 				new TypeToken<List<Repository>>() {
@@ -220,9 +242,11 @@ public class GithubImpl implements Github {
 		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/starred";
 		Response response = http.get(url,params).headers(configreHttpHeader()).response();
-		testResult(response);
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
+		else {
+			testResult(response);
+		}
 		Gson gson = new Gson();
 		ArrayList<Repository> repoList = gson.fromJson(response.body(),
 				new TypeToken<List<Repository>>() {

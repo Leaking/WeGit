@@ -11,7 +11,8 @@ import java.util.Map;
  */
 public interface Github {
 
-	
+
+	public void makeAuthRequest(String token);
 	
 	public Map<String,String> configreHttpHeader();
 	

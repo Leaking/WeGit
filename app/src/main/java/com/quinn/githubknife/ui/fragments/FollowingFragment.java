@@ -20,7 +20,6 @@ import java.util.List;
 public class FollowingFragment extends BaseFragment {
 
     private UsersAdapter adapter;
-    private List<User> follwering = new ArrayList<User>();
 
 
     public static FollowingFragment getInstance(String user){
@@ -36,20 +35,13 @@ public class FollowingFragment extends BaseFragment {
         super.onStart();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        L.i("onResume FollowerFragment");
-        if(follwering.isEmpty())
-            presenter.onPageLoad(currPage++,user);
-    }
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.i("onCreate FollowerFragment");
+        dataItems = new ArrayList<User>();
         presenter = new FolloweringPresenterImpl(this.getActivity(),this);
     }
 
@@ -57,26 +49,20 @@ public class FollowingFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new UsersAdapter(follwering);
+        adapter = new UsersAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
         return view;
     }
 
-    @Override
-    public void showProgress() {
 
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
 
     @Override
     public void setItems(List items) {
+        super.setItems(items);
+
         for(Object user:items){
-            follwering.add((User)user);
+            dataItems.add((User)user);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
@@ -84,19 +70,5 @@ public class FollowingFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void intoItem(int position) {
 
-    }
-
-    @Override
-    public void showMessage(String message) {
-
-    }
-
-
-
-    @Override
-    public void onRefresh() {
-    }
 }

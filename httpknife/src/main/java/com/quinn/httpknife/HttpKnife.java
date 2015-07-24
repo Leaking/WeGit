@@ -484,6 +484,8 @@ public class HttpKnife {
 	}
 	
 	public HttpKnife tokenAuthorization(String token){
+		if(token == null || token.isEmpty())
+			return this;
 		header(RequestHeader.AUTHORIZATION,
 				"Token " + token);
 		return this;

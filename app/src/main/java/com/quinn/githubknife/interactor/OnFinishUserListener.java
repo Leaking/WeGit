@@ -7,6 +7,6 @@ import java.util.List;
  */
 public interface OnFinishUserListener {
     public void onFinished(List items);
-    public void onError();
+    public void onError(boolean first);
 
 }

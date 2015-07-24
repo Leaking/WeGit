@@ -21,7 +21,6 @@ public class UserRepoFragment extends BaseFragment {
 
     private RepoAdapter adapter;
 
-    private List repos = new ArrayList<Repository>();
 
     public static UserRepoFragment getInstance(String user){
         UserRepoFragment userRepoFragment = new UserRepoFragment();
@@ -35,40 +34,29 @@ public class UserRepoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new UserRepoPresenterImpl(this.getActivity(),this);
-        adapter = new RepoAdapter(repos);
+        dataItems = new ArrayList<Repository>();
+        adapter = new RepoAdapter(dataItems);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new RepoAdapter(repos);
+        adapter = new RepoAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         L.i("onCreateView FollowerFragment");
         return view;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        if(repos.isEmpty())
-            presenter.onPageLoad(currPage++,user);
-    }
 
-    @Override
-    public void showProgress() {
 
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
 
     @Override
     public void setItems(List<?> items) {
+        super.setItems(items);
+
         for(Object repo:items){
-            repos.add((Repository)repo);
+            dataItems.add((Repository) repo);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
@@ -76,18 +64,5 @@ public class UserRepoFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void intoItem(int position) {
 
-    }
-
-    @Override
-    public void showMessage(String message) {
-
-    }
-
-    @Override
-    public void loadMore() {
-        super.loadMore();
-    }
 }

@@ -9,13 +9,16 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.User;
 
 /**
  * Created by Quinn on 7/22/15.
  */
 public class AuthInteractorImpl implements  AuthInteractor {
 
+    private final static String TAG = AuthInteractorImpl.class.getSimpleName();
     private Context context;
     private GitHubAccount gitHubAccount;
     private Github github;
@@ -47,11 +50,14 @@ public class AuthInteractorImpl implements  AuthInteractor {
             @Override
             public void run() {
                 String token = gitHubAccount.getAuthToken();
+                L.i(TAG,"token = " + token);
                 String avatar = "";
                 try {
-                    avatar = github.authUser(token).getAvatar_url();
+                    User user = github.authUser(token);
+                    L.i(TAG,user.toString());
+                    avatar = user.getAvatar_url();
                     L.i("Get new avatar = " + avatar);
-                }catch (IllegalStateException e){
+                }catch (GithubError e){
                     L.i("update avatar url fail");
 
                 }
