@@ -2,6 +2,7 @@ package com.quinn.githubknife.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.CardView;
@@ -32,15 +33,21 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     ImageView backDrop;
 
 
+    @Bind(R.id.repoWrap)
+    CardView repoWrap;
     @Bind(R.id.followerWrap)
     CardView followerWrap;
     @Bind(R.id.followingWrap)
     CardView followingWrap;
 
+    @Bind(R.id.repoNum)
+    TextView repoNum;
     @Bind(R.id.followersNum)
     TextView followerNum;
     @Bind(R.id.followingNum)
     TextView followingNum;
+    @Bind(R.id.iconEmail)
+    TextView iconEmail;
 
     private UserInfoPresenter presenter;
 
@@ -66,8 +73,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(user.getLogin());
-
         imageLoader.displayImage(user.getAvatar_url(),backDrop,option,animateFirstListener);
+        Typeface typeface = Typeface.createFromAsset(getAssets(),"octicons.ttf");
+        iconEmail.setTypeface(typeface);
     }
 
 
@@ -96,6 +104,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     public void loadUser(User user) {
         followerNum.setText(""+user.getFollowers());
         followingNum.setText(""+user.getFollowing());
+        repoNum.setText(""+user.getPublic_repos());
     }
 
     @Override
