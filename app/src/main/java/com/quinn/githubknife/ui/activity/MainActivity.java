@@ -130,11 +130,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,BaseFragm
         switch (id){
             case R.id.nav_home:
                 viewpager.setOffscreenPageLimit(3);
-                EventFragment eventFragment = new EventFragment();
-                Bundle bundle = new Bundle();
-                bundle.putCharSequence("user",loginUser);
-                eventFragment.setArguments(bundle);
-                adapter.addFragment(new EventFragment(), "Events");
+                adapter.addFragment(EventFragment.getInstance(loginUser), "Events");
                 adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
                 break;

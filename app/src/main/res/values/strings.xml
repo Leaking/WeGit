@@ -7,6 +7,12 @@
     <string name="fail_load">Fail! Check the Network</string>
     <string name="icon_star" translatable="false">\uf02a</string>
     <string name="icon_email" translatable="false">\uf03b</string>
+    <string name="icon_locate" translatable="false">\uf060</string>
+    <string name="icon_company" translatable="false">\uf037</string>
+    <string name="icon_blog" translatable="false">\uf05c</string>
+    <string name="icon_join" translatable="false">\uf046</string>
+    <string name="icon_fork" translatable="false">\uf020</string>
+    <string name="icon_repo" translatable="false">\uf001</string>
 
     <string-array name="drawerListData">
 

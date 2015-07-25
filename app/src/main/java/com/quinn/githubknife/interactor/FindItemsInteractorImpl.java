@@ -8,6 +8,7 @@ import android.os.Message;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
@@ -257,6 +258,41 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
             }
         }).start();
         ;
+    }
+
+    @Override
+    public void loadReceivedEvents(final String user, final int page) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                L.i("token == " + token);
+                List<Event> events = new ArrayList<Event>();
+                Message msg = new Message();
+
+                try {
+                    events = github.receivedEvent(user, page);
+                } catch (GithubError e) {
+                    L.i(TAG,"网络问题 loadReceivedEvents");
+                    if(page == 1){
+                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                    }else{
+                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
+                    }
+                    return;
+
+                }
+                msg.what = LOAD_SUCCESS;
+                msg.obj = events;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    @Override
+    public void loadUserEvents(String user, int page) {
+
     }
 
 }

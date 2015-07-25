@@ -46,8 +46,35 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     TextView followerNum;
     @Bind(R.id.followingNum)
     TextView followingNum;
+
+
+    @Bind(R.id.iconStar)
+    TextView iconStar;
     @Bind(R.id.iconEmail)
     TextView iconEmail;
+    @Bind(R.id.iconBlog)
+    TextView iconBlog;
+    @Bind(R.id.iconCompany)
+    TextView iconCompany;
+    @Bind(R.id.iconLocation)
+    TextView iconLocation;
+    @Bind(R.id.iconJoinTime)
+    TextView iconJoin;
+
+    @Bind(R.id.email)
+    TextView email;
+    @Bind(R.id.company)
+    TextView company;
+    @Bind(R.id.location)
+    TextView location;
+    @Bind(R.id.blog)
+    TextView blog;
+    @Bind(R.id.joinTime)
+    TextView joinTime;
+
+
+
+
 
     private UserInfoPresenter presenter;
 
@@ -75,7 +102,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         collapsingToolbar.setTitle(user.getLogin());
         imageLoader.displayImage(user.getAvatar_url(),backDrop,option,animateFirstListener);
         Typeface typeface = Typeface.createFromAsset(getAssets(),"octicons.ttf");
+        iconStar.setTypeface(typeface);
         iconEmail.setTypeface(typeface);
+        iconBlog.setTypeface(typeface);
+        iconCompany.setTypeface(typeface);
+        iconLocation.setTypeface(typeface);
+        iconJoin.setTypeface(typeface);
     }
 
 
@@ -105,6 +137,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         followerNum.setText(""+user.getFollowers());
         followingNum.setText(""+user.getFollowing());
         repoNum.setText(""+user.getPublic_repos());
+        email.setText(user.getEmail());
+        company.setText(user.getCompany());
+        blog.setText(user.getBlog());
+        location.setText(user.getLocation());
+        joinTime.setText(user.getCreated_at());
     }
 
     @Override

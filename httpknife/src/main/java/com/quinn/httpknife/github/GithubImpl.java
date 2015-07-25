@@ -254,6 +254,25 @@ public class GithubImpl implements Github {
 		return user;
 	}
 
+	@Override
+	public List<Event> receivedEvent(String user,int page) throws GithubError {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put(PAGE,String.valueOf(page));
+		String url = API_HOST + "users/" + user + "/received_events";
+		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		if (response.isSuccess() == false)
+			throw new GithubError("网络链接有问题");
+		else {
+			testResult(response);
+		}
+		Gson gson = new Gson();
+		ArrayList<Event> events = gson.fromJson(response.body(),
+				new TypeToken<List<Event>>() {
+				}.getType());
+		System.out.println("events = " + events);
+		return events;
+	}
+
 
 	public void testResult(Response response) {
 		System.out.println(response.statusCode());

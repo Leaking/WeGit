@@ -73,7 +73,6 @@ public class FollowerFragment extends BaseFragment implements RecycleItemClickLi
         Bundle bundle = new Bundle();
         bundle.putSerializable("user",(User)dataItems.get(position));
         UserInfoActivity.launch(this.getActivity(),bundle);
-
     }
 
     @Override
