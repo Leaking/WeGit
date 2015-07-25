@@ -25,13 +25,14 @@ import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.BaseFragment;
-import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.EventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
+import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,10 @@ public class MainActivity extends BaseActivity implements MainAuthView,BaseFragm
     }
 
     @Override
-    public void doneAuth(String avatar) {
+    public void doneAuth(User user) {
+        String avatar = "";
+        if(user != null && user.getAvatar_url() != null && !user.getAvatar_url().isEmpty())
+            avatar = user.getAvatar_url();
         if(avatar.isEmpty() == false)
             PreferenceUtils.putString(this, PreferenceUtils.Key.AVATAR,avatar);
         else{

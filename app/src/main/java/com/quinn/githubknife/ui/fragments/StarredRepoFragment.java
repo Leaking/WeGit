@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.StarRepoPresenterImpl;
+import com.quinn.githubknife.presenter.StarredRepoPresenterImpl;
 import com.quinn.githubknife.ui.activity.RepoAdapter;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
@@ -33,7 +33,7 @@ public class StarredRepoFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataItems = new ArrayList<Repository>();
-        presenter = new StarRepoPresenterImpl(this.getActivity(),this);
+        presenter = new StarredRepoPresenterImpl(this.getActivity(),this);
         adapter = new RepoAdapter(dataItems);
     }
 

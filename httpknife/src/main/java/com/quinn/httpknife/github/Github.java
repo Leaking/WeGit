@@ -52,4 +52,6 @@ public interface Github {
 
 	public List<Repository> starred(String user,int page) throws GithubError;
 
+	public User user(String user) throws GithubError;
+
 }

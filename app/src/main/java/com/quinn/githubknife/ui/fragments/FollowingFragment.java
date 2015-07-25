@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.FolloweringPresenterImpl;
+import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class FollowingFragment extends BaseFragment {
+public class FollowingFragment extends BaseFragment implements RecycleItemClickListener {
 
     private UsersAdapter adapter;
 
@@ -28,11 +30,6 @@ public class FollowingFragment extends BaseFragment {
         bundle.putString("user", user);
         followingFragment.setArguments(bundle);
         return followingFragment;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
 
@@ -51,6 +48,8 @@ public class FollowingFragment extends BaseFragment {
         View view = super.onCreateView(inflater,container,savedInstanceState);
         adapter = new UsersAdapter(dataItems);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
+
         L.i("onCreateView FollowerFragment");
         return view;
     }
@@ -60,7 +59,6 @@ public class FollowingFragment extends BaseFragment {
     @Override
     public void setItems(List items) {
         super.setItems(items);
-
         for(Object user:items){
             dataItems.add((User)user);
         }
@@ -69,6 +67,18 @@ public class FollowingFragment extends BaseFragment {
             haveMore = false;
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void intoItem(int position) {
+        super.intoItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",(User)dataItems.get(position));
+        UserInfoActivity.launch(this.getActivity(), bundle);
+    }
+    @Override
+    public void onItemClick(View view, int position) {
+    intoItem(position);
+}
 
 
 }

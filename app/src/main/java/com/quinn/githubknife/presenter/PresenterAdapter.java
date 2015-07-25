@@ -1,6 +1,6 @@
 package com.quinn.githubknife.presenter;
 
-import com.quinn.githubknife.interactor.OnFinishUserListener;
+import com.quinn.githubknife.interactor.OnLoadUserListListener;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/20/15.
  */
-public class PresenterAdapter implements ListFragmentPresenter,OnFinishUserListener {
+public class PresenterAdapter implements ListFragmentPresenter,OnLoadUserListListener {
 
     protected ListFragmentView view;
 

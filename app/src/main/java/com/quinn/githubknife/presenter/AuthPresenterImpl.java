@@ -2,24 +2,25 @@ package com.quinn.githubknife.presenter;
 
 import android.content.Context;
 
-import com.quinn.githubknife.interactor.AuthInteractor;
-import com.quinn.githubknife.interactor.AuthInteractorImpl;
-import com.quinn.githubknife.interactor.OnAuthFInishListener;
+import com.quinn.githubknife.interactor.UserInfoInteractor;
+import com.quinn.githubknife.interactor.UserInfoInteractorImpl;
+import com.quinn.githubknife.interactor.OnLoadUserInfoListener;
 import com.quinn.githubknife.ui.view.MainAuthView;
+import com.quinn.httpknife.github.User;
 
 /**
  * Created by Quinn on 7/22/15.
  */
-public class AuthPresenterImpl implements AuthPresenter,OnAuthFInishListener {
+public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     private Context context;
     private MainAuthView view;
-    private AuthInteractor authInteractor;
+    private UserInfoInteractor authInteractor;
 
     public AuthPresenterImpl(Context context, MainAuthView view){
         this.context = context;
         this.view = view;
-        this.authInteractor = new AuthInteractorImpl(context, this);
+        this.authInteractor = new UserInfoInteractorImpl(context, this);
     }
 
     @Override
@@ -28,7 +29,12 @@ public class AuthPresenterImpl implements AuthPresenter,OnAuthFInishListener {
     }
 
     @Override
-    public void authFinish(String avatar) {
-        view.doneAuth(avatar);
+    public void onFinish(User user) {
+        view.doneAuth(user);
+    }
+
+    @Override
+    public void onError() {
+
     }
 }

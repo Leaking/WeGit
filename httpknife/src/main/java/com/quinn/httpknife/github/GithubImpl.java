@@ -160,10 +160,7 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<User> myFollwerings(String token, int page) throws GithubError {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(PAGE,String.valueOf(page));
-		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
-		Response response = http.get(MY_FOLLOWERSINGS,params).headers(configreHttpHeader()).tokenAuthorization(token).response();
+		Response response = http.get(MY_FOLLOWERSINGS,pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
 		else{
@@ -178,11 +175,8 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<User> follwerings(String user,int page) throws GithubError {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(PAGE,String.valueOf(page));
-		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/following";
-		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
 		testResult(response);
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
@@ -197,11 +191,8 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<User> followers(String user,int page) throws GithubError {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(PAGE,String.valueOf(page));
-		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/followers";
-		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
 		else{
@@ -216,11 +207,8 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<Repository> repo(String user, int page) throws GithubError {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(PAGE,String.valueOf(page));
-		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/repos";
-		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
 		else{
@@ -237,11 +225,8 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<Repository> starred(String user, int page) throws GithubError {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put(PAGE,String.valueOf(page));
-		params.put(PER_PAGE,String.valueOf(DEFAULT_PAGE_SIZE));
 		String url = API_HOST + "users/" + user + "/starred";
-		Response response = http.get(url,params).headers(configreHttpHeader()).response();
+		Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");
 		else {
@@ -255,8 +240,19 @@ public class GithubImpl implements Github {
 		return repoList;
 	}
 
-
-
+	@Override
+	public User user(String username) throws GithubError {
+		String url = API_HOST + "users/" + username;
+		Response response = http.get(url).headers(configreHttpHeader()).response();
+		if (response.isSuccess() == false)
+			throw new GithubError("网络链接有问题");
+		else {
+			testResult(response);
+		}
+		Gson gson = new Gson();
+		User user = gson.fromJson(response.body(), User.class);
+		return user;
+	}
 
 
 	public void testResult(Response response) {

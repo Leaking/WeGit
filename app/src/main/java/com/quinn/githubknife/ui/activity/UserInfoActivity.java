@@ -4,18 +4,46 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.presenter.UserInfoPresenter;
+import com.quinn.githubknife.presenter.UserInfoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.view.UserInfoView;
 import com.quinn.httpknife.github.User;
 
-public class UserInfoActivity extends BaseActivity {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     private User user;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbar;
+    @Bind(R.id.backdrop)
+    ImageView backDrop;
+
+
+    @Bind(R.id.followerWrap)
+    CardView followerWrap;
+    @Bind(R.id.followingWrap)
+    CardView followingWrap;
+
+    @Bind(R.id.followersNum)
+    TextView followerNum;
+    @Bind(R.id.followingNum)
+    TextView followingNum;
+
+    private UserInfoPresenter presenter;
+
 
     public static void launch(Context context, Bundle bundle){
         Intent intent = new Intent(context,UserInfoActivity.class);
@@ -28,21 +56,21 @@ public class UserInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        ButterKnife.bind(this);
         Bundle bundle  = getIntent().getExtras();
         if(bundle != null){
             user = (User)bundle.getSerializable("user");
         }
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        presenter = new UserInfoPresenterImpl(this,this);
+        presenter.user(user.getLogin());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        collapsingToolbar.setTitle(user.getLogin());
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Leaking");
-        ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        imageLoader.displayImage(user.getAvatar_url(),imageView,option,animateFirstListener);
-
+        imageLoader.displayImage(user.getAvatar_url(),backDrop,option,animateFirstListener);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,13 +84,22 @@ public class UserInfoActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void loadUser(User user) {
+        followerNum.setText(""+user.getFollowers());
+        followingNum.setText(""+user.getFollowing());
+    }
+
+    @Override
+    public void failLoad() {
+
     }
 }

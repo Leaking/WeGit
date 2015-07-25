@@ -29,10 +29,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
 
     private GitHubAccount gitHubAccount;
     private Github github;
-    private OnFinishUserListener listener;
+    private OnLoadUserListListener listener;
     private Handler handler;
 
-    public FindItemsInteractorImpl(Context context, final OnFinishUserListener listener) {
+    public FindItemsInteractorImpl(Context context, final OnLoadUserListListener listener) {
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
         if (name.isEmpty())
             name = "NO_ACCOUNT";

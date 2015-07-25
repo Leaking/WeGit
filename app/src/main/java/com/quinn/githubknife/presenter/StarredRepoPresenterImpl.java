@@ -9,11 +9,11 @@ import com.quinn.githubknife.ui.view.ListFragmentView;
 /**
  * Created by Quinn on 7/23/15.
  */
-public class StarRepoPresenterImpl extends PresenterAdapter{
+public class StarredRepoPresenterImpl extends PresenterAdapter{
 
     private FindItemsInteractor interactor;
 
-    public StarRepoPresenterImpl(Context context, ListFragmentView view){
+    public StarredRepoPresenterImpl(Context context, ListFragmentView view){
         super(view);
         this.interactor = new FindItemsInteractorImpl(context,this);
     }

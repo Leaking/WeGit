@@ -64,7 +64,6 @@ public class FollowerFragment extends BaseFragment implements RecycleItemClickLi
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
-        currPage = currPage + 1;
         adapter.notifyDataSetChanged();
     }
 
