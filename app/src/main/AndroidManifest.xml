@@ -52,7 +52,10 @@
         <activity
             android:name=".ui.activity.FoActivity"
             android:label="@string/title_activity_fo" >
-
+        </activity>
+        <activity
+            android:name=".ui.activity.ReopActivity"
+            android:label="@string/title_activity_reop" >
         </activity>
     </application>
 

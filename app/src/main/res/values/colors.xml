@@ -6,5 +6,6 @@
     <color name="color_black">#000000</color>
     <color name="window_background">#FFF5F5F5</color>
     <color name="color_accent">#4078c0</color>
+    <color name="color_ripple">#ffffff</color>
 
 </resources>

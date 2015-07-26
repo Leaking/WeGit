@@ -25,6 +25,7 @@
     </string-array>
     <string name="title_activity_user_info">UserInfoActivity</string>
     <string name="title_activity_fo">FoActivity</string>
+    <string name="title_activity_reop">ReopActivity</string>
 
 
 

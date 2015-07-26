@@ -6,6 +6,7 @@ import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ public class LoginActivity extends BaseActivity {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.username)
     EditText username;
     @Bind(R.id.password)
@@ -52,6 +55,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        toolbar.setTitle("Login");
+        setSupportActionBar(toolbar);
         Intent intent = getIntent();
         github = new GithubImpl(this);
         mAccountManager = AccountManager.get(getBaseContext());

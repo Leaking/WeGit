@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -37,6 +38,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     CollapsingToolbarLayout collapsingToolbar;
     @Bind(R.id.backdrop)
     ImageView backDrop;
+
+
+    @Bind(R.id.relation)
+    FloatingActionButton relationBtn;
 
 
     @Bind(R.id.repoWrap)
@@ -175,6 +180,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @OnClick(R.id.starWrap)
     void viewStarred(){
         viewDetail(StarredRepoFragment.TAG);
+    }
+
+    @OnClick(R.id.relation)
+    void changeRelation(){
+        relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
     }
 
     public void viewDetail(String contentType){
