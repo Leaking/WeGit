@@ -7,20 +7,97 @@
     android:layout_margin="5dip">
 
     <LinearLayout
+        android:orientation="vertical"
         style="@style/Widget.CardContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <RelativeLayout
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/iconType"
+            style="@style/ListIcon"
+            android:textSize="40sp"
+            android:layout_marginTop="2dip"
+            android:layout_marginRight="12dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
+            />
+        <LinearLayout
+            android:layout_toRightOf="@id/iconType"
+            android:layout_marginRight="15dip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/repoName"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dip"
+                />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+
+                <TextView
+                    android:id="@+id/iconStar"
+                    style="@style/ListIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_star"
+                    android:layout_marginRight="5dip"
+                    />
+                <TextView
+                    android:id="@+id/starSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dip"
+
+                    />
+
+                <TextView
+                    android:id="@+id/iconFork"
+                    style="@style/ListIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_fork"
+                    android:layout_marginRight="5dip"
+
+                    />
+                <TextView
+                    android:id="@+id/forkSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/repoName"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:id="@+id/language"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java"
+            />
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_marginTop="3dip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

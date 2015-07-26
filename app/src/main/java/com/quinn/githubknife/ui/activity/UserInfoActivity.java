@@ -16,6 +16,10 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.UserInfoPresenter;
 import com.quinn.githubknife.presenter.UserInfoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.FollowerFragment;
+import com.quinn.githubknife.ui.fragments.FollowingFragment;
+import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
+import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.view.UserInfoView;
 import com.quinn.httpknife.github.User;
 
@@ -154,12 +158,30 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     }
 
     @OnClick(R.id.followerWrap)
-    void follower(){
-        Intent intent = new Intent(this,FoActivity.class);
+    void viewFollower(){
+        viewDetail(FollowerFragment.TAG);
+    }
+
+    @OnClick(R.id.followingWrap)
+    void viewFollowing(){
+        viewDetail(FollowingFragment.TAG);
+    }
+
+    @OnClick(R.id.repoWrap)
+    void viewRepo(){
+        viewDetail(UserRepoFragment.TAG);
+    }
+
+    @OnClick(R.id.starWrap)
+    void viewStarred(){
+        viewDetail(StarredRepoFragment.TAG);
+    }
+
+    public void viewDetail(String contentType){
         Bundle bundle = new Bundle();
         bundle.putSerializable("user",user);
-        intent.putExtras(bundle);
-        this.startActivity(intent);
+        bundle.putString("fragment", contentType);
+        FoActivity.launch(this, bundle);
     }
 
     @Override

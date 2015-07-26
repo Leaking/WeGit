@@ -207,7 +207,7 @@ public class GithubImpl implements Github {
 
 	@Override
 	public List<Repository> repo(String user, int page) throws GithubError {
-		String url = API_HOST + "users/" + user + "/repos";
+		String url = API_HOST + "users/" + user + "/repos?sort=pushed";
 		Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
 		if (response.isSuccess() == false)
 			throw new GithubError("网络链接有问题");

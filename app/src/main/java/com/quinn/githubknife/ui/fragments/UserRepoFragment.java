@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class UserRepoFragment extends BaseFragment {
 
+
+    public final static String TAG = UserRepoFragment.class.getSimpleName();
+
     private RepoAdapter adapter;
 
 

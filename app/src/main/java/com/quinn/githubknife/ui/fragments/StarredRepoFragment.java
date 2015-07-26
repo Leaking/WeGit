@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class StarredRepoFragment extends BaseFragment {
 
+
+    public final static String TAG = StarredRepoFragment.class.getSimpleName();
+
     private RepoAdapter adapter;
 
     public static StarredRepoFragment getInstance(String user){
@@ -75,13 +78,7 @@ public class StarredRepoFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void failToLoadMore() {
 
-    }
 
-    @Override
-    public void loadMore() {
-        super.loadMore();
-    }
+
 }

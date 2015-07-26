@@ -1,5 +1,6 @@
 package com.quinn.githubknife.ui.activity;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,19 @@ public class RepoAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText(dataItems.get(position).getName());
+        Repository repo = dataItems.get(position);
+        holder.name.setText(repo.getName());
+        holder.starSum.setText(""+repo.getStargazers_count());
+        holder.forkSum.setText(""+repo.getForks_count());
+        holder.language.setText(repo.getLanguage());
+        if(repo.isFork()){
+            holder.iconType.setText(R.string.icon_fork);
+        }else{
+            holder.iconType.setText(R.string.icon_repo);
+        }
+        holder.description.setText(repo.getDescription());
+
+
     }
 
     @Override
@@ -54,11 +67,30 @@ public class RepoAdapter extends
 
 
         public TextView name;
+        public TextView iconType;
+        public TextView iconFork;
+        public TextView forkSum;
+        public TextView iconStar;
+        public TextView starSum;
+        public TextView description;
+        public TextView language;
 
 
         public ViewHolder(View view){
             super(view);
             name = (TextView) view.findViewById(R.id.repoName);
+            iconType = (TextView) view.findViewById(R.id.iconType);
+            iconFork = (TextView) view.findViewById(R.id.iconFork);
+            forkSum = (TextView) view.findViewById(R.id.forkSum);
+            iconStar = (TextView) view.findViewById(R.id.iconStar);
+            starSum = (TextView) view.findViewById(R.id.starSum);
+            description = (TextView) view.findViewById(R.id.description);
+            language = (TextView) view.findViewById(R.id.language);
+
+            Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),"octicons.ttf");
+            iconType.setTypeface(typeface);
+            iconStar.setTypeface(typeface);
+            iconFork.setTypeface(typeface);
         }
 
 
