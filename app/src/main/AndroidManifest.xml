@@ -49,6 +49,11 @@
             android:name=".ui.activity.UserInfoActivity"
             android:label="@string/title_activity_user_info" >
         </activity>
+        <activity
+            android:name=".ui.activity.FoActivity"
+            android:label="@string/title_activity_fo" >
+
+        </activity>
     </application>
 
 </manifest>

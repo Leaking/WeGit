@@ -8,7 +8,7 @@
     <style name="Base.Theme.DesignDemo" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/theme_color</item>
         <item name="colorPrimaryDark">@color/color_black</item>
-        <item name="colorAccent">#4078c0</item>
+        <item name="colorAccent">@color/color_accent</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 

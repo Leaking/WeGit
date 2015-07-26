@@ -21,9 +21,11 @@ import com.quinn.httpknife.github.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
+    private static final String TAG = UserInfoActivity.class.getSimpleName();
     private User user;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -94,6 +96,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         Bundle bundle  = getIntent().getExtras();
         if(bundle != null){
             user = (User)bundle.getSerializable("user");
+        }else if(savedInstanceState != null){
+            user = (User)savedInstanceState.getSerializable("user");
         }
         presenter = new UserInfoPresenterImpl(this,this);
         presenter.user(user.getLogin());
@@ -147,5 +151,20 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @Override
     public void failLoad() {
 
+    }
+
+    @OnClick(R.id.followerWrap)
+    void follower(){
+        Intent intent = new Intent(this,FoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",user);
+        intent.putExtras(bundle);
+        this.startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user",user);
     }
 }

@@ -33,7 +33,6 @@ public class EventFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         L.i("onCreate EventFragment");
 
-        github = new GithubImpl(this.getActivity());
         presenter = new EventPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Event>();
         adapter = new EventAdapter(dataItems);

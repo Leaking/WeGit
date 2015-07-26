@@ -13,14 +13,12 @@
         android:paddingRight="8dip"
         >
 
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar"
             android:layout_width="40dip"
             android:layout_height="40dip"
             android:layout_marginRight="8dip"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_centerVertical="true" />
 
 
         <LinearLayout

@@ -1,6 +1,5 @@
 package com.quinn.githubknife.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,13 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
-import com.quinn.httpknife.github.Github;
 
 import java.util.List;
 
@@ -32,9 +29,6 @@ import butterknife.OnClick;
  */
 public abstract class BaseFragment extends Fragment implements ListFragmentView, onLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
 
-    protected Github github;
-    protected GitHubAccount gitHubAccount;
-    private GithubAccountCallBack callBack;
     protected List dataItems;
 
     @Bind(R.id.recyclerview)
@@ -57,26 +51,10 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
 
 
-    public interface GithubAccountCallBack{
-        public GitHubAccount getGithubAccount();
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            callBack = (GithubAccountCallBack)activity;
-            gitHubAccount = callBack.getGithubAccount();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement TokenCallBack");
-        }
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        gitHubAccount = callBack.getGithubAccount();
         if(dataItems.isEmpty())
             presenter.onPageLoad(currPage,user);
     }

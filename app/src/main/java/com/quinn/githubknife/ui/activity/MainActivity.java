@@ -1,6 +1,5 @@
 package com.quinn.githubknife.ui.activity;
 
-import android.accounts.Account;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -20,11 +19,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
-import com.quinn.githubknife.ui.fragments.BaseFragment;
 import com.quinn.githubknife.ui.fragments.EventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
@@ -41,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements MainAuthView,BaseFragment.GithubAccountCallBack,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainAuthView,NavigationView.OnNavigationItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -151,15 +148,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,BaseFragm
 
     }
 
-    @Override
-    public GitHubAccount getGithubAccount() {
-        String name = PreferenceUtils.getString(this,PreferenceUtils.Key.ACCOUNT);
-        if(name.isEmpty())
-            name = "NO_ACCOUNT";
-        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
-        GitHubAccount githubAccount = new GitHubAccount(account,this);
-        return githubAccount;
-    }
+
 
     @Override
     public void doneAuth(User user) {
