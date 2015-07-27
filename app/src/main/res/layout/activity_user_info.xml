@@ -407,7 +407,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="40dip"
         android:clickable="true"
-        android:src="@mipmap/ic_headset"
         android:hapticFeedbackEnabled="true"
         app:rippleColor="@color/color_ripple"
         app:layout_anchor="@id/appbar"

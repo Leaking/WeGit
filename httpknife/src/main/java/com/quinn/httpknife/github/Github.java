@@ -59,4 +59,10 @@ public interface Github {
 	public List<Event> userEvent(String user, int page) throws GithubError;
 
 	public List<Event> repoEvent(String user, String repo,int page) throws GithubError;
+
+	public boolean hasFollow(String targetUser) throws GithubError;
+
+	public boolean follow(String targetUser) throws GithubError;
+
+	public boolean unfollow(String targetUser) throws GithubError;
 }

@@ -176,7 +176,6 @@ public class GithubImpl implements Github {
     public List<User> follwerings(String user, int page) throws GithubError {
         String url = API_HOST + "users/" + user + "/following";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        testResult(response);
         if (response.isSuccess() == false)
             throw new GithubError("网络链接有问题");
         else {
@@ -309,6 +308,60 @@ public class GithubImpl implements Github {
                 }.getType());
         System.out.println("events = " + events);
         return events;
+    }
+
+    @Override
+    public boolean hasFollow(String targetUser) throws GithubError {
+        String url = API_HOST + "user/following/" + targetUser;
+        Response response = http.get(url).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            System.out.println("header = " + response.headers());
+            System.out.println("header = " + response.statusCode());
+
+        }
+        if (response.statusCode() == 204) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean follow(String targetUser) throws GithubError {
+        String url = API_HOST + "user/following/" + targetUser;
+        Response response = http.put(url).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else
+            System.out.println("header = " + response.headers());
+            System.out.println("header = " + response.statusCode());
+
+
+        if (response.statusCode() == 204) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean unfollow(String targetUser) throws GithubError {
+        String url = API_HOST + "user/following/" + targetUser;
+        Response response = http.delete(url).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            System.out.println("header = " + response.headers());
+            System.out.println("header = " + response.statusCode());
+
+        }
+        if (response.statusCode() == 204) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

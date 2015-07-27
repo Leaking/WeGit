@@ -2,8 +2,6 @@ package com.quinn.githubknife.presenter;
 
 import android.content.Context;
 
-import com.quinn.githubknife.interactor.FindItemsInteractor;
-import com.quinn.githubknife.interactor.FindItemsInteractorImpl;
 import com.quinn.githubknife.ui.view.ListFragmentView;
 
 /**
@@ -11,16 +9,15 @@ import com.quinn.githubknife.ui.view.ListFragmentView;
  */
 public class StarredRepoPresenterImpl extends PresenterAdapter{
 
-    private FindItemsInteractor interactor;
 
     public StarredRepoPresenterImpl(Context context, ListFragmentView view){
-        super(view);
-        this.interactor = new FindItemsInteractorImpl(context,this);
+        super(context, view);
     }
 
 
     @Override
     public void onPageLoad(int page, String user){
+        super.onPageLoad(page,user);
         interactor.loadStarredRepo(user,page);
     }
 }

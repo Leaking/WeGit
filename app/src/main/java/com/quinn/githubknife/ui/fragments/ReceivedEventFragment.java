@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.EventPresenterImpl;
+import com.quinn.githubknife.presenter.ReceivedEventPresenterImpl;
 import com.quinn.githubknife.ui.activity.EventAdapter;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.GithubImpl;
@@ -31,7 +31,7 @@ public class ReceivedEventFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new EventPresenterImpl(this.getActivity(),this);
+        presenter = new ReceivedEventPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Event>();
         adapter = new EventAdapter(dataItems);
     }

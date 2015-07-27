@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
@@ -37,6 +38,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.failTxt)
     TextView failTxt;
+    @Bind(R.id.progress)
+    ProgressBar progress;
 
     private int visibleItemCount;
     private int firstVisibleItem;
@@ -57,6 +60,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         super.onResume();
         if(dataItems.isEmpty())
             presenter.onPageLoad(currPage,user);
+
     }
 
     @Nullable
@@ -83,10 +87,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
                 totalItemCount = layoutManager.getItemCount();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                L.i("visibleItemCount = " + visibleItemCount);
-                L.i("totalItemCount = " + totalItemCount);
-                L.i("firstVisibleItem = " + firstVisibleItem);
-                L.i("lastVisibleItem = " + lastVisibleItem);
+
 
                 if(haveMore && !loading && (lastVisibleItem + 1) == totalItemCount){
                     L.i("加载更多");
@@ -115,12 +116,17 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
     @Override
     public void showProgress() {
-
+        if(currPage == 1) {
+            progress.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            failTxt.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void hideProgress() {
-
+        if(currPage == 1)
+            UIUtils.crossfade(progress,swipeRefreshLayout);
     }
 
     @Override
@@ -137,19 +143,19 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void failToLoadMore() {
         L.i("request more items fail");
-        ToastUtils.showMsg(this.getActivity(),R.string.fail_load);
+        loading = false;
+        ToastUtils.showMsg(this.getActivity(),R.string.fail_loadMore);
     }
 
     @Override
     public void failToLoadFirst() {
         L.i("request items first fail");
-
-        UIUtils.crossfade(swipeRefreshLayout,failTxt);
+        UIUtils.crossfade(progress,failTxt);
     }
 
     @Override
     public void reLoad(){
-        UIUtils.crossfade(failTxt,swipeRefreshLayout);
+        UIUtils.crossfade(failTxt,progress);
         presenter.onPageLoad(currPage, user);
     }
 

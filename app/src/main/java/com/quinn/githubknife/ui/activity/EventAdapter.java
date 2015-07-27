@@ -24,7 +24,7 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent"};
+    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PushEvent"};
 
     private List<Event> dataItems;
     private ImageLoader imageLoader;
@@ -46,7 +46,8 @@ public class EventAdapter extends
                 .getContext());
         final View sView = mInflater.inflate(R.layout.item_eventlist, parent,
                 false);
-        return new ViewHolder(sView);    }
+        return new ViewHolder(sView);
+    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -54,7 +55,15 @@ public class EventAdapter extends
         imageLoader.displayImage(event.getActor().getAvatar_url(),holder.avatar,option,animateFirstListener);
         holder.happenTime.setText(event.getCreated_at().toString());
         holder.eventType.setText(getEventTypeIcon(event.getType()));
-        holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
+        if(!holder.event.equals(EVENT_TYPE_ARRAY[3])){
+            holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
+        }else{
+            holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
+
+        }
+
+
+
     }
 
     @Override
@@ -75,15 +84,17 @@ public class EventAdapter extends
         }
     }
 
-    public int getEventTypeIcon(String eventType){
-        if(eventType.equals(EVENT_TYPE_ARRAY[0])){
+    public int getEventTypeIcon(String eventType) {
+        if (eventType.equals(EVENT_TYPE_ARRAY[0])) {
             return R.string.icon_star;
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[1])){
+        } else if (eventType.equals(EVENT_TYPE_ARRAY[1])) {
             return R.string.icon_fork;
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[2])){
+        } else if (eventType.equals(EVENT_TYPE_ARRAY[2])) {
             return R.string.icon_repo;
-        }else{
+        } else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
             return R.string.icon_star;
+        } else {
+            return R.string.icon_push;
         }
     }
 

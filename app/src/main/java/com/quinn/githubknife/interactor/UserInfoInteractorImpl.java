@@ -20,7 +20,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
     private final static String TAG = UserInfoInteractorImpl.class.getSimpleName();
     private final static int USER_MSG = 1;
-    private final static int BOOL_MSG = 2;
+    private final static int FOLLOW_STATE_MSG = 2;
 
     private Context context;
     private GitHubAccount gitHubAccount;
@@ -46,9 +46,11 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                         User user = (User)msg.obj;
                         listener.onFinish(user);
                         break;
-                    case BOOL_MSG:
-
+                    case FOLLOW_STATE_MSG:
+                        boolean isFollow = (boolean) msg.obj;
+                        listener.updateFollowState(isFollow);
                         break;
+
                 }
 
             }
@@ -103,17 +105,66 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     }
 
     @Override
-    public void hasFollow(String user) {
-
+    public void hasFollow(final String targetUser) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                boolean ifFollow = false;
+                try {
+                    ifFollow = github.hasFollow(targetUser);
+                }catch (GithubError e){
+                    L.i(TAG,"hasFollow fail");
+                }
+                Message msg = new Message();
+                msg.what = FOLLOW_STATE_MSG;
+                msg.obj = ifFollow;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Override
-    public void follow(String user) {
-
+    public void follow(final String targetUser) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                boolean ifFollow = false;
+                try {
+                    ifFollow = github.follow(targetUser);
+                }catch (GithubError e){
+                    L.i(TAG,"follow fail");
+                }
+                Message msg = new Message();
+                msg.what = FOLLOW_STATE_MSG;
+                msg.obj = ifFollow;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Override
-    public void unFollow(String user) {
-
+    public void unFollow(final String targetUser) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                boolean unFollow = true;
+                try {
+                    unFollow = github.unfollow(targetUser);
+                    unFollow = !unFollow;
+                }catch (GithubError e){
+                    L.i(TAG,"hasFollow fail");
+                }
+                Message msg = new Message();
+                msg.what = FOLLOW_STATE_MSG;
+                msg.obj = unFollow;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 }

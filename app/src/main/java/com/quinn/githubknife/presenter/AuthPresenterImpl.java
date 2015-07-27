@@ -34,6 +34,11 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
     }
 
     @Override
+    public void updateFollowState(boolean isFollow) {
+
+    }
+
+    @Override
     public void onError() {
 
     }

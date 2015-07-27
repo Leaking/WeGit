@@ -291,7 +291,37 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
     }
 
     @Override
-    public void loadUserEvents(String user, int page) {
+    public void loadUserEvents(final String user, final int page) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                L.i("token == " + token);
+                List<Event> events = new ArrayList<Event>();
+                Message msg = new Message();
+
+                try {
+                    events = github.userEvent(user, page);
+                } catch (GithubError e) {
+                    L.i(TAG,"网络问题 loadReceivedEvents");
+                    if(page == 1){
+                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                    }else{
+                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
+                    }
+                    return;
+
+                }
+                msg.what = LOAD_SUCCESS;
+                msg.obj = events;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    @Override
+    public void loadRepoEvents(String user, String repo, int page) {
 
     }
 

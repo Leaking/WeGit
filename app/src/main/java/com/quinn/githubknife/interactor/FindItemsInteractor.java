@@ -15,4 +15,6 @@ public interface FindItemsInteractor {
     public void loadStarredRepo(String user,int page);
     public void loadReceivedEvents(String user, int page);
     public void loadUserEvents(String user, int page);
+    public void loadRepoEvents(String user, String repo, int page);
+
 }

@@ -408,6 +408,7 @@ public class HttpKnife {
 
 	public HttpKnife delete(String url) {
 		try {
+			System.out.println("delete request : " + url);
 			openConnection(new URL(url));
 			connection.setRequestMethod(Method.DELETE);
 			return this;

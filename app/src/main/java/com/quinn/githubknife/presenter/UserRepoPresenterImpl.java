@@ -14,7 +14,7 @@ public class UserRepoPresenterImpl extends PresenterAdapter{
     private FindItemsInteractor interactor;
 
     public UserRepoPresenterImpl(Context context, ListFragmentView view){
-        super(view);
+        super(context,view);
         this.interactor = new FindItemsInteractorImpl(context,this);
     }
 

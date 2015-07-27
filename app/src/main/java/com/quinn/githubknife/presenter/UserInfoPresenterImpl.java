@@ -28,8 +28,28 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
     }
 
     @Override
+    public void hasFollow(String targetUser) {
+        interactor.hasFollow(targetUser);
+    }
+
+    @Override
+    public void follow(String targetUser) {
+        interactor.follow(targetUser);
+    }
+
+    @Override
+    public void unFollow(String targetUser) {
+        interactor.unFollow(targetUser);
+    }
+
+    @Override
     public void onFinish(User user) {
         view.loadUser(user);
+    }
+
+    @Override
+    public void updateFollowState(boolean isFollow) {
+        view.setFollowState(isFollow);
     }
 
     @Override

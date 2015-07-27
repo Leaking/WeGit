@@ -22,6 +22,7 @@ import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.view.UserInfoView;
+import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.User;
 
 import butterknife.Bind;
@@ -83,7 +84,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @Bind(R.id.joinTime)
     TextView joinTime;
 
+    FollowState followState;
 
+
+    enum FollowState {
+        UNKNOWN,
+        FOLLOWED,
+        UNFOLLOWED
+    }
 
 
 
@@ -121,6 +129,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         iconCompany.setTypeface(typeface);
         iconLocation.setTypeface(typeface);
         iconJoin.setTypeface(typeface);
+        followState = FollowState.UNKNOWN;
     }
 
 
@@ -155,6 +164,18 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         blog.setText(user.getBlog());
         location.setText(user.getLocation());
         joinTime.setText(user.getCreated_at());
+        presenter.hasFollow(user.getLogin());
+    }
+
+    @Override
+    public void setFollowState(boolean isFollow) {
+        if(isFollow){
+            relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.ic_headset));
+            followState = FollowState.FOLLOWED;
+        }else{
+            relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+            followState = FollowState.UNFOLLOWED;
+        }
     }
 
     @Override
@@ -184,7 +205,17 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @OnClick(R.id.relation)
     void changeRelation(){
-        relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+        L.i(TAG, "click changeRelation");
+        switch (followState){
+            case UNFOLLOWED:
+                L.i(TAG, "try to follow " + user.getLogin());
+                presenter.follow(user.getLogin());
+                break;
+            case FOLLOWED:
+                L.i(TAG, "try to unfollow " + user.getLogin());
+                presenter.unFollow(user.getLogin());
+                break;
+        }
     }
 
     public void viewDetail(String contentType){

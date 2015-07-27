@@ -85,9 +85,9 @@ public class FoActivity extends BaseActivity {
 
     public String subTitle(String type){
         if(type.equals(FollowerFragment.TAG)){
-            return "Following";
-        }else if(type.equals(FollowingFragment.TAG)){
             return "Followers";
+        }else if(type.equals(FollowingFragment.TAG)){
+            return "Following";
         }else if(type.equals(StarredRepoFragment.TAG)){
             return "Starred";
         }else if (type.equals(UserRepoFragment.TAG)) {

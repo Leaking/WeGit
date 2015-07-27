@@ -21,8 +21,6 @@ import java.util.List;
  */
 public class FollowerFragment extends BaseFragment implements RecycleItemClickListener {
 
-
-
     public final static String TAG = FollowerFragment.class.getSimpleName();
     private UsersAdapter adapter;
 

@@ -14,11 +14,11 @@ public class ToastUtils {
 	 * @param msg
 	 */
 	public static void showMsg(Context cont, String msg) {
-		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(cont, msg, Toast.LENGTH_LONG).show();
 	}
 
 	public static void showMsg(Context cont, int msg) {
-		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(cont, msg, Toast.LENGTH_LONG).show();
 	}
 
 	public static void showMsg(Context cont, String msg, int time) {
