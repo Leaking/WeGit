@@ -22,7 +22,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
-import com.quinn.githubknife.ui.fragments.EventFragment;
+import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         switch (id){
             case R.id.nav_home:
                 viewpager.setOffscreenPageLimit(3);
-                adapter.addFragment(EventFragment.getInstance(loginUser), "Events");
+                adapter.addFragment(ReceivedEventFragment.getInstance(loginUser), "Events");
                 adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
                 break;

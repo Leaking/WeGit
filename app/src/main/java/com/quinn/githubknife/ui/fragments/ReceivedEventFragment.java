@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.EventPresenterImpl;
 import com.quinn.githubknife.ui.activity.EventAdapter;
-import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.GithubImpl;
 
@@ -17,21 +16,20 @@ import java.util.List;
 /**
  * Created by Quinn on 7/16/15.
  */
-public class EventFragment extends BaseFragment {
+public class ReceivedEventFragment extends BaseFragment {
     private EventAdapter adapter;
 
-    public static EventFragment getInstance(String user){
-        EventFragment eventFragment = new EventFragment();
+    public static ReceivedEventFragment getInstance(String user){
+        ReceivedEventFragment receivedEventFragment = new ReceivedEventFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
-        eventFragment.setArguments(bundle);
-        return eventFragment;
+        receivedEventFragment.setArguments(bundle);
+        return receivedEventFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i("onCreate EventFragment");
 
         presenter = new EventPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Event>();
@@ -42,7 +40,6 @@ public class EventFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
         recyclerView.setAdapter(adapter);
-        L.i("onCreateView FollowerFragment");
         return view;
     }
 

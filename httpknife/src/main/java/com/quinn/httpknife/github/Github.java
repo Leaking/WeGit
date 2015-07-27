@@ -56,4 +56,7 @@ public interface Github {
 
 	public List<Event> receivedEvent(String user,int page) throws GithubError;
 
+	public List<Event> userEvent(String user, int page) throws GithubError;
+
+	public List<Event> repoEvent(String user, String repo,int page) throws GithubError;
 }
