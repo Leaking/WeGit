@@ -19,16 +19,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@mipmap/ic_headset"
+            android:icon="@mipmap/home"
             android:title="Home" />
         <item
             android:id="@+id/nav_friends"
-            android:icon="@mipmap/ic_headset"
+            android:icon="@mipmap/friends"
             android:title="Friends" />
         <item
             android:id="@+id/nav_gist"
-            android:icon="@mipmap/ic_headset"
-            android:title="Discussion" />
+            android:icon="@mipmap/search"
+            android:title="Search" />
     </group>
 
     <item android:title="Sub items">

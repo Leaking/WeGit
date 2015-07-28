@@ -52,7 +52,7 @@ public class GithubImpl implements Github {
         JSONObject json = new JSONObject();
         try {
             json.put("note", TOKEN_NOTE);
-            // json.put("scopes", new String[]{"public_repo","repo"});
+            json.put("scopes", new String[]{"public_repo","repo"});
         } catch (JSONException e) {
             e.printStackTrace();
         }
