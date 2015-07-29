@@ -126,6 +126,10 @@ public class Response {
 			this.contentString = new String(this.contentBytes,this.charset);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e){
+			e.printStackTrace();
+			throw new IllegalStateException("contentBytes == null");
+
 		}
 		return this;
 	}

@@ -180,9 +180,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void setFollowState(boolean isFollow) {
-        if(followState == FollowState.UNKNOWN){
-            return;
-        }
+
         if(isFollow){
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.unfollow));
             followState = FollowState.FOLLOWED;
