@@ -21,6 +21,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     private final static String TAG = UserInfoInteractorImpl.class.getSimpleName();
     private final static int USER_MSG = 1;
     private final static int FOLLOW_STATE_MSG = 2;
+    private final static int FAIL_MSG = 3;
 
     private Context context;
     private GitHubAccount gitHubAccount;
@@ -50,7 +51,8 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                         boolean isFollow = (boolean) msg.obj;
                         listener.updateFollowState(isFollow);
                         break;
-
+                    case FAIL_MSG:
+                        listener.onError((String)msg.obj);
                 }
 
             }
@@ -69,7 +71,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                      user = github.authUser(token);
                     L.i(TAG,user.toString());
                     L.i("Get new avatar = " + user.getAvatar_url());
-                }catch (GithubError e){
+                }catch (GithubError e) {
                     L.i("update avatar url fail");
                 }
                 Message msg = new Message();
@@ -95,6 +97,11 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                     L.i(TAG,user.toString());
                 }catch (GithubError e){
                     L.i(TAG,"userinfo fail");
+                    Message msg = new Message();
+                    msg.what = FAIL_MSG;
+                    msg.obj = "Fail to load user information";
+                    handler.sendMessage(msg);
+                    return;
                 }
                 Message msg = new Message();
                 msg.what = USER_MSG;
@@ -115,7 +122,11 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 try {
                     ifFollow = github.hasFollow(targetUser);
                 }catch (GithubError e){
-                    L.i(TAG,"hasFollow fail");
+                    Message msg = new Message();
+                    msg.what = FAIL_MSG;
+                    msg.obj = "Fail to load relation-state";
+                    handler.sendMessage(msg);
+                    return;
                 }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
@@ -136,7 +147,11 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 try {
                     ifFollow = github.follow(targetUser);
                 }catch (GithubError e){
-                    L.i(TAG,"follow fail");
+                    Message msg = new Message();
+                    msg.what = FAIL_MSG;
+                    msg.obj = "Fail to follow " + targetUser;
+                    handler.sendMessage(msg);
+                    return;
                 }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
@@ -158,8 +173,11 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                     unFollow = github.unfollow(targetUser);
                     unFollow = !unFollow;
                 }catch (GithubError e){
-                    L.i(TAG,"hasFollow fail");
-                }
+                    Message msg = new Message();
+                    msg.what = FAIL_MSG;
+                    msg.obj = "Fail to unfollow " + targetUser;
+                    handler.sendMessage(msg);
+                    return;                }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
                 msg.obj = unFollow;

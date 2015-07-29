@@ -7,16 +7,19 @@ import com.google.gson.reflect.TypeToken;
 import com.quinn.httpknife.HttpKnife;
 import com.quinn.httpknife.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GithubImpl implements Github {
 
+    private final static String[] SCOPES = {"public_repo","repo", "user", "gist"};
     public final static String HTTPS = "https://";
     public final static String HOST = "api.github.com";
     public final static String URL_SPLITTER = "/";
@@ -52,7 +55,8 @@ public class GithubImpl implements Github {
         JSONObject json = new JSONObject();
         try {
             json.put("note", TOKEN_NOTE);
-            json.put("scopes", new String[]{"public_repo","repo"});
+            JSONArray jsonArray = new JSONArray(Arrays.asList(SCOPES));
+            json.put("scopes",jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -69,6 +73,7 @@ public class GithubImpl implements Github {
             removeToken(username, password);
             return createToken(username, password);
         }
+
         Token token = new Gson().fromJson(response.body(), Token.class);
         System.out.println("token gson = " + token);
         return token.getToken();

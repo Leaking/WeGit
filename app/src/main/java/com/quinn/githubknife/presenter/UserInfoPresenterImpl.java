@@ -53,7 +53,7 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
     }
 
     @Override
-    public void onError() {
-
+    public void onError(String errorMsg) {
+        view.failLoad(errorMsg);
     }
 }

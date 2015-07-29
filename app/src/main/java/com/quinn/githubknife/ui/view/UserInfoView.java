@@ -8,5 +8,5 @@ import com.quinn.httpknife.github.User;
 public interface UserInfoView {
     public void loadUser(User user);
     public void setFollowState(boolean isFollow);
-    public void failLoad();
+    public void failLoad(String errorMsg);
 }

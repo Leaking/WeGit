@@ -39,7 +39,7 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
     }
 
     @Override
-    public void onError() {
+    public void onError(String errorMsg) {
 
     }
 }

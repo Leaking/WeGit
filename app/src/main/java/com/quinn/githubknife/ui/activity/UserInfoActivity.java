@@ -1,11 +1,13 @@
 package com.quinn.githubknife.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.view.UserInfoView;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.httpknife.github.User;
 
 import butterknife.Bind;
@@ -156,6 +159,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void loadUser(User user) {
+        if(user == null)
+            return;
+
+        /**
+         * 处理返回为空的请看
+         */
+
+
         followerNum.setText(""+user.getFollowers());
         followingNum.setText(""+user.getFollowing());
         repoNum.setText(""+user.getPublic_repos());
@@ -169,9 +180,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void setFollowState(boolean isFollow) {
+        if(followState == FollowState.UNKNOWN){
+            return;
+        }
         if(isFollow){
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.unfollow));
             followState = FollowState.FOLLOWED;
+
         }else{
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.follow));
             followState = FollowState.UNFOLLOWED;
@@ -179,8 +194,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     }
 
     @Override
-    public void failLoad() {
-
+    public void failLoad(String failMsg) {
+        ToastUtils.showMsg(this,failMsg);
     }
 
     @OnClick(R.id.followerWrap)
@@ -205,17 +220,42 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @OnClick(R.id.relation)
     void changeRelation(){
-        L.i(TAG, "click changeRelation");
+        L.i(TAG, "try to  changeRelation");
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
         switch (followState){
             case UNFOLLOWED:
                 L.i(TAG, "try to follow " + user.getLogin());
-                presenter.follow(user.getLogin());
+                L.i(TAG, "try to unfollow " + user.getLogin());
+                builder.setTitle("Follow Someone");
+                builder.setMessage("Sure to follow " + user.getLogin() + "?");
+                builder.setPositiveButton("follow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.follow(user.getLogin());
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
                 break;
             case FOLLOWED:
                 L.i(TAG, "try to unfollow " + user.getLogin());
-                presenter.unFollow(user.getLogin());
+                builder.setTitle("Unfollow Someone");
+                builder.setMessage("Sure to unfollow " + user.getLogin() + "?");
+                builder.setPositiveButton("Unfollow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.unFollow(user.getLogin());
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+                break;
+            case UNKNOWN:
                 break;
         }
+
+
     }
 
     public void viewDetail(String contentType){

@@ -3,6 +3,7 @@ package com.quinn.githubknife.account;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,7 +62,6 @@ public class LoginActivity extends BaseActivity {
         github = new GithubImpl(this);
         mAccountManager = AccountManager.get(getBaseContext());
 
-
         mAccountAuthenticatorResponse =
                 intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
@@ -86,6 +86,8 @@ public class LoginActivity extends BaseActivity {
 
     public void sumbit(final String username,final String password) {
 
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "提示", "正在登陆中", true);
+        progressDialog.setProgressStyle(R.style.AppCompatAlertDialogStyle);
         new AsyncTask<String, Void, Intent>() {
 
             @Override
@@ -118,6 +120,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             protected void onPostExecute(Intent intent) {
+                progressDialog.dismiss();
                 if (intent.hasExtra("KEY_ERROR_MESSAGE")) {
                     Toast.makeText(getBaseContext(), intent.getStringExtra("KEY_ERROR_MESSAGE"), Toast.LENGTH_SHORT).show();
                 } else {

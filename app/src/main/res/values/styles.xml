@@ -9,6 +9,7 @@
         <item name="colorPrimary">@color/theme_color</item>
         <item name="colorPrimaryDark">@color/color_black</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
@@ -25,6 +26,13 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginRight">10dip</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:textColorPrimary">@color/color_black</item>
+        <item name="android:background">@color/color_white</item>
     </style>
 
 </resources>

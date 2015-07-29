@@ -9,6 +9,6 @@ public interface OnLoadUserInfoListener {
 
     public void onFinish(User user);
     public void updateFollowState(boolean isFollow);
-    public void onError();
+    public void onError(String errorMsg);
 
 }
