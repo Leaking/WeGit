@@ -1,12 +1,15 @@
 package com.quinn.githubknife.ui.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.ReceivedEventPresenterImpl;
 import com.quinn.githubknife.ui.activity.EventAdapter;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.GithubImpl;
 
@@ -16,7 +19,7 @@ import java.util.List;
 /**
  * Created by Quinn on 7/16/15.
  */
-public class ReceivedEventFragment extends BaseFragment {
+public class ReceivedEventFragment extends BaseFragment implements RecycleItemClickListener {
     private EventAdapter adapter;
 
     public static ReceivedEventFragment getInstance(String user){
@@ -40,6 +43,7 @@ public class ReceivedEventFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
         return view;
     }
 
@@ -53,5 +57,30 @@ public class ReceivedEventFragment extends BaseFragment {
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        intoItem(position);
+    }
+
+    @Override
+    public void intoItem(int position) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this.getActivity());
+
+        builder.setItems(new String[]{"User", "Repo"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                }
+            }
+        });
+
+        builder.show();
     }
 }

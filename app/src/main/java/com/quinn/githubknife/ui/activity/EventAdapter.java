@@ -1,6 +1,5 @@
 package com.quinn.githubknife.ui.activity;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -14,6 +13,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.Event;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class EventAdapter extends
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
-    private Context context;
+    private RecycleItemClickListener itemClickListener;
 
 
     public EventAdapter(List<Event> dataItems){
@@ -46,7 +46,7 @@ public class EventAdapter extends
                 .getContext());
         final View sView = mInflater.inflate(R.layout.item_eventlist, parent,
                 false);
-        return new ViewHolder(sView);
+        return new ViewHolder(sView,itemClickListener);
     }
 
     @Override
@@ -100,26 +100,37 @@ public class EventAdapter extends
 
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private RecycleItemClickListener mItemClickListener;
 
         public ImageView avatar;
         public TextView eventType;
         public TextView event;
         public TextView happenTime;
 
-        public ViewHolder(View view){
+        public ViewHolder(View view,RecycleItemClickListener itemClickListener){
             super(view);
             avatar = (ImageView) view.findViewById(R.id.avatar);
             eventType = (TextView) view.findViewById(R.id.eventType);
             happenTime = (TextView) view.findViewById(R.id.happenTime);
             event = (TextView) view.findViewById(R.id.event);
-
+            mItemClickListener = itemClickListener;
             Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),"octicons.ttf");
             eventType.setTypeface(typeface);
+            view.setOnClickListener(this);
+
+        }
+        @Override
+        public void onClick(View v) {
+            if(mItemClickListener != null){
+                mItemClickListener.onItemClick(v,getPosition());
+            }
         }
     }
 
-
-
+    public void setOnItemClickListener(RecycleItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
 }
+
