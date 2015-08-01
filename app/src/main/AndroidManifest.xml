@@ -54,7 +54,7 @@
             android:label="@string/title_activity_fo" >
         </activity>
         <activity
-            android:name=".ui.activity.ReopActivity"
+            android:name=".ui.activity.RepoActivity"
             android:label="@string/title_activity_reop" >
         </activity>
     </application>

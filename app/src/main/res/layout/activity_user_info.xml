@@ -56,7 +56,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin"
+                android:layout_marginTop="@dimen/card_margin"
+                android:layout_marginBottom="@dimen/card_margin"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
@@ -160,9 +161,7 @@
                 android:id="@+id/starWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
@@ -195,9 +194,7 @@
                 android:id="@+id/emailWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
@@ -238,9 +235,7 @@
                 android:id="@+id/blogWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
@@ -279,9 +274,7 @@
                 android:id="@+id/CompanyWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
@@ -321,9 +314,7 @@
                 android:id="@+id/LocationWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
@@ -360,9 +351,7 @@
                 android:id="@+id/joinTimeWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin"
-                android:layout_marginLeft="@dimen/card_margin"
-                android:layout_marginRight="@dimen/card_margin">
+                android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"

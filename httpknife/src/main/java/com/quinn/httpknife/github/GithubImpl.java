@@ -370,6 +370,42 @@ public class GithubImpl implements Github {
         }
     }
 
+    @Override
+    public String readme(String owner, String repo) throws GithubError {
+        String url = API_HOST + "repos/" + owner + "/" +repo + "/readme";
+        Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+
+
+
+        return response.body();
+    }
+
+    @Override
+    public boolean hasStarRepo(String owner, String repo) throws GithubError {
+        String url = API_HOST + "user/starred/" + owner + "/" +repo;
+        Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        System.out.println("hasStarRepo statusCode " + response.statusCode());
+        if(response.statusCode() == 204){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean starRepo(String owner, String repo) throws GithubError {
+        return false;
+    }
+
+    @Override
+    public boolean unStarRepo(String owner, String repo) throws GithubError {
+        return false;
+    }
+
 
     public void testResult(Response response) {
         System.out.println(response.statusCode());

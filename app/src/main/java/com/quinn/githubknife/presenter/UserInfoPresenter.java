@@ -5,7 +5,6 @@ package com.quinn.githubknife.presenter;
  */
 public interface UserInfoPresenter {
 
-    public void createToken(String username,String password);
     public void user(String user);
     public void hasFollow(String targetUser);
     public void follow(String targetUser);

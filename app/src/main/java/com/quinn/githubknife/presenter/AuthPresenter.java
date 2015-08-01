@@ -6,6 +6,5 @@ package com.quinn.githubknife.presenter;
 public interface AuthPresenter {
 
     public void auth();
-    public void createToken(String username,String password);
 
 }

@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.Repository;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class RepoAdapter extends
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
+    private RecycleItemClickListener itemClickListener;
+
 
     public RepoAdapter(List<Repository> dataItems){
         this.dataItems = dataItems;
@@ -38,7 +41,7 @@ public class RepoAdapter extends
                 .getContext());
         final View sView = mInflater.inflate(R.layout.item_reposlist, parent,
                 false);
-        return new ViewHolder(sView);
+        return new ViewHolder(sView,itemClickListener);
     }
 
     @Override
@@ -63,8 +66,9 @@ public class RepoAdapter extends
         return dataItems.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private RecycleItemClickListener mItemClickListener;
 
         public TextView name;
         public TextView iconType;
@@ -76,8 +80,9 @@ public class RepoAdapter extends
         public TextView language;
 
 
-        public ViewHolder(View view){
+        public ViewHolder(View view,RecycleItemClickListener itemClickListener){
             super(view);
+            this.mItemClickListener = itemClickListener;
             name = (TextView) view.findViewById(R.id.repoName);
             iconType = (TextView) view.findViewById(R.id.iconType);
             iconFork = (TextView) view.findViewById(R.id.iconFork);
@@ -91,8 +96,19 @@ public class RepoAdapter extends
             iconType.setTypeface(typeface);
             iconStar.setTypeface(typeface);
             iconFork.setTypeface(typeface);
+            view.setOnClickListener(this);
+
         }
 
+        @Override
+        public void onClick(View v) {
+            if(mItemClickListener != null){
+                mItemClickListener.onItemClick(v,getPosition());
+            }
+        }
+    }
 
+    public void setOnItemClickListener(RecycleItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 }

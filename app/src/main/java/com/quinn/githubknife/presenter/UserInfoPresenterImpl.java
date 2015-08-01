@@ -11,7 +11,7 @@ import com.quinn.httpknife.github.User;
 /**
  * Created by Quinn on 7/25/15.
  */
-public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfoListener{
+public class UserInfoPresenterImpl implements UserInfoPresenter ,OnLoadUserInfoListener{
 
 
     private UserInfoView view;
@@ -22,10 +22,6 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
         this.interactor = new UserInfoInteractorImpl(context,this);
     }
 
-    @Override
-    public void createToken(String username,String password){
-        this.interactor.createToken(username,password);
-    }
 
     @Override
     public void user(String user) {
@@ -47,10 +43,7 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
         interactor.unFollow(targetUser);
     }
 
-    @Override
-    public void onTokenCreated(String token) {
 
-    }
 
     @Override
     public void onFinish(User user) {

@@ -26,7 +26,7 @@ public class FollowingFragment extends BaseFragment implements RecycleItemClickL
     private UsersAdapter adapter;
 
 
-    public static FollowingFragment getInstance(String user){
+    public static FollowingFragment getInstance(String user) {
         FollowingFragment followingFragment = new FollowingFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
@@ -35,19 +35,18 @@ public class FollowingFragment extends BaseFragment implements RecycleItemClickL
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.i("onCreate FollowerFragment");
         dataItems = new ArrayList<User>();
-        presenter = new FolloweringPresenterImpl(this.getActivity(),this);
+        presenter = new FolloweringPresenterImpl(this.getActivity(), this);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater,container,savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         adapter = new UsersAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
@@ -57,15 +56,14 @@ public class FollowingFragment extends BaseFragment implements RecycleItemClickL
     }
 
 
-
     @Override
     public void setItems(List items) {
         super.setItems(items);
-        for(Object user:items){
-            dataItems.add((User)user);
+        for (Object user : items) {
+            dataItems.add((User) user);
         }
         loading = false;
-        if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
+        if (items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
         adapter.notifyDataSetChanged();
     }
@@ -74,13 +72,14 @@ public class FollowingFragment extends BaseFragment implements RecycleItemClickL
     public void intoItem(int position) {
         super.intoItem(position);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",(User)dataItems.get(position));
+        bundle.putSerializable("user", (User) dataItems.get(position));
         UserInfoActivity.launch(this.getActivity(), bundle);
     }
+
     @Override
     public void onItemClick(View view, int position) {
-    intoItem(position);
-}
+        intoItem(position);
+    }
 
 
 }

@@ -34,7 +34,7 @@ public class FoActivity extends BaseActivity {
 
 
 
-    public static void  launch(Context context, Bundle bundle){
+    public static void launch(Context context, Bundle bundle){
         Intent intent = new Intent(context,FoActivity.class);
         intent.putExtras(bundle);
         context.startActivity(intent);

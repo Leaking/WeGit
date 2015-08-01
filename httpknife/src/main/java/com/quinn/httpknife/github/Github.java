@@ -65,4 +65,12 @@ public interface Github {
 	public boolean follow(String targetUser) throws GithubError;
 
 	public boolean unfollow(String targetUser) throws GithubError;
+
+	public String readme(String owner, String repo) throws GithubError;
+
+	public boolean hasStarRepo(String owner,String repo) throws GithubError;
+
+	public boolean starRepo(String owner,String repo) throws GithubError;
+
+	public boolean unStarRepo(String owner,String repo) throws GithubError;
 }

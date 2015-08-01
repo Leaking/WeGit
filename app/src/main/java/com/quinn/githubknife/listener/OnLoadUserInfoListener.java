@@ -7,7 +7,6 @@ import com.quinn.httpknife.github.User;
  */
 public interface OnLoadUserInfoListener extends OnErrorListener{
 
-    public void onTokenCreated(String token);
     public void onFinish(User user);
     public void updateFollowState(boolean isFollow);
 

@@ -28,17 +28,9 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
         this.authInteractor.auth();;
     }
 
-    @Override
-    public void createToken(String username,String password) {
-        this.view.showProgress();
-        this.authInteractor.createToken(username,password);
-    }
 
-    @Override
-    public void onTokenCreated(String token) {
-        this.view.hideProgress();
-        this.view.tokenCreated(token);
-    }
+
+
 
     @Override
     public void onFinish(User user) {
@@ -50,10 +42,9 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     }
 
+
     @Override
-    public void onError(String errorMsg) {
-        this.view.hideProgress();
-        this.view.onError(errorMsg);
+    public void onError(String msg) {
 
     }
 }

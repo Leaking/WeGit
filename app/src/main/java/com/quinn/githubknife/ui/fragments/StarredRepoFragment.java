@@ -51,15 +51,6 @@ public class StarredRepoFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
 
     @Override
     public void setItems(List<?> items) {

@@ -75,6 +75,7 @@ public class HttpKnife {
 		public static final String USER_AGENT = "User-Agent";
 		public static final String CONTENT_TYPE = "Content-Type";
 		public static final String AUTHORIZATION = "Authorization";
+		public static final String ACCEPT = "Accept";
 
 	}
 
@@ -470,6 +471,13 @@ public class HttpKnife {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public HttpKnife accept(String acceptMedia){
+		header(RequestHeader.ACCEPT,
+				acceptMedia);
+		return this;
 	}
 
 	/**
