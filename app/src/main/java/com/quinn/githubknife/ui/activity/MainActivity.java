@@ -27,7 +27,7 @@ import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
-import com.quinn.githubknife.ui.view.MainAuthView;
+import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.User;
 
@@ -166,6 +166,9 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         tab.setupWithViewPager(viewpager);
         setUpTab(R.id.nav_home);
     }
+
+
+
 
     static class Adapter extends FragmentStatePagerAdapter {
 

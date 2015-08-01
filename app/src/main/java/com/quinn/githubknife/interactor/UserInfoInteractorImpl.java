@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.quinn.githubknife.account.GitHubAccount;
+import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Github;
@@ -53,11 +54,15 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                         break;
                     case FAIL_MSG:
                         listener.onError((String)msg.obj);
+                        break;
+
                 }
 
             }
         };
     }
+
+
 
     @Override
     public void auth() {
@@ -80,7 +85,6 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 handler.sendMessage(msg);
             }
         }).start();
-
 
     }
 

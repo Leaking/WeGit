@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.view;
+package com.quinn.githubknife.view;
 
 import com.quinn.httpknife.github.User;
 
@@ -8,5 +8,6 @@ import com.quinn.httpknife.github.User;
 public interface MainAuthView {
 
     public void doneAuth(User user);
+
 
 }

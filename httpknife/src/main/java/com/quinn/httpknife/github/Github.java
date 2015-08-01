@@ -20,7 +20,7 @@ public interface Github {
 	 * If the token has already existed,list all token and find it out,remove it and recreate it.
 	 * @return
 	 */
-	public String createToken(String username, String password) throws GithubError;
+	public String createToken(String username, String password) throws GithubError,AuthError;
 	
 	
 	/**

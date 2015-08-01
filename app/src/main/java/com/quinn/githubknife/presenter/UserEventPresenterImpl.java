@@ -2,7 +2,7 @@ package com.quinn.githubknife.presenter;
 
 import android.content.Context;
 
-import com.quinn.githubknife.ui.view.ListFragmentView;
+import com.quinn.githubknife.view.ListFragmentView;
 
 /**
  * Created by Quinn on 7/27/15.

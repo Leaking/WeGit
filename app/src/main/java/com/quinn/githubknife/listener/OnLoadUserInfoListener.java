@@ -1,14 +1,14 @@
-package com.quinn.githubknife.interactor;
+package com.quinn.githubknife.listener;
 
 import com.quinn.httpknife.github.User;
 
 /**
  * Created by Quinn on 7/22/15.
  */
-public interface OnLoadUserInfoListener {
+public interface OnLoadUserInfoListener extends OnErrorListener{
 
+    public void onTokenCreated(String token);
     public void onFinish(User user);
     public void updateFollowState(boolean isFollow);
-    public void onError(String errorMsg);
 
 }

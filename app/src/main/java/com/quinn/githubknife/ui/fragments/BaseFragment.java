@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
-import com.quinn.githubknife.ui.view.ListFragmentView;
+import com.quinn.githubknife.view.ListFragmentView;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;

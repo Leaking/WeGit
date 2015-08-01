@@ -128,7 +128,6 @@ public class Response {
 			e.printStackTrace();
 		} catch (NullPointerException e){
 			e.printStackTrace();
-			throw new IllegalStateException("contentBytes == null");
 
 		}
 		return this;

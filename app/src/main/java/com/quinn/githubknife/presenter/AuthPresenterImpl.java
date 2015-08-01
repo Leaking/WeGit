@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.quinn.githubknife.interactor.UserInfoInteractor;
 import com.quinn.githubknife.interactor.UserInfoInteractorImpl;
-import com.quinn.githubknife.interactor.OnLoadUserInfoListener;
-import com.quinn.githubknife.ui.view.MainAuthView;
+import com.quinn.githubknife.listener.OnLoadUserInfoListener;
+import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
 /**
@@ -29,6 +29,18 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
     }
 
     @Override
+    public void createToken(String username,String password) {
+        this.view.showProgress();
+        this.authInteractor.createToken(username,password);
+    }
+
+    @Override
+    public void onTokenCreated(String token) {
+        this.view.hideProgress();
+        this.view.tokenCreated(token);
+    }
+
+    @Override
     public void onFinish(User user) {
         view.doneAuth(user);
     }
@@ -40,6 +52,8 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void onError(String errorMsg) {
+        this.view.hideProgress();
+        this.view.onError(errorMsg);
 
     }
 }

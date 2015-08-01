@@ -30,5 +30,9 @@
     <string name="title_activity_reop">ReopActivity</string>
 
 
+    <string name="network_error">Please check your network</string>
+    <string name="auth_error">Username or password is incorrect</string>
+
+
 
 </resources>

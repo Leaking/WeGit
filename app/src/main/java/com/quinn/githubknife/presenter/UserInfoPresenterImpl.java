@@ -2,10 +2,10 @@ package com.quinn.githubknife.presenter;
 
 import android.content.Context;
 
-import com.quinn.githubknife.interactor.OnLoadUserInfoListener;
+import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.interactor.UserInfoInteractor;
 import com.quinn.githubknife.interactor.UserInfoInteractorImpl;
-import com.quinn.githubknife.ui.view.UserInfoView;
+import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.httpknife.github.User;
 
 /**
@@ -20,6 +20,11 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
     public UserInfoPresenterImpl(Context context, UserInfoView view){
         this.view = view;
         this.interactor = new UserInfoInteractorImpl(context,this);
+    }
+
+    @Override
+    public void createToken(String username,String password){
+        this.interactor.createToken(username,password);
     }
 
     @Override
@@ -43,6 +48,11 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
     }
 
     @Override
+    public void onTokenCreated(String token) {
+
+    }
+
+    @Override
     public void onFinish(User user) {
         view.loadUser(user);
     }
@@ -54,6 +64,6 @@ public class UserInfoPresenterImpl implements  UserInfoPresenter ,OnLoadUserInfo
 
     @Override
     public void onError(String errorMsg) {
-        view.failLoad(errorMsg);
+        view.onError(errorMsg);
     }
 }

@@ -1,15 +1,11 @@
-package com.quinn.githubknife.ui.view;
+package com.quinn.githubknife.view;
 
 import java.util.List;
 
 /**
  * Created by Quinn on 7/20/15.
  */
-public interface ListFragmentView {
-
-    public void showProgress();
-
-    public void hideProgress();
+public interface ListFragmentView extends ProgressView{
 
     public void setItems(List<?> items);
 

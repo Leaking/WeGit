@@ -51,7 +51,7 @@ public class GithubImpl implements Github {
 
     @Override
     public String createToken(String username, String password)
-            throws GithubError {
+            throws GithubError,AuthError {
         JSONObject json = new JSONObject();
         try {
             json.put("note", TOKEN_NOTE);
@@ -67,6 +67,7 @@ public class GithubImpl implements Github {
             throw new GithubError("网络链接有问题");
         if (response.statusCode() == 401) {
             //账号密码错误
+            throw new AuthError("username or password is incorrect");
         }
         testResult(response);
         if (response.statusCode() == 422) {

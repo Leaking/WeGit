@@ -11,6 +11,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.quinn.githubknife.ui.activity.LoginActivity;
+import com.quinn.httpknife.github.AuthError;
+import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubError;
+import com.quinn.httpknife.github.GithubImpl;
+
 
 /**
  * Created by Quinn on 7/10/15.
@@ -56,15 +62,21 @@ public class Authenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
         final AccountManager am = AccountManager.get(context);
-        System.out.println("come into getAuthToken===========");
         Log.i(TAG, "Try to get AuthToken");
         String authToken = am.peekAuthToken(account, authTokenType);
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
-                //Github github = new GithubImpl(context);
-                //github.createToken()
-                 authToken = "sdddddd";
+                Github github = new GithubImpl(context);
+                try {
+                    github.createToken(account.name,password);
+                } catch (GithubError githubError) {
+                    githubError.printStackTrace();
+                    authToken = "";
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    authToken = "";
+                }
             }
         }
 

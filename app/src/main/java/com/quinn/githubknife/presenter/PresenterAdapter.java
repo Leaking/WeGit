@@ -4,15 +4,15 @@ import android.content.Context;
 
 import com.quinn.githubknife.interactor.FindItemsInteractor;
 import com.quinn.githubknife.interactor.FindItemsInteractorImpl;
-import com.quinn.githubknife.interactor.OnLoadUserListListener;
-import com.quinn.githubknife.ui.view.ListFragmentView;
+import com.quinn.githubknife.listener.OnLoadItemListListener;
+import com.quinn.githubknife.view.ListFragmentView;
 
 import java.util.List;
 
 /**
  * Created by Quinn on 7/20/15.
  */
-public class PresenterAdapter implements ListFragmentPresenter,OnLoadUserListListener {
+public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListListener {
 
     protected ListFragmentView view;
     protected FindItemsInteractor interactor;

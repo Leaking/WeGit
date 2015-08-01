@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.quinn.githubknife.account.GitHubAccount;
+import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.Event;
@@ -30,10 +31,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
 
     private GitHubAccount gitHubAccount;
     private Github github;
-    private OnLoadUserListListener listener;
+    private OnLoadItemListListener listener;
     private Handler handler;
 
-    public FindItemsInteractorImpl(Context context, final OnLoadUserListListener listener) {
+    public FindItemsInteractorImpl(Context context, final OnLoadItemListListener listener) {
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
         if (name.isEmpty())
             name = "NO_ACCOUNT";

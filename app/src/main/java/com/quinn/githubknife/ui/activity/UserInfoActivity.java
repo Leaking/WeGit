@@ -23,7 +23,7 @@ import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
-import com.quinn.githubknife.ui.view.UserInfoView;
+import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.httpknife.github.User;
@@ -192,8 +192,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     }
 
     @Override
-    public void failLoad(String failMsg) {
-        ToastUtils.showMsg(this,failMsg);
+    public void onError(String msg) {
+        ToastUtils.showMsg(this,msg);
     }
 
     @OnClick(R.id.followerWrap)
@@ -219,6 +219,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @OnClick(R.id.relation)
     void changeRelation(){
         L.i(TAG, "try to  changeRelation");
+
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
         switch (followState){
