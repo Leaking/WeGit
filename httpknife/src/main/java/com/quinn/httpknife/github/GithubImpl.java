@@ -398,12 +398,30 @@ public class GithubImpl implements Github {
 
     @Override
     public boolean starRepo(String owner, String repo) throws GithubError {
-        return false;
+        String url = API_HOST + "user/starred/" + owner + "/" +repo;
+        Response response = http.put(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        System.out.println("starRepo statusCode " + response.statusCode());
+        if(response.statusCode() == 204){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public boolean unStarRepo(String owner, String repo) throws GithubError {
-        return false;
+        String url = API_HOST + "user/starred/" + owner + "/" +repo;
+        Response response = http.delete(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        System.out.println("unStarRepo statusCode " + response.statusCode());
+        if(response.statusCode() == 204){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
