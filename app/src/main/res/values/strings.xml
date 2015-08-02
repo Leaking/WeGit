@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">GIthubKnife</string>
+    <string name="app_name">GithubKnife</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Github-Knife</string>
     <string name="fail_load">Fail! Check the Network</string>
     <string name="fail_loadMore">Fail to load more! Check the Network</string>
     <string name="icon_star" translatable="false">\uf02a</string>

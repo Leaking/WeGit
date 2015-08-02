@@ -1,6 +1,7 @@
 package com.quinn.httpknife.github;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable{
 
@@ -35,8 +36,8 @@ public class User implements Serializable{
 	private int public_gists;
 	private int followers;
 	private int following;
-	private String created_at;
-	private String updated_at;
+	private Date created_at;
+	private Date updated_at;
 	//private
 	private int total_private_repos;
 	private int owned_private_repos;
@@ -257,16 +258,16 @@ public class User implements Serializable{
 	public void setFollowing(int following) {
 		this.following = following;
 	}
-	public String getCreated_at() {
+	public Date getCreated_at() {
 		return created_at;
 	}
-	public void setCreated_at(String created_at) {
+	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
-	public String getUpdated_at() {
+	public Date getUpdated_at() {
 		return updated_at;
 	}
-	public void setUpdated_at(String updated_at) {
+	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
 	}
 	public int getTotal_private_repos() {

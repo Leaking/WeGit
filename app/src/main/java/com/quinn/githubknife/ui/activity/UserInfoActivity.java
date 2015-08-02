@@ -28,6 +28,8 @@ import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.httpknife.github.User;
 
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -161,11 +163,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     public void loadUser(User user) {
         if(user == null)
             return;
-
         /**
          * 处理返回为空的请看
          */
-
 
         followerNum.setText(""+user.getFollowers());
         followingNum.setText(""+user.getFollowing());
@@ -174,7 +174,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         company.setText(user.getCompany());
         blog.setText(user.getBlog());
         location.setText(user.getLocation());
-        joinTime.setText(user.getCreated_at());
+        Date date = user.getCreated_at();
+
+        joinTime.setText(date.toLocaleString());
         presenter.hasFollow(user.getLogin());
     }
 
@@ -225,7 +227,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         switch (followState){
             case UNFOLLOWED:
                 L.i(TAG, "try to follow " + user.getLogin());
-                L.i(TAG, "try to unfollow " + user.getLogin());
                 builder.setTitle("Follow Someone");
                 builder.setMessage("Sure to follow " + user.getLogin() + "?");
                 builder.setPositiveButton("follow", new DialogInterface.OnClickListener() {

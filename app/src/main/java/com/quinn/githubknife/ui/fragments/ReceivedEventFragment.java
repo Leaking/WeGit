@@ -1,17 +1,17 @@
 package com.quinn.githubknife.ui.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.ReceivedEventPresenterImpl;
 import com.quinn.githubknife.ui.activity.EventAdapter;
+import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,6 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         presenter = new ReceivedEventPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Event>();
         adapter = new EventAdapter(dataItems);
@@ -65,22 +64,33 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
     }
 
     @Override
-    public void intoItem(int position) {
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(this.getActivity());
+    public void intoItem(final int position) {
+        Event event = (Event)dataItems.get(position);
+        User user = (User)event.getActor();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",user);
+        UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(),bundle);
 
-        builder.setItems(new String[]{"User", "Repo"}, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                }
-            }
-        });
-
-        builder.show();
+//        AlertDialog.Builder builder =
+//                new AlertDialog.Builder(this.getActivity());
+//
+//        builder.setItems(new String[]{"User", "Repo"}, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                switch (which){
+//                    case 0:
+//                        Event event = (Event)dataItems.get(position);
+//                        User user = (User)event.getActor();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("user",user);
+//                        UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(),bundle);
+//                        break;
+//                    case 1:
+//                        break;
+//                }
+//            }
+//        });
+//
+//        builder.show();
     }
 }

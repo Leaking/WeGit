@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
+import com.quinn.githubknife.utils.TimeUtils;
 import com.quinn.httpknife.github.Event;
 
 import java.util.List;
@@ -25,7 +26,6 @@ public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
     public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PushEvent"};
-
     private List<Event> dataItems;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -53,15 +53,13 @@ public class EventAdapter extends
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = dataItems.get(position);
         imageLoader.displayImage(event.getActor().getAvatar_url(),holder.avatar,option,animateFirstListener);
-        holder.happenTime.setText(event.getCreated_at().toString());
+        holder.happenTime.setText(TimeUtils.getRelativeTime(event.getCreated_at()));
         holder.eventType.setText(getEventTypeIcon(event.getType()));
         if(!holder.event.equals(EVENT_TYPE_ARRAY[3])){
             holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
         }else{
             holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
-
         }
-
 
 
     }
