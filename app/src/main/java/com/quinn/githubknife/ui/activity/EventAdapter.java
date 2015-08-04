@@ -25,7 +25,7 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PushEvent"};
+    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent"};
     private List<Event> dataItems;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -77,8 +77,10 @@ public class EventAdapter extends
             return "forked";
         }else if(eventType.equals(EVENT_TYPE_ARRAY[2])){
             return "created repo";
+        }else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
+            return "opened pull request";
         }else{
-            return ",,";
+            return "XXXXX";   // I will add more eventtype later
         }
     }
 
@@ -90,9 +92,9 @@ public class EventAdapter extends
         } else if (eventType.equals(EVENT_TYPE_ARRAY[2])) {
             return R.string.icon_repo;
         } else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
-            return R.string.icon_star;
+            return R.string.icon_pullRequest;
         } else {
-            return R.string.icon_push;
+            return R.string.icon_star;
         }
     }
 
