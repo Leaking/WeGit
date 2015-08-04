@@ -6,7 +6,7 @@
     tools:context="com.quinn.githubknife.ui.activity.MainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolboar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="30dip"
         android:minHeight="?attr/actionBarSize"
