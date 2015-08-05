@@ -82,6 +82,7 @@ public class EventAdapter extends
         }else{
             return "XXXXX";   // I will add more eventtype later
         }
+
     }
 
     public int getEventTypeIcon(String eventType) {

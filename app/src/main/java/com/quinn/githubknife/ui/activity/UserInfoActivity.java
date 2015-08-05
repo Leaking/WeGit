@@ -3,15 +3,19 @@ package com.quinn.githubknife.ui.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +27,9 @@ import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
-import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
+import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.httpknife.github.User;
 
 import java.util.Date;
@@ -34,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserInfoActivity extends BaseActivity implements UserInfoView{
+public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     private static final String TAG = UserInfoActivity.class.getSimpleName();
     private User user;
@@ -99,13 +103,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     }
 
 
-
     private UserInfoPresenter presenter;
 
 
-    public static void launch(Context context, Bundle bundle){
-        Intent intent = new Intent(context,UserInfoActivity.class);
-        if(bundle != null)
+    public static void launch(Context context, Bundle bundle) {
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        if (bundle != null)
             intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -115,19 +118,19 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
-        Bundle bundle  = getIntent().getExtras();
-        if(bundle != null){
-            user = (User)bundle.getSerializable("user");
-        }else if(savedInstanceState != null){
-            user = (User)savedInstanceState.getSerializable("user");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            user = (User) bundle.getSerializable("user");
+        } else if (savedInstanceState != null) {
+            user = (User) savedInstanceState.getSerializable("user");
         }
-        presenter = new UserInfoPresenterImpl(this,this);
+        presenter = new UserInfoPresenterImpl(this, this);
         presenter.user(user.getLogin());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(user.getLogin());
-        imageLoader.displayImage(user.getAvatar_url(),backDrop,option,animateFirstListener);
-        Typeface typeface = Typeface.createFromAsset(getAssets(),"octicons.ttf");
+        paletteToolbar();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "octicons.ttf");
         iconStar.setTypeface(typeface);
         iconEmail.setTypeface(typeface);
         iconBlog.setTypeface(typeface);
@@ -138,6 +141,35 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     }
 
 
+    public void paletteToolbar(){
+        //collapsingToolbar.setcon
+        imageLoader.displayImage(user.getAvatar_url(), backDrop, option, new AnimateFirstDisplayListener(){
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+
+                Palette.generateAsync(loadedImage,24, new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+
+                        Palette.Swatch vibrant = palette.getVibrantSwatch();
+                        Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
+                        Palette.Swatch lightVibrant = palette.getLightVibrantSwatch();
+                        Palette.Swatch muted = palette.getMutedSwatch();
+                        Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
+                        Palette.Swatch lightMuted = palette.getLightMutedSwatch();
+                        Palette.Swatch swatch = vibrant;
+                        swatch = (swatch == null) ? muted:swatch;
+                        swatch = (swatch == null) ? darkVibrant:swatch;
+                        swatch = (swatch == null) ? darkMuted:swatch;
+                        swatch = (swatch == null) ? lightVibrant:swatch;
+                        swatch = (swatch == null) ? lightMuted:swatch;
+                        collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
+                        // 使用颜色
+                    }});
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,15 +193,15 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void loadUser(User user) {
-        if(user == null)
+        if (user == null)
             return;
         /**
          * 处理返回为空的请看
          */
 
-        followerNum.setText(""+user.getFollowers());
-        followingNum.setText(""+user.getFollowing());
-        repoNum.setText(""+user.getPublic_repos());
+        followerNum.setText("" + user.getFollowers());
+        followingNum.setText("" + user.getFollowing());
+        repoNum.setText("" + user.getPublic_repos());
         email.setText(user.getEmail());
         company.setText(user.getCompany());
         blog.setText(user.getBlog());
@@ -183,11 +215,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @Override
     public void setFollowState(boolean isFollow) {
 
-        if(isFollow){
+        if (isFollow) {
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.unfollow));
             followState = FollowState.FOLLOWED;
 
-        }else{
+        } else {
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.follow));
             followState = FollowState.UNFOLLOWED;
         }
@@ -195,36 +227,36 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void onError(String msg) {
-        ToastUtils.showMsg(this,msg);
+        ToastUtils.showMsg(this, msg);
     }
 
     @OnClick(R.id.followerWrap)
-    void viewFollower(){
+    void viewFollower() {
         viewDetail(FollowerFragment.TAG);
     }
 
     @OnClick(R.id.followingWrap)
-    void viewFollowing(){
+    void viewFollowing() {
         viewDetail(FollowingFragment.TAG);
     }
 
     @OnClick(R.id.repoWrap)
-    void viewRepo(){
+    void viewRepo() {
         viewDetail(UserRepoFragment.TAG);
     }
 
     @OnClick(R.id.starWrap)
-    void viewStarred(){
+    void viewStarred() {
         viewDetail(StarredRepoFragment.TAG);
     }
 
     @OnClick(R.id.relation)
-    void changeRelation(){
+    void changeRelation() {
         L.i(TAG, "try to  changeRelation");
 
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
-        switch (followState){
+        switch (followState) {
             case UNFOLLOWED:
                 L.i(TAG, "try to follow " + user.getLogin());
                 builder.setTitle("Follow Someone");
@@ -258,9 +290,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     }
 
-    public void viewDetail(String contentType){
+    public void viewDetail(String contentType) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
+        bundle.putSerializable("user", user);
         bundle.putString("fragment", contentType);
         FoActivity.launch(this, bundle);
     }
@@ -268,6 +300,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("user",user);
+        outState.putSerializable("user", user);
     }
 }
