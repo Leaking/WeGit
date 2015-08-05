@@ -12,10 +12,17 @@
     <string name="icon_company" translatable="false">\uf037</string>
     <string name="icon_blog" translatable="false">\uf05c</string>
     <string name="icon_join" translatable="false">\uf046</string>
-    <string name="icon_fork" translatable="false">\uf020</string>
     <string name="icon_repo" translatable="false">\uf001</string>
     <string name="icon_push" translatable="false">\uf01f</string>
     <string name="icon_pullRequest" translatable="false">\uf009</string>
+    <string name="icon_commit" translatable="false">\uf07e</string>
+    <string name="icon_fork" translatable="false">\uf002</string>
+    <string name="icon_branch" translatable="false">\uf020</string>
+    <string name="icon_organization" translatable="false">\uf037</string>
+    <string name="icon_code" translatable="false">\uf05f</string>
+    <string name="icon_issue" translatable="false">\uf026</string>
+    <string name="icon_tag" translatable="false">\uf015</string>
+
 
 
     <string-array name="drawerListData">

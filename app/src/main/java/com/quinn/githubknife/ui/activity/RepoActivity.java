@@ -31,18 +31,39 @@ public class RepoActivity extends BaseActivity implements RepoView{
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.repoName)
-    TextView repoName;
+
     @Bind(R.id.description)
     TextView description;
     @Bind(R.id.numStar)
     TextView starNum;
     @Bind(R.id.numFork)
     TextView forkNum;
+
+
     @Bind(R.id.iconStar)
     TextView starIcon;
     @Bind(R.id.iconFork)
     TextView forkIcon;
+    @Bind(R.id.iconCode)
+    TextView codeIcon;
+    @Bind(R.id.iconCommit)
+    TextView commitIcon;
+    @Bind(R.id.iconTag)
+    TextView tagIcon;
+    @Bind(R.id.iconIssue)
+    TextView issueIcon;
+    @Bind(R.id.iconBranch)
+    TextView branchIcon;
+    @Bind(R.id.iconPullRequest)
+    TextView pullRequestIcon;
+    @Bind(R.id.iconContribute)
+    TextView contributeIcon;
+
+
+
+
+
+
 
     StarState starState;
     enum StarState {
@@ -67,22 +88,39 @@ public class RepoActivity extends BaseActivity implements RepoView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         Bundle bundle = getIntent().getExtras();
         repo = (Repository) bundle.getSerializable("repo");
         toolbar.setTitle(repo.getName());
         toolbar.setSubtitle(repo.getOwner().getLogin());
+        setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        repoName.setText(repo.getName());
         description.setText(repo.getDescription());
         starNum.setText("" + repo.getStargazers_count());
         forkNum.setText("" + repo.getForks_count());
         Typeface typeface = Typeface.createFromAsset(getAssets(),"octicons.ttf");
         starIcon.setTypeface(typeface);
         forkIcon.setTypeface(typeface);
+        codeIcon.setTypeface(typeface);
+        commitIcon.setTypeface(typeface);
+        branchIcon.setTypeface(typeface);
+        tagIcon.setTypeface(typeface);
+        issueIcon.setTypeface(typeface);
+        pullRequestIcon.setTypeface(typeface);
+        contributeIcon.setTypeface(typeface);
+
+
         forkIcon.setText(getResources().getString(R.string.icon_fork) + " Fork");
         starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
+        codeIcon.setText(getResources().getString(R.string.icon_code) + " Code");
+        commitIcon.setText(getResources().getString(R.string.icon_commit) + " Commit");
+        branchIcon.setText(getResources().getString(R.string.icon_branch) + " Branch");
+        issueIcon.setText(getResources().getString(R.string.icon_issue) + " Issue");
+        pullRequestIcon.setText(getResources().getString(R.string.icon_pullRequest) + " Pull Request");
+        contributeIcon.setText(getResources().getString(R.string.icon_organization) + " Contributor");
+        tagIcon.setText(getResources().getString(R.string.icon_tag) + " Tag");
+
         starState = StarState.UNKNOWN;
         presenter = new RepoPresenterImpl(this,this);
         presenter.hasStar(repo.getOwner().getLogin(),repo.getName());

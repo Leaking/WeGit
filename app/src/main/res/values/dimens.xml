@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
 
-    <dimen name="card_margin">16dip</dimen>
+    <dimen name="card_margin">10dip</dimen>
 
     <dimen name="item_content_textsize">16sp</dimen>
 </resources>
