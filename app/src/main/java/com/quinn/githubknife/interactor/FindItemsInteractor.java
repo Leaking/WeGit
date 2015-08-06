@@ -16,5 +16,8 @@ public interface FindItemsInteractor {
     public void loadReceivedEvents(String user, int page);
     public void loadUserEvents(String user, int page);
     public void loadRepoEvents(String user, String repo, int page);
+    public void loadStargazers(String owner,String repo, int page);
+    public void loadForkers(String owner,String repo, int page);
+    public void loadCollaborators(String owner,String repo, int page);
 
 }

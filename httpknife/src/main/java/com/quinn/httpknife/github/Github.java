@@ -73,4 +73,22 @@ public interface Github {
 	public boolean starRepo(String owner,String repo) throws GithubError;
 
 	public boolean unStarRepo(String owner,String repo) throws GithubError;
+
+	//GET /repos/:owner/:repo/stargazers
+	public List<User> stargazers(String owner,String repo,int page) throws GithubError;
+
+	//GET /repos/:owner/:repo/forks
+	public List<User> forkers(String owner,String repo,int page) throws GithubError;
+
+	//POST /repos/:owner/:repo/forks
+	public boolean fork(String owner,String repo) throws GithubError;
+
+	//GET /repos/:owner/:repo/collaborators
+	public List<User> collaborators(String owner,String repo,int page) throws GithubError;
+
+	//GET /repos/:owner/:repo/commits
+	//public boolean commits(String owner,String repo) throws GithubError;
+
+
+
 }

@@ -15,6 +15,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.RepoPresenter;
 import com.quinn.githubknife.presenter.RepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.RepoUserFragment;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.RepoView;
@@ -30,7 +31,6 @@ public class RepoActivity extends BaseActivity implements RepoView{
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
 
     @Bind(R.id.description)
     TextView description;
@@ -59,11 +59,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
     @Bind(R.id.iconContribute)
     TextView contributeIcon;
 
-
-
-
-
-
+    private Menu menu;
 
     StarState starState;
     enum StarState {
@@ -71,7 +67,6 @@ public class RepoActivity extends BaseActivity implements RepoView{
         STARRED,
         UNSTARRED
     }
-
 
 
     private Repository repo;
@@ -93,7 +88,6 @@ public class RepoActivity extends BaseActivity implements RepoView{
         toolbar.setTitle(repo.getName());
         toolbar.setSubtitle(repo.getOwner().getLogin());
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         description.setText(repo.getDescription());
@@ -125,7 +119,6 @@ public class RepoActivity extends BaseActivity implements RepoView{
         presenter = new RepoPresenterImpl(this,this);
         presenter.hasStar(repo.getOwner().getLogin(),repo.getName());
 
-
     }
 
 
@@ -134,25 +127,52 @@ public class RepoActivity extends BaseActivity implements RepoView{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_reop, menu);
+        this.menu = menu;
         return true;
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void updateStarMenuItem(){
+        MenuItem starItem = menu.findItem(R.id.action_star);
+        switch (starState){
+            case STARRED:
+                starItem.setTitle("UNSTAR");
+                break;
+            case UNSTARRED:
+                starItem.setTitle("STAR");
+                break;
+            default:
+                break;
+        }
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_star:
+                star();
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    @OnClick(R.id.iconStar)
     void star(){
         L.i(TAG,"Click star icon");
         AlertDialog.Builder builder =
@@ -187,6 +207,21 @@ public class RepoActivity extends BaseActivity implements RepoView{
             case UNKNOWN:
                 break;
         }
+
+    }
+
+
+    @OnClick(R.id.starWrap)
+    void stargazers(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", repo.getOwner().getLogin());
+        bundle.putSerializable("repo", repo.getName());
+        bundle.putString("fragment", RepoUserFragment.TAG);
+        FoActivity.launch(this, bundle);
+    }
+
+    void forkers(){
+
     }
 
 
@@ -205,5 +240,10 @@ public class RepoActivity extends BaseActivity implements RepoView{
             starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
             starState = StarState.UNSTARRED;
         }
+        updateStarMenuItem();
     }
+
+
+
+
 }

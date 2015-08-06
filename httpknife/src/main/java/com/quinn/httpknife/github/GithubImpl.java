@@ -424,6 +424,60 @@ public class GithubImpl implements Github {
         }
     }
 
+    @Override
+    public List<User> stargazers(String owner, String repo,int page) throws GithubError {
+        //GET /repos/:owner/:repo/stargazers
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/stargazers";
+        Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        ArrayList<User> userList = gson.fromJson(response.body(),
+                new TypeToken<List<User>>() {
+                }.getType());
+        return userList;
+    }
+
+    @Override
+    public List<User> forkers(String owner, String repo,int page) throws GithubError {
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/forks";
+        Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        ArrayList<User> userList = gson.fromJson(response.body(),
+                new TypeToken<List<User>>() {
+                }.getType());
+        return userList;
+    }
+
+    @Override
+    public boolean fork(String owner, String repo) throws GithubError {
+        return false;
+    }
+
+    @Override
+    public List<User> collaborators(String owner,String repo,int page) throws GithubError {
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/collaborators";
+        Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        ArrayList<User> userList = gson.fromJson(response.body(),
+                new TypeToken<List<User>>() {
+                }.getType());
+        return userList;
+    }
+
 
     public void testResult(Response response) {
         System.out.println(response.statusCode());

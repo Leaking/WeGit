@@ -14,10 +14,11 @@ import android.widget.TextView;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
-import com.quinn.githubknife.view.ListFragmentView;
+import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
+import com.quinn.githubknife.view.ListFragmentView;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ import butterknife.OnClick;
  */
 public abstract class BaseFragment extends Fragment implements ListFragmentView, onLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
 
+    public final static String TAG = BaseFragment.class.getSimpleName();
     protected List dataItems;
 
     @Bind(R.id.recyclerview)
@@ -49,17 +51,15 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     protected int currPage;
     private LinearLayoutManager layoutManager;
     protected String user;
+    protected String repo;
     protected ListFragmentPresenter presenter;
-
-
-
 
 
     @Override
     public void onResume() {
         super.onResume();
         if(dataItems.isEmpty())
-            presenter.onPageLoad(currPage,user);
+           loadPage();
 
     }
 
@@ -70,8 +70,10 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
                 R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
-        if(bundle != null)
+        if(bundle != null) {
             user = bundle.getString("user");
+            repo = bundle.getString("repo");
+        }
         layoutManager = new LinearLayoutManager(this.getActivity());
         loading = false;
         haveMore = true;
@@ -104,7 +106,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void loadMore() {
         loading = true;
-        presenter.onPageLoad(currPage,user);
+        loadPage();
     }
 
 
@@ -156,13 +158,25 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void reLoad(){
         UIUtils.crossfade(failTxt,progress);
-        presenter.onPageLoad(currPage, user);
+        loadPage();
     }
 
     @OnClick(R.id.failTxt)
     void failTxt(){
         reLoad();
     }
+
+
+
+    public void loadPage(){
+        if(presenter instanceof StargazersPresenterImpl){
+            L.i(TAG,"loadpage in RepoUserFragment");
+            presenter.onPageLoad(user,repo,currPage);
+        }else{
+            presenter.onPageLoad(currPage,user);
+        }
+    }
+
 
 
 }

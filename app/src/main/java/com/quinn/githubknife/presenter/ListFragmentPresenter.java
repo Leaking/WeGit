@@ -9,4 +9,5 @@ public interface ListFragmentPresenter {
 
     public void onPageLoad(int page, String user);
 
+    public void onPageLoad(String user, String repo, int page);
 }

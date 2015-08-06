@@ -14,10 +14,10 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
+import com.quinn.githubknife.ui.fragments.RepoUserFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.utils.L;
-import com.quinn.httpknife.github.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +29,8 @@ public class FoActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    private User user;
+    private String user;
+    private String repo;
     private String contentType;
 
 
@@ -45,16 +46,21 @@ public class FoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fo);
         ButterKnife.bind(this);
-        Bundle bundle  = getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            user = (User)bundle.getSerializable("user");
+            user = (String)bundle.getString("user");
+            repo = (String)bundle.getString("repo");
             contentType = bundle.getString("fragment");
         }else if(savedInstanceState != null){
-            user = (User)savedInstanceState.getSerializable("user");
+            user = (String)savedInstanceState.getString("user");
+            repo = (String)bundle.getString("repo");
             contentType = savedInstanceState.getString("fragment");
         }
         L.i(TAG, bundle.toString());
-        toolbar.setTitle(user.getLogin());
+        toolbar.setTitle(user);
+        if(repo != null){
+            toolbar.setTitle(repo);
+        }
         toolbar.setSubtitle(subTitle(contentType));
 
         setSupportActionBar(toolbar);
@@ -64,21 +70,23 @@ public class FoActivity extends BaseActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = contentFragment(contentType,user.getLogin());
+        Fragment fragment = contentFragment(contentType);
         fragmentTransaction.add(R.id.container,fragment);
         fragmentTransaction.commit();
     }
 
 
-    public Fragment contentFragment(String type,String username){
+    public Fragment contentFragment(String type){
         if(type.equals(FollowerFragment.TAG)){
-            return FollowerFragment.getInstance(username);
+            return FollowerFragment.getInstance(user);
         }else if(type.equals(FollowingFragment.TAG)){
-            return FollowingFragment.getInstance(username);
+            return FollowingFragment.getInstance(user);
         }else if(type.equals(StarredRepoFragment.TAG)){
-            return StarredRepoFragment.getInstance(username);
+            return StarredRepoFragment.getInstance(user);
         }else if (type.equals(UserRepoFragment.TAG)) {
-            return UserRepoFragment.getInstance(username);
+            return UserRepoFragment.getInstance(user);
+        }else if(type.equals(RepoUserFragment.TAG)){
+            return RepoUserFragment.getInstance(user,repo);
         }
         return null;
     }
@@ -92,6 +100,8 @@ public class FoActivity extends BaseActivity {
             return "Starred";
         }else if (type.equals(UserRepoFragment.TAG)) {
             return "Repository";
+        }else if (type.equals(RepoUserFragment.TAG)) {
+            return "stargazers";
         }
         return null;
     }
@@ -118,8 +128,8 @@ public class FoActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("user", user);
+        outState.putString("user", user);
+        outState.putString("repo", repo);
         outState.putString("fragment",contentType);
-
     }
 }

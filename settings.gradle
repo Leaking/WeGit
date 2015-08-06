@@ -1,1 +1,1 @@
-include ':app', ':httpknife'
+include ':app', ':httpknife', ':iconlibrary'

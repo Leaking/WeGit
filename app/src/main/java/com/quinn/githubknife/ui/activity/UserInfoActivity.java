@@ -292,7 +292,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     public void viewDetail(String contentType) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", user);
+        bundle.putSerializable("user", user.getLogin());
         bundle.putString("fragment", contentType);
         FoActivity.launch(this, bundle);
     }

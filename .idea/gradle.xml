@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/httpknife" />
+            <option value="$PROJECT_DIR$/iconlibrary" />
           </set>
         </option>
       </GradleProjectSettings>
