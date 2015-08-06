@@ -451,9 +451,13 @@ public class GithubImpl implements Github {
             testResult(response);
         }
         Gson gson = new Gson();
-        ArrayList<User> userList = gson.fromJson(response.body(),
-                new TypeToken<List<User>>() {
+        ArrayList<Repository> repoList = gson.fromJson(response.body(),
+                new TypeToken<List<Repository>>() {
                 }.getType());
+        ArrayList<User> userList = new ArrayList<User>();
+        for(Repository repoItem : repoList){
+            userList.add(repoItem.getOwner());
+        }
         return userList;
     }
 

@@ -382,8 +382,32 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
     }
 
     @Override
-    public void loadCollaborators(String owner, String repo, int page) {
+    public void loadCollaborators(final String owner, final String repo, final int page) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                List<User> users = new ArrayList<User>();
+                Message msg = new Message();
+                try {
+                    users = github.collaborators(owner, repo, page);
+                } catch (GithubError e) {
+                    L.i(TAG,"网络问题 loadCollaborators");
+                    if(page == 1){
+                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                    }else{
+                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
+                    }
+                    return;
+                }
 
+                msg.what = LOAD_SUCCESS;
+                msg.obj = users;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        ;
     }
 
 }

@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
+import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.utils.L;
@@ -52,6 +54,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     private LinearLayoutManager layoutManager;
     protected String user;
     protected String repo;
+    protected String presenterType;
     protected ListFragmentPresenter presenter;
 
 
@@ -60,7 +63,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         super.onResume();
         if(dataItems.isEmpty())
            loadPage();
-
     }
 
     @Nullable
@@ -73,6 +75,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         if(bundle != null) {
             user = bundle.getString("user");
             repo = bundle.getString("repo");
+            presenterType = bundle.getString("presenter");
         }
         layoutManager = new LinearLayoutManager(this.getActivity());
         loading = false;
@@ -89,7 +92,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
                 totalItemCount = layoutManager.getItemCount();
                 firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
 
                 if(haveMore && !loading && (lastVisibleItem + 1) == totalItemCount){
                     L.i("加载更多");
@@ -169,8 +171,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
 
     public void loadPage(){
-        if(presenter instanceof StargazersPresenterImpl){
-            L.i(TAG,"loadpage in RepoUserFragment");
+        if(presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
             presenter.onPageLoad(user,repo,currPage);
         }else{
             presenter.onPageLoad(currPage,user);

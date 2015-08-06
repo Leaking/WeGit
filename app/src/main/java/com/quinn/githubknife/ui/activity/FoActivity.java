@@ -12,9 +12,11 @@ import android.view.MenuItem;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
-import com.quinn.githubknife.ui.fragments.RepoUserFragment;
+import com.quinn.githubknife.ui.fragments.ForkersFragment;
+import com.quinn.githubknife.ui.fragments.StargazersFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.utils.L;
@@ -67,7 +69,6 @@ public class FoActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = contentFragment(contentType);
@@ -85,9 +86,14 @@ public class FoActivity extends BaseActivity {
             return StarredRepoFragment.getInstance(user);
         }else if (type.equals(UserRepoFragment.TAG)) {
             return UserRepoFragment.getInstance(user);
-        }else if(type.equals(RepoUserFragment.TAG)){
-            return RepoUserFragment.getInstance(user,repo);
+        }else if(type.equals(StargazersFragment.TAG)){
+            return StargazersFragment.getInstance(user, repo);
+        }else if(type.equals(ForkersFragment.TAG)){
+            return ForkersFragment.getInstance(user, repo);
+        }else if(type.equals(CollaboratorsFragment.TAG)){
+            return CollaboratorsFragment.getInstance(user, repo);
         }
+
         return null;
     }
 
@@ -100,8 +106,12 @@ public class FoActivity extends BaseActivity {
             return "Starred";
         }else if (type.equals(UserRepoFragment.TAG)) {
             return "Repository";
-        }else if (type.equals(RepoUserFragment.TAG)) {
+        }else if (type.equals(StargazersFragment.TAG)) {
             return "stargazers";
+        }else if (type.equals(ForkersFragment.TAG)) {
+            return "forkers";
+        }else if (type.equals(CollaboratorsFragment.TAG)){
+            return "Contributors";
         }
         return null;
     }

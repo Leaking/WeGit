@@ -7,19 +7,19 @@ import com.quinn.githubknife.view.ListFragmentView;
 /**
  * Created by Quinn on 7/20/15.
  */
-public class StargazersPresenterImpl extends PresenterAdapter{
+public class CollaboratorsPresenterImpl extends PresenterAdapter{
 
 
-    public static final String TAG = StargazersPresenterImpl.class.getSimpleName();
+    public static final String TAG = CollaboratorsPresenterImpl.class.getSimpleName();
 
-    public StargazersPresenterImpl(Context context, ListFragmentView view){
+    public CollaboratorsPresenterImpl(Context context, ListFragmentView view){
         super(context, view);
     }
 
     @Override
     public void onPageLoad(String user,String repo,int page){
         super.onPageLoad(user,repo,page);
-        interactor.loadStargazers(user,repo,page);
+        interactor.loadCollaborators(user,repo,page);
     }
 
 

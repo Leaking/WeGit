@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.StargazersPresenterImpl;
+import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
 import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
@@ -20,20 +20,20 @@ import java.util.List;
  * Created by Quinn on 8/6/15.
  * Show who stars or forks X repo
  */
-public class RepoUserFragment extends BaseFragment implements RecycleItemClickListener {
+public class CollaboratorsFragment extends BaseFragment implements RecycleItemClickListener {
 
-    public final static String TAG = RepoUserFragment.class.getSimpleName();
+    public final static String TAG = CollaboratorsFragment.class.getSimpleName();
     private UsersAdapter adapter;
 
 
-    public static RepoUserFragment getInstance(String user,String repo){
+    public static CollaboratorsFragment getInstance(String user,String repo){
         L.i(TAG, "create Fragment");
-        RepoUserFragment repoUserFragment = new RepoUserFragment();
+        CollaboratorsFragment collaboratorsFragment = new CollaboratorsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
         bundle.putString("repo", repo);
-        repoUserFragment.setArguments(bundle);
-        return repoUserFragment;
+        collaboratorsFragment.setArguments(bundle);
+        return collaboratorsFragment;
     }
 
 
@@ -42,7 +42,6 @@ public class RepoUserFragment extends BaseFragment implements RecycleItemClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataItems = new ArrayList<User>();
-        presenter = new StargazersPresenterImpl(this.getActivity(),this);
         adapter = new UsersAdapter(dataItems);
     }
 
@@ -51,9 +50,13 @@ public class RepoUserFragment extends BaseFragment implements RecycleItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
         recyclerView.setAdapter(adapter);
+
+        presenter = new CollaboratorsPresenterImpl(this.getActivity(),this);
         adapter.setOnItemClickListener(this);
         return view;
     }
+
+
 
 
 
