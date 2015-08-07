@@ -57,6 +57,10 @@
             android:name=".ui.activity.RepoActivity"
             android:label="@string/title_activity_reop" >
         </activity>
+        <activity
+            android:name=".ui.activity.FileTreeActivity"
+            android:label="@string/title_activity_file_tree" >
+        </activity>
     </application>
 
 </manifest>

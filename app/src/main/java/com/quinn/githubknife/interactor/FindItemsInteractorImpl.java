@@ -14,6 +14,8 @@ import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;
+import com.quinn.httpknife.github.Tree;
+import com.quinn.httpknife.github.TreeItem;
 import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
@@ -48,14 +50,14 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case LOAD_SUCCESS:
-                        List<User> users = (List<User>) msg.obj;
+                        List users = (List) msg.obj;
                         listener.onFinished(users);
                         break;
                     case LOAD_FIRST_FAIL:
-                        listener.onError(true);
+                        listener.onError(true,(String)msg.obj);
                         break;
                     case LOAD_MORE_FAIL:
-                        listener.onError(false);
+                        listener.onError(false,"");
                         break;
                 }
 
@@ -79,7 +81,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError githubError) {
                     githubError.printStackTrace();
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = githubError.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -110,7 +114,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i("网络问题 loadMyFollwers");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -142,7 +148,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadFollowerings");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -173,7 +181,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadFollwers");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -214,7 +224,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadRepo");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -243,7 +255,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadStarredRepo");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -274,7 +288,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadReceivedEvents");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -304,7 +320,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadReceivedEvents");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -337,7 +355,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadFollwers");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -366,7 +386,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadFollwers");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -393,9 +415,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     users = github.collaborators(owner, repo, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadCollaborators");
                     if(page == 1){
-                        handler.sendEmptyMessage(LOAD_FIRST_FAIL);
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
                     }else{
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
@@ -408,6 +431,33 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
             }
         }).start();
         ;
+    }
+
+    @Override
+    public void loadTree(final String owner,final String repo, final String sha) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                List<TreeItem> treeItems = new ArrayList<TreeItem>();
+                Message msg = new Message();
+                try {
+                    Tree tree  = github.getTree(owner, repo, sha);
+                    treeItems = tree.getTree();
+                } catch (GithubError e) {
+                    L.i(TAG,"网络问题 loadFollwers");
+                    msg.what = LOAD_FIRST_FAIL;
+                    msg.obj = e.getMessage();
+                    handler.sendMessage(msg);
+                    return;
+                }
+
+                msg.what = LOAD_SUCCESS;
+                msg.obj = treeItems;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
 }

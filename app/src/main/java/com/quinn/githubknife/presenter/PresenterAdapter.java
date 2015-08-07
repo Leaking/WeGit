@@ -45,9 +45,9 @@ public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListLis
     }
 
     @Override
-    public void onError(boolean first) {
+    public void onError(boolean first,String errorMsg) {
         if(first)
-            view.failToLoadFirst();
+            view.failToLoadFirst(errorMsg);
         else{
             view.failToLoadMore();
         }

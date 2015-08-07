@@ -19,5 +19,5 @@ public interface FindItemsInteractor {
     public void loadStargazers(String owner,String repo, int page);
     public void loadForkers(String owner,String repo, int page);
     public void loadCollaborators(String owner,String repo, int page);
-
+    public void loadTree(String owner,String repo,String sha);
 }

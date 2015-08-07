@@ -1,1 +1,1 @@
-＃ A Github Android APP
+A Github Android APP

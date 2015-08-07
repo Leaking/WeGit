@@ -15,6 +15,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.RepoPresenter;
 import com.quinn.githubknife.presenter.RepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.ForkersFragment;
 import com.quinn.githubknife.ui.fragments.StargazersFragment;
 import com.quinn.githubknife.utils.L;
@@ -233,11 +234,11 @@ public class RepoActivity extends BaseActivity implements RepoView{
 
     @OnClick(R.id.contributeWrap)
     void collaborators(){
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("user", repo.getOwner().getLogin());
-//        bundle.putSerializable("repo", repo.getName());
-//        bundle.putString("fragment", CollaboratorsFragment.TAG);
-//        FoActivity.launch(this, bundle);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", repo.getOwner().getLogin());
+        bundle.putSerializable("repo", repo.getName());
+        bundle.putString("fragment", CollaboratorsFragment.TAG);
+        FoActivity.launch(this, bundle);
     }
 
 

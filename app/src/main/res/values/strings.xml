@@ -3,6 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <string name="title_activity_main">Github-Knife</string>
     <string name="fail_load">Fail! Check the Network</string>
     <string name="fail_loadMore">Fail to load more! Check the Network</string>
@@ -41,7 +42,7 @@
 
     <string name="network_error">Please check your network</string>
     <string name="auth_error">Username or password is incorrect</string>
-
+    <string name="title_activity_file_tree">FileTreeActivity</string>
 
 
 </resources>

@@ -8,6 +8,6 @@ import java.util.List;
 public interface OnLoadItemListListener{
 
     public void onFinished(List items);
-    public void onError(boolean first);
+    public void onError(boolean first,String content);
 
 }

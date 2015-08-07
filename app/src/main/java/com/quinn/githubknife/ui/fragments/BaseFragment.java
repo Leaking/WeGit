@@ -152,13 +152,15 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     }
 
     @Override
-    public void failToLoadFirst() {
+    public void failToLoadFirst(String errorMsg) {
         L.i("request items first fail");
+        failTxt.setText(errorMsg);
         UIUtils.crossfade(progress,failTxt);
     }
 
     @Override
     public void reLoad(){
+        failTxt.setText(R.string.network_error);
         UIUtils.crossfade(failTxt,progress);
         loadPage();
     }

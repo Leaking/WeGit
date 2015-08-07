@@ -89,6 +89,7 @@ public interface Github {
 	//GET /repos/:owner/:repo/commits
 	//public boolean commits(String owner,String repo) throws GithubError;
 
-
+	//GET /repos/:owner/:repo/git/trees/:sha
+	public Tree getTree(String owner,String repo,String sha) throws GithubError;
 
 }

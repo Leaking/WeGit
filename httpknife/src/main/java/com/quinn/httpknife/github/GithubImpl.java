@@ -475,11 +475,34 @@ public class GithubImpl implements Github {
         else {
             testResult(response);
         }
+        if(response.statusCode() == 403){
+            JSONObject body = response.json();
+            try {
+                throw new GithubError(body.getString("message"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         Gson gson = new Gson();
         ArrayList<User> userList = gson.fromJson(response.body(),
                 new TypeToken<List<User>>() {
                 }.getType());
         return userList;
+    }
+
+    @Override
+    public Tree getTree(String owner, String repo, String ref) throws GithubError {
+         //GET /repos/:owner/:repo/git/trees/:sha
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/git/trees/" + ref;
+        Response response = http.get(url).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        Tree tree = gson.fromJson(response.body(),Tree.class);
+        return tree;
     }
 
 

@@ -187,6 +187,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_refresh:
+                presenter.user(user.getLogin());
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -252,8 +255,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @OnClick(R.id.relation)
     void changeRelation() {
-        L.i(TAG, "try to  changeRelation");
-
+        L.i(TAG, "try to changeRelation");
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
         switch (followState) {

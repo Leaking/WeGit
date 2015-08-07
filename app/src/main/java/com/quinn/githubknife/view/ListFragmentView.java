@@ -13,7 +13,7 @@ public interface ListFragmentView extends ProgressView{
 
     public void failToLoadMore();
 
-    public void failToLoadFirst();
+    public void failToLoadFirst(String errorMsg);
 
     public void reLoad();
 }
