@@ -17,9 +17,9 @@ public class TreePresenterImpl extends PresenterAdapter{
     }
 
     @Override
-    public void onPageLoad(String user,String repo,int page){
-        super.onPageLoad(user,repo,page);
-        interactor.loadForkers(user, repo, page);
+    public void onTreeLoad(String user,String repo,String sha){
+        super.onTreeLoad(user, repo, sha);
+        interactor.loadTree(user, repo, sha);
     }
 
 }

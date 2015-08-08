@@ -11,6 +11,7 @@ import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.BitmapUtils;
+import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.TreeItem;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class TreeAdapter extends
         RecyclerView.Adapter<TreeAdapter.ViewHolder>{
 
+    private static final String TAG = TreeAdapter.class.getSimpleName();
     private List<TreeItem> dataItems;
     private RecycleItemClickListener itemClickListener;
 
@@ -42,7 +44,8 @@ public class TreeAdapter extends
     public void onBindViewHolder(ViewHolder holder, int position) {
         TreeItem treeItem = dataItems.get(position);
         holder.treeItemName.setText(treeItem.getPath());
-        if(treeItem.getMode().equals(TreeItem.MODE_BLOB)){
+        L.i(TAG, treeItem.getType());
+        if(treeItem.getType().equals(TreeItem.MODE_BLOB)){
             BitmapUtils.setIconFont(holder.treeItemImg.getContext(), holder.treeItemImg, OctIcon.FILE,R.color.theme_color);
         }else{
             BitmapUtils.setIconFont(holder.treeItemImg.getContext(), holder.treeItemImg, OctIcon.FOLDER,R.color.theme_color);

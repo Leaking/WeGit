@@ -17,7 +17,6 @@
 
         <ImageView
             android:id="@+id/treeItemImg"
-            android:src="@mipmap/ic_launcher"
             android:layout_width="40dip"
             android:layout_height="40dip"
             android:layout_marginRight="20dp"/>

@@ -10,4 +10,6 @@ public interface ListFragmentPresenter {
     public void onPageLoad(int page, String user);
 
     public void onPageLoad(String user, String repo, int page);
+
+    public void onTreeLoad(String owner, String repo, String sha);
 }

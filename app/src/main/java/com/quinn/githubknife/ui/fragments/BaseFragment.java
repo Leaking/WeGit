@@ -17,6 +17,7 @@ import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
 import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
+import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
@@ -54,6 +55,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     private LinearLayoutManager layoutManager;
     protected String user;
     protected String repo;
+    protected String sha = "master";
     protected String presenterType;
     protected ListFragmentPresenter presenter;
 
@@ -80,6 +82,9 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         layoutManager = new LinearLayoutManager(this.getActivity());
         loading = false;
         haveMore = true;
+        if(presenter instanceof TreePresenterImpl){
+            haveMore = false;
+        }
         currPage = 1;
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -94,7 +99,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
                 if(haveMore && !loading && (lastVisibleItem + 1) == totalItemCount){
-                    L.i("加载更多");
+                    L.i("try to load more");
                     loadMore();
                 }
             }
@@ -136,7 +141,12 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void setItems(List<?> items) {
         L.i("request items successfully");
-        currPage++;
+        if(presenter instanceof TreePresenterImpl){
+            return;
+        }else {
+            currPage++;
+        }
+
     }
 
     @Override
@@ -175,6 +185,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     public void loadPage(){
         if(presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
             presenter.onPageLoad(user,repo,currPage);
+        }if(presenter instanceof TreePresenterImpl){
+            presenter.onTreeLoad(user,repo,sha);
         }else{
             presenter.onPageLoad(currPage,user);
         }

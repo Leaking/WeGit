@@ -39,6 +39,11 @@ public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListLis
     }
 
     @Override
+    public void onTreeLoad(String owner, String repo, String sha) {
+        view.showProgress();
+    }
+
+    @Override
     public void onFinished(List items) {
         view.hideProgress();
         view.setItems(items);
