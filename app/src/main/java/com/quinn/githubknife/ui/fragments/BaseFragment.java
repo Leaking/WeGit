@@ -124,9 +124,11 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void showProgress() {
         if(currPage == 1) {
-            progress.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
-            failTxt.setVisibility(View.GONE);
+            L.i(TAG,"show Progress");
+            UIUtils.crossfade(swipeRefreshLayout,progress);
+//            progress.setVisibility(View.VISIBLE);
+//            swipeRefreshLayout.setVisibility(View.GONE);
+            //failTxt.setVisibility(View.GONE);
         }
     }
 

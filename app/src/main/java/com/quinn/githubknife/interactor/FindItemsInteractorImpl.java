@@ -452,7 +452,6 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     handler.sendMessage(msg);
                     return;
                 }
-
                 msg.what = LOAD_SUCCESS;
                 msg.obj = treeItems;
                 handler.sendMessage(msg);
