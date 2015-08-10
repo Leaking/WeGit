@@ -16,7 +16,7 @@ public class UIUtils {
         if (nextView != null) {
             nextView.setAlpha(0f);
             nextView.setVisibility(View.VISIBLE);
-            nextView.animate().alpha(1f).setDuration(400).setListener(new AnimatorListenerAdapter() {
+            nextView.animate().alpha(1f).setDuration(200).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     nextView.setVisibility(View.VISIBLE);
@@ -29,7 +29,7 @@ public class UIUtils {
         // participate in layout passes, etc.)
         if (currView != null) {
             currView.setVisibility(View.GONE);
-            currView.animate().alpha(0f).setDuration(400)
+            currView.animate().alpha(0f).setDuration(200)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {

@@ -6,6 +6,7 @@ import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +33,13 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
-    @Bind(R.id.toolbar)
+    @Nullable @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.username)
+    @Nullable @Bind(R.id.username)
     EditText username;
-    @Bind(R.id.password)
+    @Nullable @Bind(R.id.password)
     EditText password;
-    @Bind(R.id.submit)
+    @Nullable @Bind(R.id.submit)
     Button submit;
 
     private String accountName;

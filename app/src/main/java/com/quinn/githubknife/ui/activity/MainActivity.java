@@ -40,12 +40,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity implements MainAuthView,NavigationView.OnNavigationItemSelectedListener {
 
-    @Bind(R.id.toolbar)
+    @Bind(R.id.toolbar_main)
     Toolbar toolbar;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view)
     NavigationView navigationVIew;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
     @Bind(R.id.viewpager)
     ViewPager viewpager;
     @Bind(R.id.tabs)
@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
         txt_user = (TextView)navigationVIew.findViewById(R.id.headerText);
         imageLoader = ImageLoader.getInstance();
