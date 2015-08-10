@@ -46,6 +46,7 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
         return view;
     }
 
+
     @Override
     public void setItems(List<?> items) {
         super.setItems(items);

@@ -10,7 +10,7 @@ import com.quinn.githubknife.view.RepoView;
 /**
  * Created by Quinn on 8/1/15.
  */
-public class RepoPresenterImpl implements  RepoPresenter,OnLoadRepoListener{
+public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
 
     private Context context;
     private RepoView view;

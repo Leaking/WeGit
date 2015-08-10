@@ -30,7 +30,6 @@ public class UserEventFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         presenter = new UserEventPresenterImpl(this.getActivity(), this);
         dataItems = new ArrayList<Event>();
         adapter = new EventAdapter(dataItems);

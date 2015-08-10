@@ -129,8 +129,8 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
             case R.id.nav_home:
                 viewpager.setOffscreenPageLimit(3);
                 adapter.addFragment(ReceivedEventFragment.getInstance(loginUser), "Events");
-                adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
+                adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 break;
             case R.id.nav_friends:
                 viewpager.setOffscreenPageLimit(2);

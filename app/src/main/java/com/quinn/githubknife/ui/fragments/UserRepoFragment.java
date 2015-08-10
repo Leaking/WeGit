@@ -24,7 +24,6 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
     public final static String TAG = UserRepoFragment.class.getSimpleName();
     private RepoAdapter adapter;
 
-
     public static UserRepoFragment getInstance(String user){
         UserRepoFragment userRepoFragment = new UserRepoFragment();
         Bundle bundle = new Bundle();
@@ -36,8 +35,8 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new UserRepoPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Repository>();
+        presenter = new UserRepoPresenterImpl(this.getActivity(),this);
         adapter = new RepoAdapter(dataItems);
     }
 
@@ -49,7 +48,6 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
         adapter.setOnItemClickListener(this);
         return view;
     }
-
 
 
     @Override

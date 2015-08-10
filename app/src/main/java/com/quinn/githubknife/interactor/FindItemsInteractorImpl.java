@@ -216,13 +216,12 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
             public void run() {
                 String token = gitHubAccount.getAuthToken();
                 github.makeAuthRequest(token);
-                L.i("token == " + token);
                 List<Repository> repos = new ArrayList<Repository>();
                 Message msg = new Message();
                 try {
                     repos = github.repo(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadRepo");
+                    L.i(TAG,"网络问题 loadStarredRepo");
                     if(page == 1){
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
@@ -231,6 +230,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;

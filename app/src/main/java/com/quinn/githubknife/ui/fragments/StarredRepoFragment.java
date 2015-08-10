@@ -18,14 +18,13 @@ import java.util.List;
 /**
  * Created by Quinn on 7/15/15.
  */
-public class StarredRepoFragment extends BaseFragment  implements RecycleItemClickListener{
+public class StarredRepoFragment extends BaseFragment implements RecycleItemClickListener {
 
 
-public final static String TAG = StarredRepoFragment.class.getSimpleName();
-
+    public final static String TAG = StarredRepoFragment.class.getSimpleName();
     private RepoAdapter adapter;
 
-    public static StarredRepoFragment getInstance(String user){
+    public static StarredRepoFragment getInstance(String user) {
         StarredRepoFragment starredRepoFragment = new StarredRepoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
@@ -37,7 +36,7 @@ public final static String TAG = StarredRepoFragment.class.getSimpleName();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataItems = new ArrayList<Repository>();
-        presenter = new StarredRepoPresenterImpl(this.getActivity(),this);
+        presenter = new StarredRepoPresenterImpl(this.getActivity(), this);
         adapter = new RepoAdapter(dataItems);
     }
 
@@ -45,22 +44,20 @@ public final static String TAG = StarredRepoFragment.class.getSimpleName();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new RepoAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         return view;
     }
 
 
-
     @Override
     public void setItems(List<?> items) {
         super.setItems(items);
-        for(Object repo:items){
-            dataItems.add((Repository)repo);
+        for (Object repo : items) {
+            dataItems.add((Repository) repo);
         }
         loading = false;
-        if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
+        if (items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
             haveMore = false;
         adapter.notifyDataSetChanged();
     }
@@ -77,7 +74,6 @@ public final static String TAG = StarredRepoFragment.class.getSimpleName();
     public void onItemClick(View view, int position) {
         intoItem(position);
     }
-
 
 
 }

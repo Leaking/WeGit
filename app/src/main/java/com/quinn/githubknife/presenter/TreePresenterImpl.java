@@ -9,8 +9,6 @@ import com.quinn.githubknife.view.ListFragmentView;
  */
 public class TreePresenterImpl extends PresenterAdapter{
 
-    public static final String TAG = ForkersPresenterImpl.class.getSimpleName();
-
 
     public TreePresenterImpl(Context context, ListFragmentView view){
         super(context, view);
