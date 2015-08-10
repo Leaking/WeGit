@@ -70,27 +70,5 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
         Bundle bundle = new Bundle();
         bundle.putSerializable("user",user);
         UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(),bundle);
-
-//        AlertDialog.Builder builder =
-//                new AlertDialog.Builder(this.getActivity());
-//
-//        builder.setItems(new String[]{"User", "Repo"}, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                switch (which){
-//                    case 0:
-//                        Event event = (Event)dataItems.get(position);
-//                        User user = (User)event.getActor();
-//                        Bundle bundle = new Bundle();
-//                        bundle.putSerializable("user",user);
-//                        UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(),bundle);
-//                        break;
-//                    case 1:
-//                        break;
-//                }
-//            }
-//        });
-//
-//        builder.show();
     }
 }

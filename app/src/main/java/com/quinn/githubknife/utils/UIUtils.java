@@ -9,14 +9,19 @@ import android.view.View;
  */
 public class UIUtils {
 
-    public static void crossfade(final View currView, View nextView) {
+    public static void crossfade(final View currView, final View nextView) {
 
         // Set the content view to 0% opacity but visible, so that it is visible
         // (but fully transparent) during the animation.
         if (nextView != null) {
             nextView.setAlpha(0f);
             nextView.setVisibility(View.VISIBLE);
-            nextView.animate().alpha(1f).setDuration(400).setListener(null);
+            nextView.animate().alpha(1f).setDuration(400).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    nextView.setVisibility(View.VISIBLE);
+                }
+            });
         }
 
         // Animate the loading view to 0% opacity. After the animation ends,

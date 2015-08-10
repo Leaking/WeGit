@@ -22,13 +22,13 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
-import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
+import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
-import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;

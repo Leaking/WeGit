@@ -8,12 +8,9 @@ import android.view.ViewGroup;
 import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
 import com.quinn.githubknife.ui.activity.RepoActivity;
 import com.quinn.githubknife.ui.activity.RepoAdapter;
-import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
-import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;
-import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,6 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
 
 
     public final static String TAG = UserRepoFragment.class.getSimpleName();
-
     private RepoAdapter adapter;
 
 
@@ -49,7 +45,6 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        adapter = new RepoAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         return view;
@@ -57,11 +52,9 @@ public class UserRepoFragment extends BaseFragment implements RecycleItemClickLi
 
 
 
-
     @Override
     public void setItems(List<?> items) {
         super.setItems(items);
-
         for(Object repo:items){
             dataItems.add((Repository) repo);
         }

@@ -507,6 +507,7 @@ public class GithubImpl implements Github {
 
 
     public void testResult(Response response) {
+
         System.out.println(response.statusCode());
         System.out.println(response.headers());
         System.out.println(response.body());

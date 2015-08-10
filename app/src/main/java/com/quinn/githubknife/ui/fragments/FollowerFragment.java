@@ -9,7 +9,6 @@ import com.quinn.githubknife.presenter.FollowerPresenterImpl;
 import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.activity.UsersAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
-import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
@@ -32,12 +31,9 @@ public class FollowerFragment extends BaseFragment implements RecycleItemClickLi
         return followerFragment;
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i("onCreate FollowerFragment");
         dataItems = new ArrayList<User>();
         presenter = new FollowerPresenterImpl(this.getActivity(),this);
         adapter = new UsersAdapter(dataItems);
@@ -49,7 +45,6 @@ public class FollowerFragment extends BaseFragment implements RecycleItemClickLi
         View view = super.onCreateView(inflater,container,savedInstanceState);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
-        L.i("onCreateView FollowerFragment");
         return view;
     }
 
@@ -58,7 +53,6 @@ public class FollowerFragment extends BaseFragment implements RecycleItemClickLi
     @Override
     public void setItems(List items) {
         super.setItems(items);
-
         for(Object user:items){
             dataItems.add((User)user);
         }

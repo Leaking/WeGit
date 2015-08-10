@@ -70,8 +70,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view  =  inflater.inflate(
-                R.layout.fragment_friends, container, false);
+        View view = inflater.inflate(
+                R.layout.fragment_list, container, false);
         ButterKnife.bind(this, view);
         Bundle bundle = getArguments();
         if(bundle != null) {
@@ -104,8 +104,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
                 }
             }
         });
-        //setupRecyclerView(rv);
-
         return view;
     }
 
@@ -164,7 +162,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     @Override
     public void failToLoadFirst(String errorMsg) {
         L.i("request items first fail");
-        failTxt.setText(errorMsg);
+        failTxt.setText(errorMsg + "(ERROR)");
         UIUtils.crossfade(progress,failTxt);
     }
 
@@ -177,6 +175,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
     @OnClick(R.id.failTxt)
     void failTxt(){
+        L.i(TAG,"click the fail text");
         reLoad();
     }
 
