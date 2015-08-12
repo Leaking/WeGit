@@ -18,7 +18,6 @@ import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.ForkersFragment;
 import com.quinn.githubknife.ui.fragments.StargazersFragment;
-import com.quinn.githubknife.ui.fragments.TreeFragment;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.RepoView;
@@ -247,8 +246,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
-        bundle.putString("fragment", TreeFragment.TAG);
-        FoActivity.launch(this, bundle);
+        FileTreeActivity.launch(this, bundle);
     }
 
 

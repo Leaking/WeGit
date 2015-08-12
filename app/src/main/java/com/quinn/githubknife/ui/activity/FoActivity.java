@@ -56,7 +56,7 @@ public class FoActivity extends BaseActivity {
             contentType = bundle.getString("fragment");
         }else if(savedInstanceState != null){
             user = (String)savedInstanceState.getString("user");
-            repo = (String)bundle.getString("repo");
+            repo = (String)savedInstanceState.getString("repo");
             contentType = savedInstanceState.getString("fragment");
         }
         L.i(TAG, bundle.toString());

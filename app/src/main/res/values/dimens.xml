@@ -7,4 +7,14 @@
     <dimen name="card_margin">10dip</dimen>
 
     <dimen name="item_content_textsize">16sp</dimen>
+
+
+    <!-- http://developer.android.com/design/style/metrics-grids.html -->
+    <dimen name="gapMicro">2dp</dimen>
+    <dimen name="gapSmall">4dp</dimen>
+    <dimen name="gapMedium">8dp</dimen>
+    <dimen name="gapLarge">16dp</dimen>
+    <dimen name="gapXLarge">32dp</dimen>
+    <dimen name="gapXXLarge">64dp</dimen>
+    <dimen name="gapXXXLarge">128dp</dimen>
 </resources>

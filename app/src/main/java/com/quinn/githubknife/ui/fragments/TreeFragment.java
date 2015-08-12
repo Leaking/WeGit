@@ -1,5 +1,6 @@
 package com.quinn.githubknife.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,21 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
 
     private TreeAdapter adapter;
 
+    private PathCallback callback;
+
+    public interface PathCallback{
+        public void onPathChoosen(String path);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof PathCallback){
+            callback = (PathCallback) activity;
+        }else{
+            throw new IllegalStateException("FileTreeActivity have not implement PathCallback");
+        }
+    }
 
     public static TreeFragment getInstance(String owner,String repo) {
         TreeFragment treeFragment = new TreeFragment();
@@ -67,6 +83,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
     @Override
     public void intoItem(int position) {
         super.intoItem(position);
+        callback.onPathChoosen(((TreeItem) dataItems.get(position)).getPath());
         String sha = ((TreeItem)dataItems.get(position)).getSha();
         dataItems.clear();
         adapter.notifyDataSetChanged();

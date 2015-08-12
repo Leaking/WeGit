@@ -289,7 +289,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 break;
         }
 
-
     }
 
     public void viewDetail(String contentType) {
