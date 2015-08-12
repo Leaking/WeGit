@@ -38,14 +38,12 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/title_activity_main"
-            >
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.activity.UserInfoActivity"
@@ -62,10 +60,10 @@
         <activity
             android:name=".ui.activity.FileTreeActivity"
             android:label="@string/title_activity_file_tree" >
-
-
-
-
+        </activity>
+        <activity
+            android:name=".ui.activity.CodeActivity"
+            android:label="@string/title_activity_code" >
         </activity>
     </application>
 

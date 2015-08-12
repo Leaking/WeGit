@@ -85,7 +85,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         super.intoItem(position);
         TreeItem item = (TreeItem)dataItems.get(position);
         callback.onPathChoosen(item.getPath(),item.getSha());
-        String sha = item.getSha();
+        sha = item.getSha();
         dataItems.clear();
         adapter.notifyDataSetChanged();
         presenter.onTreeLoad(user,repo,sha);

@@ -43,6 +43,7 @@
     <string name="network_error">Please check your network</string>
     <string name="auth_error">Username or password is incorrect</string>
     <string name="title_activity_file_tree">FileTreeActivity</string>
+    <string name="title_activity_code">CodeActivity</string>
 
 
 </resources>
