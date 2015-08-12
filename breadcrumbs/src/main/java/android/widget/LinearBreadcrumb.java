@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 
 import com.alorma.library.R;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,12 +25,13 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
 
     public static class Crumb implements Serializable {
 
-        public Crumb(String path) {
+        public Crumb(String path,String attachMsg) {
             mPath = path;
+            mAttachMsg = attachMsg;
         }
 
         private final String mPath;
-
+        private final String mAttachMsg;
         private int mScrollY;
         private int mScrollOffset;
         public int getScrollY() {
@@ -59,6 +58,10 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
             return (mPath != null && mPath.equals("/")) ? "ROOT" : mPath;
         }
 
+        public String getmAttachMsg() {
+            return mAttachMsg;
+        }
+
         @Override
         public boolean equals(Object o) {
             return (o instanceof Crumb) && ((Crumb) o).getPath().equals(getPath());
@@ -66,9 +69,13 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
 
         @Override
         public String toString() {
-            return getPath();
+            return "Crumb{" +
+                    "mAttachMsg='" + mAttachMsg + '\'' +
+                    ", mPath='" + mPath + '\'' +
+                    ", mScrollY=" + mScrollY +
+                    ", mScrollOffset=" + mScrollOffset +
+                    '}';
         }
-
     }
     public interface SelectionCallback {
 
@@ -113,13 +120,13 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
         }
     }
 
-    public void addPath(@NonNull String path, @NonNull String separator) {
+    public void addPath(@NonNull String path,@NonNull String sha, @NonNull String separator) {
         clearCrumbs();
         initRootCrumb();
         String[] paths = path.split(separator);
         Crumb lastCrumb = null;
         for (String splitPath : paths) {
-            lastCrumb = new Crumb(splitPath);
+            lastCrumb = new Crumb(splitPath,sha);
             addCrumb(lastCrumb, false);
         }
 
@@ -205,7 +212,7 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
         }
     }
 
-    private void removeCrumbAt(int index) {
+    public void removeCrumbAt(int index) {
         mCrumbs.remove(index);
         mChildFrame.removeViewAt(index);
     }
@@ -299,6 +306,6 @@ public class LinearBreadcrumb extends HorizontalScrollView implements View.OnCli
 
     public void initRootCrumb() {
         clearCrumbs();
-        addCrumb(new Crumb("/"), true);
+        addCrumb(new Crumb("/","master"), true);
     }
 }

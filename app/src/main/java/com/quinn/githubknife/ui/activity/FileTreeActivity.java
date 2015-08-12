@@ -3,7 +3,6 @@ package com.quinn.githubknife.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -31,10 +30,11 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
 
     private String user;
     private String repo;
+    private TreeFragment fragment;
 
 
-    public static void launch(Context context, Bundle bundle){
-        Intent intent = new Intent(context,FileTreeActivity.class);
+    public static void launch(Context context, Bundle bundle) {
+        Intent intent = new Intent(context, FileTreeActivity.class);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -45,12 +45,12 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
         setContentView(R.layout.activity_filetree);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            user = (String)bundle.getString("user");
-            repo = (String)bundle.getString("repo");
-        }else if(savedInstanceState != null){
-            user = (String)savedInstanceState.getString("user");
-            repo = (String)savedInstanceState.getString("repo");
+        if (bundle != null) {
+            user = (String) bundle.getString("user");
+            repo = (String) bundle.getString("repo");
+        } else if (savedInstanceState != null) {
+            user = (String) savedInstanceState.getString("user");
+            repo = (String) savedInstanceState.getString("repo");
         }
         breadCrumbs.initRootCrumb();
         breadCrumbs.setCallback(this);
@@ -60,8 +60,8 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = TreeFragment.getInstance(user,repo);
-        fragmentTransaction.add(R.id.container,fragment);
+        fragment = TreeFragment.getInstance(user, repo);
+        fragmentTransaction.add(R.id.container, fragment);
         fragmentTransaction.commit();
 
 
@@ -76,7 +76,7 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -86,9 +86,8 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
 
 
     @Override
-    public void onPathChoosen(String path) {
-        breadCrumbs.addCrumb(new LinearBreadcrumb.Crumb(path),true);
-
+    public void onPathChoosen(String path, String sha) {
+        breadCrumbs.addCrumb(new LinearBreadcrumb.Crumb(path, sha), true);
     }
 
     @Override
@@ -97,5 +96,10 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
         L.i(TAG, "absolutePath = " + absolutePath);
         L.i(TAG, "count = " + count);
         L.i(TAG, "index = " + index);
+        for (int i = index + 1; i < count; i++) {
+            breadCrumbs.removeCrumbAt(breadCrumbs.size() - 1);
+        }
+        breadCrumbs.setActive(crumb);
+        fragment.loadCertainTree(crumb.getmAttachMsg());
     }
 }

@@ -27,7 +27,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
     private PathCallback callback;
 
     public interface PathCallback{
-        public void onPathChoosen(String path);
+        public void onPathChoosen(String path,String sha);
     }
 
     @Override
@@ -83,8 +83,9 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
     @Override
     public void intoItem(int position) {
         super.intoItem(position);
-        callback.onPathChoosen(((TreeItem) dataItems.get(position)).getPath());
-        String sha = ((TreeItem)dataItems.get(position)).getSha();
+        TreeItem item = (TreeItem)dataItems.get(position);
+        callback.onPathChoosen(item.getPath(),item.getSha());
+        String sha = item.getSha();
         dataItems.clear();
         adapter.notifyDataSetChanged();
         presenter.onTreeLoad(user,repo,sha);
@@ -97,6 +98,13 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
             intoItem(position);
         }
     }
+
+    public void loadCertainTree(String certainSha){
+        dataItems.clear();
+        adapter.notifyDataSetChanged();
+        presenter.onTreeLoad(user,repo,certainSha);
+    }
+
 
 
 }
