@@ -92,4 +92,11 @@ public interface Github {
 	//GET /repos/:owner/:repo/git/trees/:sha
 	public Tree getTree(String owner,String repo,String sha) throws GithubError;
 
+	//GET /search/users
+	public List<User> searchUser(List<String> keywords) throws GithubError ;
+
+	//GET /search/repositories
+	public List<Repository> searchRepo(List<String> keywords)  throws GithubError ;
+
+
 }

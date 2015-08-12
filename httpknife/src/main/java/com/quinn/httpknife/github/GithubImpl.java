@@ -505,6 +505,35 @@ public class GithubImpl implements Github {
         return tree;
     }
 
+    @Override
+    public List<User> searchUser(List<String> keywords)  throws GithubError {
+        //GET /search/users
+        StringBuilder keywordsParams = new StringBuilder();
+        for(int i = 0; i < keywords.size();i++){
+            if(i != keywords.size()-1)
+                keywordsParams.append(keywords.get(i) + "+");
+            else
+                keywordsParams.append(keywords.get(i));
+        }
+        String url = API_HOST + "search/users?q=" + keywordsParams.toString();
+        Response response = http.get(url).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        ArrayList<User> userList = gson.fromJson(response.body(),
+                new TypeToken<List<User>>() {
+                }.getType());
+        return null;
+    }
+
+    @Override
+    public List<Repository> searchRepo(List<String> keywords) {
+        return null;
+    }
+
 
     public void testResult(Response response) {
 

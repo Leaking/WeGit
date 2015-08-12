@@ -258,6 +258,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         L.i(TAG, "try to changeRelation");
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
+        
         switch (followState) {
             case UNFOLLOWED:
                 L.i(TAG, "try to follow " + user.getLogin());
