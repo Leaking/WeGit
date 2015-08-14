@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.TreePresenterImpl;
+import com.quinn.githubknife.ui.activity.CodeActivity;
 import com.quinn.githubknife.ui.activity.TreeAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
+import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.TreeItem;
 
@@ -26,8 +28,11 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
 
     private PathCallback callback;
 
+
+
     public interface PathCallback{
         public void onPathChoosen(String path,String sha);
+        public String getAbosolutePath(int position);
     }
 
     @Override
@@ -55,6 +60,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         super.onCreate(savedInstanceState);
         dataItems = new ArrayList<TreeItem>();
         presenter = new TreePresenterImpl(this.getActivity(), this);
+
     }
 
 
@@ -96,6 +102,13 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         TreeItem treeItem = ((TreeItem)dataItems.get(position));
         if(treeItem.getType().equals(TreeItem.MODE_TREE)){
             intoItem(position);
+        }else if(treeItem.getType().equals(TreeItem.MODE_BLOB)){
+            Bundle bundle = new Bundle();
+            bundle.putString("owner",user);
+            bundle.putString("repo",repo);
+            bundle.putString("path",callback.getAbosolutePath(position));
+            L.i(TAG,"crumb path = " + callback.getAbosolutePath(position));
+            CodeActivity.launch(this.getActivity(), bundle);
         }
     }
 

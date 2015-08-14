@@ -98,5 +98,9 @@ public interface Github {
 	//GET /search/repositories
 	public List<Repository> searchRepo(List<String> keywords)  throws GithubError ;
 
+	///repos/:owner/:repo/contents/:path
+	public String getRawContent(String owner, String repo, String path) throws GithubError;
+
+
 
 }

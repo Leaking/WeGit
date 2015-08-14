@@ -25,7 +25,8 @@ public class GithubImpl implements Github {
     public final static String URL_SPLITTER = "/";
     public final static String API_HOST = HTTPS + HOST + URL_SPLITTER;
 
-    public final static String ACCEPT = "application/vnd.github.beta+json";
+    public final static String ACCEPT_JSON = "application/vnd.github.beta+json";
+    public final static String ACCEPT_RAW = "application/vnd.github.VERSION.raw";
     public final static String AGENT_USER = "GithubKnife/1.0";
     public final static String TOKEN_NOTE = "GithubKnife APP Token";
 
@@ -132,7 +133,7 @@ public class GithubImpl implements Github {
     @Override
     public Map<String, String> configreHttpHeader() {
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Accept", ACCEPT);
+        headers.put("Accept", ACCEPT_JSON);
         headers.put("User-Agent", AGENT_USER);
         if (token != null) {
             headers.put(HttpKnife.RequestHeader.AUTHORIZATION,
@@ -532,6 +533,19 @@ public class GithubImpl implements Github {
     @Override
     public List<Repository> searchRepo(List<String> keywords) {
         return null;
+    }
+
+    @Override
+    public String getRawContent(String owner, String repo, String path) throws GithubError {
+        ///repos/:owner/:repo/contents/:path
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/contents/" + path;
+        Response response = http.get(url).headers(configreHttpHeader()).header("Accept", ACCEPT_RAW).response();
+        if (response.isSuccess() == false)
+            throw new GithubError("网络链接有问题");
+        else {
+            testResult(response);
+        }
+        return response.body();
     }
 
 

@@ -91,6 +91,11 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
     }
 
     @Override
+    public String getAbosolutePath(int position) {
+        return breadCrumbs.getAbsolutePath(breadCrumbs.getCrumb(position),"/");
+    }
+
+    @Override
     public void onCrumbSelection(LinearBreadcrumb.Crumb crumb, String absolutePath, int count, int index) {
         L.i(TAG, "crumb = " + crumb);
         L.i(TAG, "absolutePath = " + absolutePath);

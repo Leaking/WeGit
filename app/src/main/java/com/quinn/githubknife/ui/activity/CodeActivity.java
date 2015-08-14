@@ -1,18 +1,20 @@
 package com.quinn.githubknife.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.ui.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CodeActivity extends AppCompatActivity {
+public class CodeActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -20,6 +22,11 @@ public class CodeActivity extends AppCompatActivity {
     WebView webview;
 
 
+    public static void launch(Context context, Bundle bundle){
+        Intent intent = new Intent(context, CodeActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

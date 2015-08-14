@@ -59,6 +59,8 @@ public class HttpKnife {
 	 * 'application/json' content type header value
 	 */
 	private static final String CONTENT_TYPE_JSON = "application/json";
+	private static final String CONTENT_TYPE_RAW = "application/vnd.github.VERSION.raw";
+
 
 	private static final String BOUNDARY = "00content0boundary00";
 
@@ -69,6 +71,7 @@ public class HttpKnife {
 	private static final String MUTIPART_END_LINE = "--" + BOUNDARY + "--"
 			+ CRLF;
 	private static final String GZIP = "gzip";
+
 
 	public interface RequestHeader {
 		public static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
