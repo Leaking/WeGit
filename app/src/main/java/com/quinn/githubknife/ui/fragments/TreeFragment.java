@@ -29,23 +29,23 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
     private PathCallback callback;
 
 
+    public interface PathCallback {
+        public void onPathChoosen(String path, String sha);
 
-    public interface PathCallback{
-        public void onPathChoosen(String path,String sha);
         public String getAbosolutePath(int position);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof PathCallback){
+        if (activity instanceof PathCallback) {
             callback = (PathCallback) activity;
-        }else{
+        } else {
             throw new IllegalStateException("FileTreeActivity have not implement PathCallback");
         }
     }
 
-    public static TreeFragment getInstance(String owner,String repo) {
+    public static TreeFragment getInstance(String owner, String repo) {
         TreeFragment treeFragment = new TreeFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", owner);
@@ -89,36 +89,40 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
     @Override
     public void intoItem(int position) {
         super.intoItem(position);
-        TreeItem item = (TreeItem)dataItems.get(position);
-        callback.onPathChoosen(item.getPath(),item.getSha());
+        TreeItem item = (TreeItem) dataItems.get(position);
+        callback.onPathChoosen(item.getPath(), item.getSha());
         sha = item.getSha();
         dataItems.clear();
         adapter.notifyDataSetChanged();
-        presenter.onTreeLoad(user,repo,sha);
+        presenter.onTreeLoad(user, repo, sha);
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        TreeItem treeItem = ((TreeItem)dataItems.get(position));
-        if(treeItem.getType().equals(TreeItem.MODE_TREE)){
+        TreeItem treeItem = ((TreeItem) dataItems.get(position));
+        if (treeItem.getType().equals(TreeItem.MODE_TREE)) {
             intoItem(position);
-        }else if(treeItem.getType().equals(TreeItem.MODE_BLOB)){
+        } else if (treeItem.getType().equals(TreeItem.MODE_BLOB)) {
             Bundle bundle = new Bundle();
-            bundle.putString("owner",user);
-            bundle.putString("repo",repo);
-            String path = callback.getAbosolutePath(position)+"/"+((TreeItem) dataItems.get(position)).getPath();
-            bundle.putString("path",path);
-            L.i(TAG,"crumb path = " + path);
+            bundle.putString("owner", user);
+            bundle.putString("repo", repo);
+            String absPath = callback.getAbosolutePath(position);
+            String path;
+            if (absPath != null && absPath.isEmpty() == false)
+                path = callback.getAbosolutePath(position) + "/" + ((TreeItem) dataItems.get(position)).getPath();
+            else
+                path = ((TreeItem) dataItems.get(position)).getPath();
+            bundle.putString("path", path);
+            L.i(TAG, "crumb path = " + path);
             CodeActivity.launch(this.getActivity(), bundle);
         }
     }
 
-    public void loadCertainTree(String certainSha){
+    public void loadCertainTree(String certainSha) {
         dataItems.clear();
         adapter.notifyDataSetChanged();
-        presenter.onTreeLoad(user,repo,certainSha);
+        presenter.onTreeLoad(user, repo, certainSha);
     }
-
 
 
 }
