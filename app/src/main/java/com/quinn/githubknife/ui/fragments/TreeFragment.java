@@ -106,8 +106,9 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
             Bundle bundle = new Bundle();
             bundle.putString("owner",user);
             bundle.putString("repo",repo);
-            bundle.putString("path",callback.getAbosolutePath(position));
-            L.i(TAG,"crumb path = " + callback.getAbosolutePath(position));
+            String path = callback.getAbosolutePath(position)+"/"+((TreeItem) dataItems.get(position)).getPath();
+            bundle.putString("path",path);
+            L.i(TAG,"crumb path = " + path);
             CodeActivity.launch(this.getActivity(), bundle);
         }
     }
