@@ -92,7 +92,7 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
 
     @Override
     public String getAbosolutePath(int position) {
-        return breadCrumbs.getAbsolutePath(breadCrumbs.getCrumb(position),"/");
+        return breadCrumbs.getAbsolutePath(breadCrumbs.getCrumb(breadCrumbs.size() - 1),"/");
     }
 
     @Override
