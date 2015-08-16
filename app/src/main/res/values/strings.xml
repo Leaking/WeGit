@@ -7,6 +7,12 @@
     <string name="title_activity_main">WeGit</string>
     <string name="fail_load">Fail! Check the Network</string>
     <string name="fail_loadMore">Fail to load more! Check the Network</string>
+    <string name="developing">This module is under development!</string>
+
+
+
+
+    <!-- -->
     <string name="icon_star" translatable="false">\uf02a</string>
     <string name="icon_email" translatable="false">\uf03b</string>
     <string name="icon_locate" translatable="false">\uf060</string>
@@ -44,6 +50,7 @@
     <string name="auth_error">Username or password is incorrect</string>
     <string name="title_activity_file_tree">FileTreeActivity</string>
     <string name="title_activity_code">CodeActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.quinn.githubknife.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,7 +29,9 @@ import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
+import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
@@ -38,8 +42,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements MainAuthView,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainAuthView,NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+
+    private final static String TAG = MainActivity.class.getSimpleName();
     @Bind(R.id.toolbar_main)
     Toolbar toolbar;
     @Bind(R.id.nav_view)
@@ -51,8 +57,10 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     @Bind(R.id.tabs)
     TabLayout tab;
 
+    private View headerView;
     private TextView txt_user;
     private CircleImageView img_avatar;
+    private boolean doneAuth = false;
 
     private Adapter adapter;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -61,6 +69,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     private DisplayImageOptions option;
     private AuthPresenter presenter;
     private String loginUser;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +79,9 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
         img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
         txt_user = (TextView)navigationVIew.findViewById(R.id.headerText);
+        headerView = (View)navigationVIew.findViewById(R.id.nav_header);
+
+
         imageLoader = ImageLoader.getInstance();
         option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
                 .considerExifParams(true).build();
@@ -87,6 +99,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         viewpager.setAdapter(adapter);
         presenter = new AuthPresenterImpl(this,this);
         presenter.auth();
+        headerView.setOnClickListener(this);
 
     }
 
@@ -95,7 +108,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+       // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -104,12 +117,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -118,8 +126,11 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         menuItem.setChecked(true);
-        mDrawerLayout.closeDrawers();
-        setUpTab(menuItem.getItemId());
+        if(doneAuth) {
+            L.i(TAG, "menuItem id = " + menuItem.getItemId() + " order = " + menuItem.getOrder());
+            mDrawerLayout.closeDrawers();
+            setUpTab(menuItem.getItemId());
+        }
         return true;
     }
 
@@ -137,11 +148,15 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
                 adapter.addFragment(FollowerFragment.getInstance(loginUser),"Follower");
                 adapter.addFragment(FollowingFragment.getInstance(loginUser),"Following");
                 break;
-            case R.id.nav_gist:
-                break;
+            case R.id.nav_search:
+                ToastUtils.showMsg(this, R.string.developing);
+                return;
             case R.id.nav_setting:
-                break;
+                ToastUtils.showMsg(this, R.string.developing);
+                return;
             case R.id.nav_about:
+                Intent intent = new Intent(this,AboutActivity.class);
+                this.startActivity(intent);
                 break;
         }
         adapter.notifyDataSetChanged();
@@ -153,6 +168,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
     @Override
     public void doneAuth(User user) {
+        this.user = user;
         String avatar = "";
         if(user != null && user.getAvatar_url() != null && !user.getAvatar_url().isEmpty())
             avatar = user.getAvatar_url();
@@ -166,9 +182,18 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         imageLoader.displayImage(avatar,img_avatar,option,animateFirstListener);
         tab.setupWithViewPager(viewpager);
         setUpTab(R.id.nav_home);
+        doneAuth = true;
     }
 
 
+    @Override
+    public void onClick(View v) {
+        if(doneAuth){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", user);
+            UserInfoActivity.launch(this, bundle);
+        }
+    }
 
 
     static class Adapter extends FragmentStatePagerAdapter {

@@ -32,6 +32,9 @@
             
             <android.support.v7.widget.CardView
                 android:id="@+id/descriptionWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -61,6 +64,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/starWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -93,6 +99,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/forkWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -125,6 +134,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/commitWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -156,6 +168,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/codeWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -188,6 +203,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/contributeWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -218,6 +236,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/issueWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -247,6 +268,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/pullRequestWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -277,6 +301,9 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/branchWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">
@@ -309,6 +336,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/tagWrap"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_margin">

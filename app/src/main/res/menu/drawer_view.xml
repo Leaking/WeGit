@@ -26,7 +26,7 @@
             android:icon="@mipmap/friends"
             android:title="Friends" />
         <item
-            android:id="@+id/nav_gist"
+            android:id="@+id/nav_search"
             android:icon="@mipmap/search"
             android:title="Search" />
     </group>
@@ -36,11 +36,11 @@
             <item
                 android:id="@+id/nav_setting"
                 android:icon="@mipmap/ic_headset"
-                android:title="Sub item 1" />
+                android:title="Setting" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@mipmap/ic_headset"
-                android:title="Sub item 2" />
+                android:title="About" />
         </menu>
     </item>
 

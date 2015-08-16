@@ -249,6 +249,29 @@ public class RepoActivity extends BaseActivity implements RepoView{
         FileTreeActivity.launch(this, bundle);
     }
 
+    @OnClick(R.id.commitWrap)
+    void commit(){
+        ToastUtils.showMsg(this,R.string.developing);
+    }
+    @OnClick(R.id.issueWrap)
+    void issue(){
+        ToastUtils.showMsg(this,R.string.developing);
+    }
+    @OnClick(R.id.pullRequestWrap)
+    void pullRequest(){
+        ToastUtils.showMsg(this,R.string.developing);
+    }
+    @OnClick(R.id.branchWrap)
+    void branch(){
+        ToastUtils.showMsg(this,R.string.developing);
+    }
+    @OnClick(R.id.tagWrap)
+    void tag(){
+        ToastUtils.showMsg(this,R.string.developing);
+    }
+
+
+
 
     @Override
     public void onError(String msg) {
