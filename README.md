@@ -1,6 +1,6 @@
 # A Github Android APP
 
-<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/GitLogo.jpg" width="340" />
+<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/GitLogo.jpg" width="240" />
 
 
 # How does it look like ?
