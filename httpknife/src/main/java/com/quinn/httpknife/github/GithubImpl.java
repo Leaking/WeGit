@@ -362,7 +362,6 @@ public class GithubImpl implements Github {
         else {
             System.out.println("header = " + response.headers());
             System.out.println("header = " + response.statusCode());
-
         }
         if (response.statusCode() == 204) {
             return true;
