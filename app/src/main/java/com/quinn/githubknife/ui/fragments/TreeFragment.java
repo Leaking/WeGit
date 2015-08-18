@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.ui.activity.CodeActivity;
+import com.quinn.githubknife.ui.activity.ImageActivity;
 import com.quinn.githubknife.ui.adapter.TreeAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.FileUtils;
@@ -103,9 +104,17 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         TreeItem treeItem = ((TreeItem) dataItems.get(position));
         if (treeItem.getType().equals(TreeItem.MODE_TREE)) {
             intoItem(position);
+
         } else if (treeItem.getType().equals(TreeItem.MODE_BLOB)) {
             if(FileUtils.isImage(treeItem.getPath())){
-
+                String path = callback.getAbosolutePath(position) + "/" + treeItem.getPath();
+                L.i(TAG,"图片路径 ＝ " + path);
+                Bundle bundle = new Bundle();
+                bundle.putString("path",path);
+                bundle.putString("repo",repo);
+                bundle.putString("user",user);
+                bundle.putString("branch","master");
+                ImageActivity.launch(this.getActivity(),bundle);
             }else {
                 Bundle bundle = new Bundle();
                 bundle.putString("owner", user);
@@ -117,7 +126,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
                 else
                     path = ((TreeItem) dataItems.get(position)).getPath();
                 bundle.putString("path", path);
-                L.i(TAG, "crumb path = " + path);
+                L.i(TAG, "file path = " + path);
                 CodeActivity.launch(this.getActivity(), bundle);
             }
         }
