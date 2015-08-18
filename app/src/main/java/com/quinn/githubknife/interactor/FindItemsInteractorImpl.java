@@ -65,72 +65,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
         };
     }
 
-    @Override
-    public void loadMyFollowings(final int page) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                L.i("token == " + token);
-                List<User> users = new ArrayList<User>();
-                Message msg = new Message();
 
-                try {
-                    users = github.myFollwerings(token, page);
-                } catch (GithubError githubError) {
-                    githubError.printStackTrace();
-                    if(page == 1){
-                        msg.what = LOAD_FIRST_FAIL;
-                        msg.obj = githubError.getMessage();
-                        handler.sendMessage(msg);
-                    }else{
-                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
-                    }
-                    return;
 
-                }
-                msg.what = LOAD_SUCCESS;
-                msg.obj = users;
-                handler.sendMessage(msg);
-            }
-        }).start();
-        ;
-    }
-
-    @Override
-    public void loadMyFollwers(final int page) {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                L.i("token == " + token);
-                List<User> users = new ArrayList<User>();
-                Message msg = new Message();
-
-                try {
-                    users = github.myFollwers(token, page);
-                } catch (GithubError e) {
-                    L.i("网络问题 loadMyFollwers");
-                    if(page == 1){
-                        msg.what = LOAD_FIRST_FAIL;
-                        msg.obj = e.getMessage();
-                        handler.sendMessage(msg);
-                    }else{
-                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
-                    }
-                    return;
-
-                }
-                msg.what = 1;
-                msg.obj = users;
-                handler.sendMessage(msg);
-            }
-        }).start();
-        ;
-
-    }
 
     @Override
     public void loadFollowerings(final String user, final int page) {
@@ -295,7 +232,6 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = events;

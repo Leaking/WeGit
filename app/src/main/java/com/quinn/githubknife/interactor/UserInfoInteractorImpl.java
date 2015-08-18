@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.utils.L;
@@ -103,7 +104,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                     L.i(TAG,"userinfo fail");
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
-                    msg.obj = "Fail to load user information";
+                    msg.obj = context.getString(R.string.fail_load_userInfo) + username;
                     handler.sendMessage(msg);
                     return;
                 }
@@ -128,7 +129,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 }catch (GithubError e){
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
-                    msg.obj = "Fail to load relation-state";
+                    msg.obj = context.getString(R.string.fail_load_relation);
                     handler.sendMessage(msg);
                     return;
                 }
@@ -153,7 +154,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 }catch (GithubError e){
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
-                    msg.obj = "Fail to follow " + targetUser;
+                    msg.obj = context.getString(R.string.fail_follow) + targetUser;
                     handler.sendMessage(msg);
                     return;
                 }
@@ -179,7 +180,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 }catch (GithubError e){
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
-                    msg.obj = "Fail to unfollow " + targetUser;
+                    msg.obj = context.getString(R.string.fail_unfollow) + targetUser;
                     handler.sendMessage(msg);
                     return;                }
                 Message msg = new Message();

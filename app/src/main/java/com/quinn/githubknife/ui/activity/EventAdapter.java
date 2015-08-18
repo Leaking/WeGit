@@ -89,7 +89,7 @@ public class EventAdapter extends
         if (eventType.equals(EVENT_TYPE_ARRAY[0])) {
             return R.string.icon_star;
         } else if (eventType.equals(EVENT_TYPE_ARRAY[1])) {
-            return R.string.icon_fork;
+            return R.string.icon_branch;
         } else if (eventType.equals(EVENT_TYPE_ARRAY[2])) {
             return R.string.icon_repo;
         } else if(eventType.equals(EVENT_TYPE_ARRAY[3])){

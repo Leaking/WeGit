@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.quinn.githubknife.R;
 import com.quinn.githubknife.listener.OnCodeListener;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
@@ -22,7 +23,7 @@ public class CodeInteractorImpl implements CodeInteractor{
     private Github github;
     private Handler handler;
 
-    public CodeInteractorImpl(Context context, final OnCodeListener listener){
+    public CodeInteractorImpl(final Context context, final OnCodeListener listener){
         this.listener = listener;
         this.context = context;
         this.github = new GithubImpl(this.context);
@@ -37,7 +38,7 @@ public class CodeInteractorImpl implements CodeInteractor{
                         break;
 
                     case FAILURE:
-                        listener.onError("Get Content fall");
+                        listener.onError(context.getString(R.string.fail_load_content));
                         break;
                 }
             }

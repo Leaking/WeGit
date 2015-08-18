@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">httpknife</string>
+    <string name="network_error">Check the Network or Try later</string>
 </resources>

@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
-    <!--App Name and Activity Name-->
+    <!--APP名称，界面名称-->
     <string name="app_name">WeGit</string>
 
     <string name="title_activity_main">WeGit</string>
@@ -12,24 +14,26 @@
     <string name="title_activity_about">AboutActivity</string>
 
 
-    <!--menuitem name-->
-    <string name="action_settings">Settings</string>
-    <string name="action_refresh">Refresh</string>
+    <!--menuitem名称-->
+    <string name="action_settings">设置</string>
+    <string name="action_refresh">刷新</string>
+
+    <!--错误提醒-->
+    <string name="fail_load">请检查网络，或稍后重试</string>
+    <string name="fail_loadMore">加载更多失败! 请检查网络</string>
+    <string name="developing">该模块正在开发中</string>
+    <string name="network_error">请检查网络，或稍后重试</string>
+    <string name="auth_error">账号密码错误</string>
+    <string name="fail_follow">关注失败： </string>
+    <string name="fail_unfollow">取消关注失败： </string>
+    <string name="fail_load_relation">加载好友关系失败</string>
+    <string name="fail_load_userInfo">加载用户信息失败： </string>
+    <string name="fail_load_content">获取文件内容</string>
 
 
-    <!--Error warning-->
-    <string name="fail_load">Fail! Check the Network</string>
-    <string name="fail_loadMore">Fail to load more! Check the Network</string>
-    <string name="developing">This module is under development!</string>
-    <string name="network_error">Please check your network</string>
-    <string name="auth_error">Username or password is incorrect</string>
-    <string name="fail_follow">Fail to follow </string>
-    <string name="fail_unfollow">Fail to unfollow </string>
-    <string name="fail_load_relation">Fail to load relation</string>
-    <string name="fail_load_userInfo">Fail to load information of </string>
-    <string name="fail_load_content">Fail to load file content</string>
 
-    <!-- TTF fonts-->
+
+    <!--ttf字体编号 -->
     <string name="icon_star" translatable="false">\uf02a</string>
     <string name="icon_email" translatable="false">\uf03b</string>
     <string name="icon_locate" translatable="false">\uf060</string>
@@ -46,6 +50,10 @@
     <string name="icon_code" translatable="false">\uf05f</string>
     <string name="icon_issue" translatable="false">\uf026</string>
     <string name="icon_tag" translatable="false">\uf015</string>
+
+
+
+
 
 
 

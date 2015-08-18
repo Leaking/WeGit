@@ -168,7 +168,11 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
     @Override
     public void doneAuth(User user) {
-        this.user = user;
+        if(user == null){
+            this.user = new User();
+        }else {
+            this.user = user;
+        }
         String avatar = "";
         if(user != null && user.getAvatar_url() != null && !user.getAvatar_url().isEmpty())
             avatar = user.getAvatar_url();
@@ -178,6 +182,8 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
             avatar = PreferenceUtils.getString(this, PreferenceUtils.Key.AVATAR);
         }
         loginUser = PreferenceUtils.getString(this, PreferenceUtils.Key.ACCOUNT);
+        this.user.setAvatar_url(avatar);
+        this.user.setLogin(loginUser);
         txt_user.setText(loginUser);
         imageLoader.displayImage(avatar,img_avatar,option,animateFirstListener);
         tab.setupWithViewPager(viewpager);

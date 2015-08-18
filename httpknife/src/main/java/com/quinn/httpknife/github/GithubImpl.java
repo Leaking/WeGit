@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.quinn.httpknife.HttpKnife;
+import com.quinn.httpknife.R;
 import com.quinn.httpknife.Response;
 
 import org.json.JSONArray;
@@ -27,8 +28,8 @@ public class GithubImpl implements Github {
 
     public final static String ACCEPT_JSON = "application/vnd.github.beta+json";
     public final static String ACCEPT_RAW = "application/vnd.github.VERSION.raw";
-    public final static String AGENT_USER = "GithubKnife/1.0";
-    public final static String TOKEN_NOTE = "GithubKnife APP Token";
+    public final static String AGENT_USER = "WeGit/1.0";
+    public final static String TOKEN_NOTE = "WeGit APP Token";
 
     public final static String CREATE_TOKEN = API_HOST + "authorizations"; // POST
     public final static String LIST_TOKENS = API_HOST + "authorizations"; // GET
@@ -44,9 +45,13 @@ public class GithubImpl implements Github {
 
     private String token = null;
     private HttpKnife http;
+    private Context context;
+    private GithubError githubError;
 
     public GithubImpl(Context context) {
-        http = new HttpKnife(context);
+        this.context = context;
+        this.http = new HttpKnife(context);
+        githubError = new GithubError(context.getString(R.string.network_error));
     }
 
 
@@ -65,7 +70,7 @@ public class GithubImpl implements Github {
                 .headers(configreHttpHeader())
                 .basicAuthorization(username, password).json(json).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         if (response.statusCode() == 401) {
             //账号密码错误
             throw new AuthError("username or password is incorrect");
@@ -87,7 +92,7 @@ public class GithubImpl implements Github {
         Response response = http.get(LIST_TOKENS).headers(configreHttpHeader())
                 .basicAuthorization(username, password).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         Gson gson = new Gson();
         ArrayList<Token> tokenList = gson.fromJson(response.body(),
                 new TypeToken<List<Token>>() {
@@ -109,7 +114,7 @@ public class GithubImpl implements Github {
                 .headers(configreHttpHeader())
                 .basicAuthorization(username, password).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         testResult(response);
     }
 
@@ -117,7 +122,7 @@ public class GithubImpl implements Github {
     public User authUser(String token) throws GithubError {
         Response response = http.get(LOGIN_USER).headers(configreHttpHeader()).tokenAuthorization(token).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         testResult(response);
         Gson gson = new Gson();
         User user = gson.fromJson(response.body(), User.class);
@@ -153,7 +158,7 @@ public class GithubImpl implements Github {
     public List<User> myFollwers(String token, int page) throws GithubError {
         Response response = http.get(MY_FOLLOWERS, pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         testResult(response);
         Gson gson = new Gson();
         List<User> tokenList = gson.fromJson(response.body(),
@@ -168,7 +173,7 @@ public class GithubImpl implements Github {
     public List<User> myFollwerings(String token, int page) throws GithubError {
         Response response = http.get(MY_FOLLOWERSINGS, pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -184,7 +189,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/following";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -200,7 +205,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/followers";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -216,7 +221,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/repos?sort=pushed";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -234,7 +239,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/starred";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -251,7 +256,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + username;
         Response response = http.get(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -267,7 +272,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/received_events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -286,7 +291,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -305,7 +310,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + user + "/" + repo + "/events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -322,7 +327,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.get(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             System.out.println("header = " + response.headers());
             System.out.println("header = " + response.statusCode());
@@ -340,7 +345,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.put(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else
             System.out.println("header = " + response.headers());
             System.out.println("header = " + response.statusCode());
@@ -358,7 +363,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.delete(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             System.out.println("header = " + response.headers());
             System.out.println("header = " + response.statusCode());
@@ -375,7 +380,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" +repo + "/readme";
         Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
 
 
 
@@ -387,7 +392,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         System.out.println("hasStarRepo statusCode " + response.statusCode());
         if(response.statusCode() == 204){
             return true;
@@ -401,7 +406,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.put(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         System.out.println("starRepo statusCode " + response.statusCode());
         if(response.statusCode() == 204){
             return true;
@@ -415,7 +420,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.delete(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         System.out.println("unStarRepo statusCode " + response.statusCode());
         if(response.statusCode() == 204){
             return true;
@@ -430,7 +435,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/stargazers";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -446,7 +451,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/forks";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -471,7 +476,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/collaborators";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -496,7 +501,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/git/trees/" + ref;
         Response response = http.get(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -518,7 +523,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "search/users?q=" + keywordsParams.toString();
         Response response = http.get(url).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
@@ -540,7 +545,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/contents/" + path;
         Response response = http.get(url).headers(configreHttpHeader()).header("Accept", ACCEPT_RAW).response();
         if (response.isSuccess() == false)
-            throw new GithubError("网络链接有问题");
+            throw githubError;
         else {
             testResult(response);
         }
