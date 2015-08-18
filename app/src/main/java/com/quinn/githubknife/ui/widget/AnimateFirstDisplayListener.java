@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.activity;
+package com.quinn.githubknife.ui.widget;
 
 import android.graphics.Bitmap;
 import android.view.View;

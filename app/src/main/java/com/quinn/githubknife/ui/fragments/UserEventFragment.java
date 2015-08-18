@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.UserEventPresenterImpl;
-import com.quinn.githubknife.ui.activity.EventAdapter;
+import com.quinn.githubknife.ui.adapter.EventAdapter;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.GithubImpl;
 

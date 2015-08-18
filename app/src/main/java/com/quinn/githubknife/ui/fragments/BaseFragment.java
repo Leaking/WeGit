@@ -18,6 +18,7 @@ import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.presenter.TreePresenterImpl;
+import com.quinn.githubknife.ui.widget.onLoadMoreListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;

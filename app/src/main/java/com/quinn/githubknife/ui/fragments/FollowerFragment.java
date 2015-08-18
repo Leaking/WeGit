@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.FollowerPresenterImpl;
 import com.quinn.githubknife.ui.activity.UserInfoActivity;
-import com.quinn.githubknife.ui.activity.UsersAdapter;
+import com.quinn.githubknife.ui.adapter.UsersAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;

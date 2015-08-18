@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.quinn.githubknife.ui.activity.AnimateFirstDisplayListener;
+import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 
 
 /**

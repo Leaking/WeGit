@@ -1,4 +1,4 @@
-package com.quinn.githubknife.ui.fragments;
+package com.quinn.githubknife.ui.widget;
 
 /**
  * Created by Quinn on 7/21/15.

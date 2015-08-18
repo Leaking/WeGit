@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.ui.activity.UserInfoActivity;
-import com.quinn.githubknife.ui.activity.UsersAdapter;
+import com.quinn.githubknife.ui.adapter.UsersAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;

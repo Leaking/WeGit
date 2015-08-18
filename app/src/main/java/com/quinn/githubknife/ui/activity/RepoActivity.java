@@ -246,7 +246,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
-        FileTreeActivity.launch(this, bundle);
+        TreeActivity.launch(this, bundle);
     }
 
     @OnClick(R.id.commitWrap)

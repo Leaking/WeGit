@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.ui.activity.CodeActivity;
-import com.quinn.githubknife.ui.activity.TreeAdapter;
+import com.quinn.githubknife.ui.adapter.TreeAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
+import com.quinn.githubknife.utils.FileUtils;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.TreeItem;
@@ -41,7 +42,7 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         if (activity instanceof PathCallback) {
             callback = (PathCallback) activity;
         } else {
-            throw new IllegalStateException("FileTreeActivity have not implement PathCallback");
+            throw new IllegalStateException("TreeActivity have not implement PathCallback");
         }
     }
 
@@ -103,20 +104,26 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         if (treeItem.getType().equals(TreeItem.MODE_TREE)) {
             intoItem(position);
         } else if (treeItem.getType().equals(TreeItem.MODE_BLOB)) {
-            Bundle bundle = new Bundle();
-            bundle.putString("owner", user);
-            bundle.putString("repo", repo);
-            String absPath = callback.getAbosolutePath(position);
-            String path;
-            if (absPath != null && absPath.isEmpty() == false)
-                path = callback.getAbosolutePath(position) + "/" + ((TreeItem) dataItems.get(position)).getPath();
-            else
-                path = ((TreeItem) dataItems.get(position)).getPath();
-            bundle.putString("path", path);
-            L.i(TAG, "crumb path = " + path);
-            CodeActivity.launch(this.getActivity(), bundle);
+            if(FileUtils.isImage(treeItem.getPath())){
+
+            }else {
+                Bundle bundle = new Bundle();
+                bundle.putString("owner", user);
+                bundle.putString("repo", repo);
+                String absPath = callback.getAbosolutePath(position);
+                String path;
+                if (absPath != null && absPath.isEmpty() == false)
+                    path = callback.getAbosolutePath(position) + "/" + treeItem.getPath();
+                else
+                    path = ((TreeItem) dataItems.get(position)).getPath();
+                bundle.putString("path", path);
+                L.i(TAG, "crumb path = " + path);
+                CodeActivity.launch(this.getActivity(), bundle);
+            }
         }
     }
+
+
 
     public void loadCertainTree(String certainSha) {
         dataItems.clear();

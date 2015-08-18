@@ -19,10 +19,10 @@ import com.quinn.githubknife.utils.L;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class FileTreeActivity extends BaseActivity implements PathCallback, LinearBreadcrumb.SelectionCallback {
+public class TreeActivity extends BaseActivity implements PathCallback, LinearBreadcrumb.SelectionCallback {
 
 
-    private static final String TAG = FileTreeActivity.class.getSimpleName();
+    private static final String TAG = TreeActivity.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.breadCrumbs)
@@ -34,7 +34,7 @@ public class FileTreeActivity extends BaseActivity implements PathCallback, Line
 
 
     public static void launch(Context context, Bundle bundle) {
-        Intent intent = new Intent(context, FileTreeActivity.class);
+        Intent intent = new Intent(context, TreeActivity.class);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
 import com.quinn.githubknife.ui.activity.RepoActivity;
-import com.quinn.githubknife.ui.activity.RepoAdapter;
+import com.quinn.githubknife.ui.adapter.RepoAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;

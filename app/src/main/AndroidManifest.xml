@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quinn.githubknife"
     android:versionCode="1"
-    android:versionName="0.5"
-    >
+    android:versionName="0.5" >
 
     <!-- client -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -61,7 +60,7 @@
             android:label="@string/title_activity_reop" >
         </activity>
         <activity
-            android:name=".ui.activity.FileTreeActivity"
+            android:name=".ui.activity.TreeActivity"
             android:label="@string/title_activity_file_tree" >
         </activity>
         <activity
@@ -71,6 +70,10 @@
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ImageActivity"
+            android:label="@string/title_activity_image" >
         </activity>
     </application>
 
