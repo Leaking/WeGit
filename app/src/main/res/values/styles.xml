@@ -35,4 +35,19 @@
         <item name="android:background">@color/color_white</item>
     </style>
 
+
+    <style name="EditTextHeadline" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textColorHint">#33ffffff</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
+    <style name="EditTextSubhead" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textColorHint">#33ffffff</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
 </resources>

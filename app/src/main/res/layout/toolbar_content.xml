@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:orientation="vertical">
+
+
+    <!-- Toolbar space -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/EditTextHeadline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:hint="Title" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <!-- First divider space -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/EditTextSubhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:hint="Description"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <!-- Second divider space -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+
+</LinearLayout>

@@ -75,6 +75,11 @@
             android:name=".ui.activity.ImageActivity"
             android:label="@string/title_activity_image" >
         </activity>
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:label="@string/title_activity_search" >
+
+        </activity>
     </application>
 
 </manifest>

@@ -53,6 +53,9 @@ public class StarredRepoFragment extends BaseFragment implements RecycleItemClic
     @Override
     public void setItems(List<?> items) {
         super.setItems(items);
+        if(items == null){
+            return;
+        }
         for (Object repo : items) {
             dataItems.add((Repository) repo);
         }

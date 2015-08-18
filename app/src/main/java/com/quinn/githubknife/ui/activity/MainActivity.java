@@ -136,22 +136,27 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     }
 
     public void setUpTab(int id){
-        adapter.clear();
+
         switch (id){
             case R.id.nav_home:
+                adapter.clear();
                 viewpager.setOffscreenPageLimit(3);
                 adapter.addFragment(ReceivedEventFragment.getInstance(loginUser), "Events");
                 adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
                 adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 break;
             case R.id.nav_friends:
+                adapter.clear();
                 viewpager.setOffscreenPageLimit(2);
                 adapter.addFragment(FollowerFragment.getInstance(loginUser),"Follower");
                 adapter.addFragment(FollowingFragment.getInstance(loginUser),"Following");
                 break;
-            case R.id.nav_search:
-                ToastUtils.showMsg(this, R.string.developing);
-                return;
+            case R.id.nav_search:{
+                Intent intent = new Intent(this,SearchActivity.class);
+                this.startActivity(intent);
+                //ToastUtils.showMsg(this, R.string.developing);
+                break;
+            }
             case R.id.nav_setting:
                 ToastUtils.showMsg(this, R.string.developing);
                 return;
