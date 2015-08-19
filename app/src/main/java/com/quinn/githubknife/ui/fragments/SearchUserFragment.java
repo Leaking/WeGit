@@ -1,5 +1,6 @@
 package com.quinn.githubknife.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ public class SearchUserFragment extends BaseFragment implements RecycleItemClick
     public final static String TAG = SearchUserFragment.class.getSimpleName();
 
     private UsersAdapter adapter;
-
+    private TotalCountCallback callback;
 
     public static SearchUserFragment getInstance(String keywords) {
         SearchUserFragment searchUserFragment = new SearchUserFragment();
@@ -43,6 +44,20 @@ public class SearchUserFragment extends BaseFragment implements RecycleItemClick
         presenter = new SearchPresenterImpl(this.getActivity(), this);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callback = (TotalCountCallback) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement TotalCountCallback");
+        }
+    }
+
+    public interface TotalCountCallback{
+        public void setTotalCount(int count);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +73,12 @@ public class SearchUserFragment extends BaseFragment implements RecycleItemClick
     @Override
     public void setItems(List items) {
         super.setItems(items);
+        /**
+         * first item mean the total_count ,not a real user
+         */
+        int total_count = ((User)items.get(0)).getFollowers();
+        callback.setTotalCount(total_count);
+        items.remove(0);
         for (Object user : items) {
             dataItems.add((User) user);
         }

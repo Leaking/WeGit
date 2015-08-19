@@ -50,8 +50,8 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case LOAD_SUCCESS:
-                        List users = (List) msg.obj;
-                        listener.onFinished(users);
+                        List items = (List) msg.obj;
+                        listener.onFinished(items);
                         break;
                     case LOAD_FIRST_FAIL:
                         listener.onError(true,(String)msg.obj);

@@ -26,9 +26,11 @@ import com.quinn.githubknife.utils.UIUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements SearchUserFragment.TotalCountCallback{
 
     private final static  String TAG = SearchActivity.class.getSimpleName();
+
+
 
     enum SEARCH_TYPE{
         SEARCH_USER,
@@ -158,5 +160,10 @@ public class SearchActivity extends BaseActivity {
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void setTotalCount(int count) {
+        toolbar.setSubtitle("" + count);
     }
 }

@@ -532,7 +532,12 @@ public class GithubImpl implements Github {
         ArrayList<User> userList = new ArrayList<User>();
         try {
             JSONArray users = response.json().getJSONArray("items");
-            System.out.println("search users 0 = " + users);
+            /**
+             * Add a first item to save the total_count,It do not mean  a user!!!
+             */
+            int total_count = response.json().getInt("total_count");
+            User user = new User();
+            user.setFollowers(total_count);
             userList = gson.fromJson(users.toString(),
                     new TypeToken<List<User>>() {
                     }.getType());
