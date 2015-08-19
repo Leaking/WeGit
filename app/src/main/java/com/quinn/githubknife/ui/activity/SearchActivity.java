@@ -4,6 +4,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +14,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.SearchDescriptionFragment;
+import com.quinn.githubknife.ui.fragments.SearchUserFragment;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.UIUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,21 +30,40 @@ public class SearchActivity extends BaseActivity {
 
     private final static  String TAG = SearchActivity.class.getSimpleName();
 
+    enum SEARCH_TYPE{
+        SEARCH_USER,
+        SEARCH_REPO
+    };
+
+    SEARCH_TYPE search_type = SEARCH_TYPE.SEARCH_USER;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.container)
+    FrameLayout container;
+
     private Menu menu;
     private SearchView searchView = null;
+    private Fragment searchDescriptionrFragment;
+    private Fragment searchUserFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        toolbar.setTitle("rep");
+        toolbar.setTitle("Search");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        searchDescriptionrFragment = new SearchDescriptionFragment();
+        fragmentTransaction.replace(R.id.container, searchDescriptionrFragment);
+        fragmentTransaction.commit();
+
     }
 
     @Override
@@ -64,7 +90,6 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 L.i(TAG, "click action_search");
-                //SearchActivity.this.menu.removeItem(R.id.action_set);
                 setItem.setVisible(false);
             }
         });
@@ -72,8 +97,13 @@ public class SearchActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                L.i(TAG,"onQueryTextSubmit : " + query);
-                return false;
+                UIUtils.closeInputMethod(SearchActivity.this);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                searchUserFragment = SearchUserFragment.getInstance(query);
+                fragmentTransaction.replace(R.id.container, searchUserFragment);
+                fragmentTransaction.commit();
+                return true;
             }
 
             @Override
@@ -88,7 +118,6 @@ public class SearchActivity extends BaseActivity {
             public boolean onClose() {
                 setItem.setVisible(true);
                 invalidateOptionsMenu();
-
                 return true;
             }
         });
@@ -105,7 +134,10 @@ public class SearchActivity extends BaseActivity {
             showPreferenceDialog();
             return true;
         }
-
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -113,13 +145,14 @@ public class SearchActivity extends BaseActivity {
     public void showPreferenceDialog(){
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
-        builder.setSingleChoiceItems(new String[]{"Search User", "Search Repository"}, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(R.array.search_type, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 0){
-                    searchView.setQueryHint("Search User");
+                    searchView.setQueryHint(getResources().getString(R.string.search_user));
+
                 }else if(which == 1){
-                    searchView.setQueryHint("Search Repository");
+                    searchView.setQueryHint(getResources().getString(R.string.search_repository));
                 }
                 dialog.dismiss();
             }

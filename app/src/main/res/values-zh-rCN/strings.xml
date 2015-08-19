@@ -31,6 +31,16 @@
     <string name="fail_load_content">获取文件内容</string>
 
 
+    <!--说明-->
+    <string name="search_warning">你可以输入关键字搜索用户或项目，，，</string>
+
+    <!--Array-->
+    <string-array name="search_type">
+        <item>搜索用户</item>
+        <item>搜索项目</item>
+    </string-array>
+    <string name="search_user">搜索用户</string>
+    <string name="search_repository">搜索项目</string>
 
 
     <!--ttf字体编号 -->

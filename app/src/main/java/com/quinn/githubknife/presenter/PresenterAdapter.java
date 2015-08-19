@@ -39,6 +39,12 @@ public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListLis
     }
 
     @Override
+    public void onPageLoad(List<String> keywords, int page) {
+        view.showProgress();
+    }
+
+
+    @Override
     public void onTreeLoad(String owner, String repo, String sha) {
         view.showProgress();
     }

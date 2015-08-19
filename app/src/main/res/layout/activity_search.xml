@@ -15,12 +15,17 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1">
 
-    </RelativeLayout>
+
+
+
+
+    </FrameLayout>
 
 
 

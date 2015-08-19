@@ -1,5 +1,7 @@
 package com.quinn.githubknife.interactor;
 
+import java.util.List;
+
 /**
  * Created by Quinn on 7/20/15.
  */
@@ -19,4 +21,5 @@ public interface FindItemsInteractor {
     public void loadForkers(String owner,String repo, int page);
     public void loadCollaborators(String owner,String repo, int page);
     public void loadTree(String owner,String repo,String sha);
+    public void searchUsers(List<String> keywords,int page);
 }

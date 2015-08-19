@@ -29,6 +29,19 @@
     <string name="fail_load_userInfo">Fail to load information of </string>
     <string name="fail_load_content">Fail to load file content</string>
 
+    <!--Description-->
+    <string name="search_warning">You can input keywords to search user or repository，，，</string>
+
+
+    <!--Search-->
+    <string-array name="search_type">
+        <item>Search User</item>
+        <item>Search Repository</item>
+    </string-array>
+    <string name="search_user">Search User</string>
+    <string name="search_repository">Search Repository</string>
+
+
     <!-- TTF fonts-->
     <string name="icon_star" translatable="false">\uf02a</string>
     <string name="icon_email" translatable="false">\uf03b</string>

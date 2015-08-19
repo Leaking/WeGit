@@ -144,12 +144,16 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
                 adapter.addFragment(ReceivedEventFragment.getInstance(loginUser), "Events");
                 adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
                 adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
+                adapter.notifyDataSetChanged();
+                tab.setupWithViewPager(viewpager);
                 break;
             case R.id.nav_friends:
                 adapter.clear();
                 viewpager.setOffscreenPageLimit(2);
                 adapter.addFragment(FollowerFragment.getInstance(loginUser),"Follower");
                 adapter.addFragment(FollowingFragment.getInstance(loginUser),"Following");
+                adapter.notifyDataSetChanged();
+                tab.setupWithViewPager(viewpager);
                 break;
             case R.id.nav_search:{
                 Intent intent = new Intent(this,SearchActivity.class);
@@ -165,8 +169,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
                 this.startActivity(intent);
                 break;
         }
-        adapter.notifyDataSetChanged();
-        tab.setupWithViewPager(viewpager);
+
 
     }
 

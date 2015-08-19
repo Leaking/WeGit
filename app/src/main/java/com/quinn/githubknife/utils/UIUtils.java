@@ -2,7 +2,10 @@ package com.quinn.githubknife.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by Quinn on 7/24/15.
@@ -37,6 +40,18 @@ public class UIUtils {
                         }
                     });
         }
+    }
+
+    /**
+     * 关闭输入法
+     * @param context
+     */
+    public static void closeInputMethod(Context context) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(((Activity) context)
+                        .getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

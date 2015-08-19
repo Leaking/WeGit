@@ -9,8 +9,8 @@ public enum OctIcon implements Icon {
 	STAR(0xf096),
     FORK(0xf002),
     FILE(0xf011),
-	FOLDER(0xf016);
-
+	FOLDER(0xf016),
+	SEARCH(0xf02e);
 	
 	private final int mIconUtfValue;
 

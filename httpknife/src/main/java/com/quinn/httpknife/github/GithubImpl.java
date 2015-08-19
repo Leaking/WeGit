@@ -511,7 +511,7 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<User> searchUser(List<String> keywords)  throws GithubError {
+    public List<User> searchUser(List<String> keywords,int page)  throws GithubError {
         //GET /search/users
         StringBuilder keywordsParams = new StringBuilder();
         for(int i = 0; i < keywords.size();i++){
@@ -521,21 +521,32 @@ public class GithubImpl implements Github {
                 keywordsParams.append(keywords.get(i));
         }
         String url = API_HOST + "search/users?q=" + keywordsParams.toString();
-        Response response = http.get(url).headers(configreHttpHeader()).response();
+        System.out.println("searchUser url : " + url);
+        Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
             throw githubError;
         else {
             testResult(response);
         }
         Gson gson = new Gson();
-        ArrayList<User> userList = gson.fromJson(response.body(),
-                new TypeToken<List<User>>() {
-                }.getType());
-        return null;
+        ArrayList<User> userList = new ArrayList<User>();
+        try {
+            JSONArray users = response.json().getJSONArray("items");
+            System.out.println("search users 0 = " + users);
+            userList = gson.fromJson(users.toString(),
+                    new TypeToken<List<User>>() {
+                    }.getType());
+            System.out.println("search users 1 = " + userList);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 
     @Override
-    public List<Repository> searchRepo(List<String> keywords) {
+    public List<Repository> searchRepo(List<String> keywords,int page) {
+        String url = API_HOST + "" + "";
         return null;
     }
 
@@ -554,10 +565,9 @@ public class GithubImpl implements Github {
 
 
     public void testResult(Response response) {
-
-//        System.out.println(response.statusCode());
-//        System.out.println(response.headers());
-       // System.out.println(response.body());
+        System.out.println(response.statusCode());
+        System.out.println(response.headers());
+        System.out.println(response.body());
     }
 
 }

@@ -16,6 +16,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
 import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
+import com.quinn.githubknife.presenter.SearchPresenterImpl;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.ui.widget.onLoadMoreListener;
@@ -24,6 +25,7 @@ import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.ListFragmentView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -58,6 +60,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     protected String repo;
     protected String sha = "master";
     protected String presenterType;
+    protected List<String>  keywords;
     protected ListFragmentPresenter presenter;
 
 
@@ -79,6 +82,9 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
             user = bundle.getString("user");
             repo = bundle.getString("repo");
             presenterType = bundle.getString("presenter");
+            String keywordsStr = bundle.getString("keywords");
+            if(keywordsStr != null)
+                keywords = Arrays.asList(keywordsStr.split(" "));
         }
         layoutManager = new LinearLayoutManager(this.getActivity());
         loading = false;
@@ -186,9 +192,11 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
     public void loadPage(){
         if(presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
-            presenter.onPageLoad(user,repo,currPage);
-        }if(presenter instanceof TreePresenterImpl){
-            presenter.onTreeLoad(user,repo,sha);
+            presenter.onPageLoad(user, repo, currPage);
+        }else if(presenter instanceof SearchPresenterImpl){
+            presenter.onPageLoad(keywords,currPage);
+        } else if(presenter instanceof TreePresenterImpl){
+            presenter.onTreeLoad(user, repo,sha);
         }else{
             presenter.onPageLoad(currPage,user);
         }

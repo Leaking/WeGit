@@ -93,10 +93,10 @@ public interface Github {
 	public Tree getTree(String owner,String repo,String sha) throws GithubError;
 
 	//GET /search/users
-	public List<User> searchUser(List<String> keywords) throws GithubError ;
+	public List<User> searchUser(List<String> keywords,int page) throws GithubError ;
 
 	//GET /search/repositories
-	public List<Repository> searchRepo(List<String> keywords)  throws GithubError ;
+	public List<Repository> searchRepo(List<String> keywords,int pages)  throws GithubError ;
 
 	///repos/:owner/:repo/contents/:path
 	public String getRawContent(String owner, String repo, String path) throws GithubError;
