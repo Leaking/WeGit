@@ -18,6 +18,12 @@ public class ToastUtils {
 	}
 
 	public static void showMsg(Context cont, int msg) {
+		if(cont == null){
+			L.i("LOG","context = null");
+		}else{
+			L.i("LOG","context != null");
+
+		}
 		Toast.makeText(cont, msg, Toast.LENGTH_LONG).show();
 	}
 

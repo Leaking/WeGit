@@ -521,6 +521,9 @@ public class HttpKnife {
 			httpResponse.setEntity(entityFromConnection());
 			headersFromConnection(httpResponse);
 			Response response = new Response(httpResponse);
+			int statusCode = statusLine.getStatusCode();
+			if(statusCode >= 400 && statusCode <= 500)
+				response.setSuccess(false);
 			return response;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -544,8 +547,12 @@ public class HttpKnife {
 			throw new IOException(
 					"Could not retrieve response code from HttpUrlConnection.");
 		}
-		responseStatus = new BasicStatusLine(protocolVersion,
-				connection.getResponseCode(), connection.getResponseMessage());
+		try{
+			responseStatus = new BasicStatusLine(protocolVersion,
+					responseCode, connection.getResponseMessage());
+		}catch (Exception e){
+			throw new IOException("Could not retrieve response code from HttpUrlConnection.");
+		}
 		return responseStatus;
 	}
 

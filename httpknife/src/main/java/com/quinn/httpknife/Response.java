@@ -45,6 +45,8 @@ public class Response {
 
     private Response parseReasonPhrase() {
         this.statusCode = response.getStatusLine().getStatusCode();
+        if(this.statusCode >= 400 && this.statusCode <= 500)
+            this.requestSuccess = false;
         return this;
     }
 

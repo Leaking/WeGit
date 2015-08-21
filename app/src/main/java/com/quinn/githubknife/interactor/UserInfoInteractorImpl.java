@@ -32,6 +32,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     private Handler handler;
 
     public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener){
+        this.context = context;
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
         if(name.isEmpty())
             name = "NO_ACCOUNT";
