@@ -25,7 +25,7 @@ Android Studio
 
 2. You can also scan the below QR code to download apk in your mobile phone.
 
-<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
+<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.png" width="340" />
 
 # TODO
 
