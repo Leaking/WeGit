@@ -12,6 +12,9 @@
     <string name="title_activity_file_tree">FileTreeActivity</string>
     <string name="title_activity_code">CodeActivity</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_image">ImageActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 
 
     <!--menuitem名称-->
@@ -42,30 +45,6 @@
     <string name="search_user">搜索用户</string>
     <string name="search_repository">搜索项目</string>
     <string name="search_result_count">个搜索结果</string>
-
-
-
-    <!--ttf字体编号 -->
-    <string name="icon_star" translatable="false">\uf02a</string>
-    <string name="icon_email" translatable="false">\uf03b</string>
-    <string name="icon_locate" translatable="false">\uf060</string>
-    <string name="icon_company" translatable="false">\uf037</string>
-    <string name="icon_blog" translatable="false">\uf05c</string>
-    <string name="icon_join" translatable="false">\uf046</string>
-    <string name="icon_repo" translatable="false">\uf001</string>
-    <string name="icon_push" translatable="false">\uf01f</string>
-    <string name="icon_pullRequest" translatable="false">\uf009</string>
-    <string name="icon_commit" translatable="false">\uf07e</string>
-    <string name="icon_fork" translatable="false">\uf002</string>
-    <string name="icon_branch" translatable="false">\uf020</string>
-    <string name="icon_organization" translatable="false">\uf037</string>
-    <string name="icon_code" translatable="false">\uf05f</string>
-    <string name="icon_issue" translatable="false">\uf026</string>
-    <string name="icon_tag" translatable="false">\uf015</string>
-
-
-
-
 
 
 
