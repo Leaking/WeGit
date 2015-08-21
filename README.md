@@ -18,9 +18,17 @@
 
 Android Studio
 
+
+# APK
+
+1. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.5.apk)
+
+2. You can also scan the below QR code to download apk in your mobile phone.
+
+<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
+
 # TODO
 
-- Search Module(Under development)
 - Setting Module
 
 # Contact me
