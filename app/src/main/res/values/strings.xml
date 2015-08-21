@@ -40,6 +40,10 @@
     </string-array>
     <string name="search_user">Search User</string>
     <string name="search_repository">Search Repository</string>
+    <string name="search_result_count"> search results</string>
+
+
+
 
 
     <!-- TTF fonts-->
@@ -63,6 +67,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 
 
 

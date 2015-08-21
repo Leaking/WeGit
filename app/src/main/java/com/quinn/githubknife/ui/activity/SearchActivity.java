@@ -30,9 +30,7 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
 
     private final static  String TAG = SearchActivity.class.getSimpleName();
 
-
-
-    enum SEARCH_TYPE{
+    public enum SEARCH_TYPE{
         SEARCH_USER,
         SEARCH_REPO
     };
@@ -65,7 +63,6 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         searchDescriptionrFragment = new SearchDescriptionFragment();
         fragmentTransaction.replace(R.id.container, searchDescriptionrFragment);
         fragmentTransaction.commit();
-
     }
 
     @Override
@@ -74,7 +71,7 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         menuInflater.inflate(R.menu.menu_search, menu);
         this.menu = menu;
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         final MenuItem setItem = menu.findItem(R.id.action_set);
 
         SearchManager searchManager = (SearchManager) SearchActivity.this.getSystemService(Context.SEARCH_SERVICE);
@@ -100,11 +97,12 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
             @Override
             public boolean onQueryTextSubmit(String query) {
                 UIUtils.closeInputMethod(SearchActivity.this);
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                searchUserFragment = SearchUserFragment.getInstance(query);
-                fragmentTransaction.replace(R.id.container, searchUserFragment);
-                fragmentTransaction.commit();
+                searchView.setIconified(true);
+                setItem.setVisible(true);
+                Bundle bundle = new Bundle();
+                bundle.putString("query",query);
+                bundle.putSerializable("search_type", search_type);
+                SearchResultActivity.launch(SearchActivity.this,bundle);
                 return true;
             }
 
@@ -147,14 +145,21 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
     public void showPreferenceDialog(){
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
-        builder.setSingleChoiceItems(R.array.search_type, 0, new DialogInterface.OnClickListener() {
+        int currentIndex = 0;
+        if(search_type == SEARCH_TYPE.SEARCH_USER){
+            currentIndex = 0;
+        }else{
+            currentIndex = 1;
+        }
+        builder.setSingleChoiceItems(R.array.search_type, currentIndex, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 0){
                     searchView.setQueryHint(getResources().getString(R.string.search_user));
-
+                    search_type = SEARCH_TYPE.SEARCH_USER;
                 }else if(which == 1){
                     searchView.setQueryHint(getResources().getString(R.string.search_repository));
+                    search_type = SEARCH_TYPE.SEARCH_REPO;
                 }
                 dialog.dismiss();
             }

@@ -16,7 +16,8 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
 import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
-import com.quinn.githubknife.presenter.SearchPresenterImpl;
+import com.quinn.githubknife.presenter.SearchRepoPresenterImpl;
+import com.quinn.githubknife.presenter.SearchUserPresenterImpl;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.ui.widget.onLoadMoreListener;
@@ -193,7 +194,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     public void loadPage(){
         if(presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
             presenter.onPageLoad(user, repo, currPage);
-        }else if(presenter instanceof SearchPresenterImpl){
+        }else if(presenter instanceof SearchUserPresenterImpl || presenter instanceof SearchRepoPresenterImpl){
             presenter.onPageLoad(keywords,currPage);
         } else if(presenter instanceof TreePresenterImpl){
             presenter.onTreeLoad(user, repo,sha);

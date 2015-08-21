@@ -425,4 +425,32 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
         ;
     }
 
+    @Override
+    public void searchRepos(final List<String> keywords, final int page) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                List<Repository> repos = new ArrayList<Repository>();
+                Message msg = new Message();
+                try {
+                    repos = github.searchRepo(keywords, page);
+                } catch (GithubError e) {
+                    if(page == 1){
+                        msg.what = LOAD_FIRST_FAIL;
+                        msg.obj = e.getMessage();
+                        handler.sendMessage(msg);
+                    }else{
+                        handler.sendEmptyMessage(LOAD_MORE_FAIL);
+                    }
+                    return;
+                }
+                msg.what = LOAD_SUCCESS;
+                msg.obj = repos;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
 }

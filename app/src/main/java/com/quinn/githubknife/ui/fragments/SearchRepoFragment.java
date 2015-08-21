@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quinn.githubknife.presenter.SearchUserPresenterImpl;
-import com.quinn.githubknife.ui.activity.UserInfoActivity;
-import com.quinn.githubknife.ui.adapter.UsersAdapter;
+import com.quinn.githubknife.presenter.SearchRepoPresenterImpl;
+import com.quinn.githubknife.ui.activity.RepoActivity;
+import com.quinn.githubknife.ui.adapter.RepoAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
-import com.quinn.httpknife.github.User;
+import com.quinn.httpknife.github.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,49 +20,46 @@ import java.util.List;
 /**
  * Created by Quinn on 8/19/15.
  */
-public class SearchUserFragment extends BaseFragment implements RecycleItemClickListener {
+public class SearchRepoFragment extends BaseFragment implements RecycleItemClickListener {
 
-    public final static String TAG = SearchUserFragment.class.getSimpleName();
+    public final static String TAG = SearchRepoFragment.class.getSimpleName();
 
-    private UsersAdapter adapter;
-    private TotalCountCallback callback;
+    private RepoAdapter adapter;
+    private SearchUserFragment.TotalCountCallback callback;
 
-    public static SearchUserFragment getInstance(String keywords) {
-        SearchUserFragment searchUserFragment = new SearchUserFragment();
+    public static SearchRepoFragment getInstance(String keywords) {
+        SearchRepoFragment searchRepoFragment = new SearchRepoFragment();
         Bundle bundle = new Bundle();
         bundle.putString("keywords", keywords);
-        searchUserFragment.setArguments(bundle);
-        return searchUserFragment;
+        searchRepoFragment.setArguments(bundle);
+        return searchRepoFragment;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.i("onCreate FollowerFragment");
-        dataItems = new ArrayList<User>();
-        presenter = new SearchUserPresenterImpl(this.getActivity(), this);
+        dataItems = new ArrayList<Repository>();
+        presenter = new SearchRepoPresenterImpl(this.getActivity(), this);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            callback = (TotalCountCallback) activity;
+            callback = (SearchUserFragment.TotalCountCallback) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement TotalCountCallback");
         }
     }
 
-    public interface TotalCountCallback{
-        public void setTotalCount(int count);
-    }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        adapter = new UsersAdapter(dataItems);
+        adapter = new RepoAdapter(dataItems);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         L.i("onCreateView SearchUserFragment");
@@ -74,13 +71,13 @@ public class SearchUserFragment extends BaseFragment implements RecycleItemClick
     public void setItems(List items) {
         super.setItems(items);
         /**
-         * first item mean the total_count ,not a real user
+         * first item mean the total_count ,not a real repo
          */
-        int total_count = ((User)items.get(0)).getFollowers();
+        int total_count = ((Repository)items.get(0)).getForks_count();
         callback.setTotalCount(total_count);
         items.remove(0);
-        for (Object user : items) {
-            dataItems.add((User) user);
+        for (Object repo : items) {
+            dataItems.add((Repository)repo);
         }
         loading = false;
         if (items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
@@ -92,8 +89,8 @@ public class SearchUserFragment extends BaseFragment implements RecycleItemClick
     public void intoItem(int position) {
         super.intoItem(position);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user", (User) dataItems.get(position));
-        UserInfoActivity.launch(this.getActivity(), bundle);
+        bundle.putSerializable("repo", (Repository) dataItems.get(position));
+        RepoActivity.launch(this.getActivity(), bundle);
     }
 
     @Override

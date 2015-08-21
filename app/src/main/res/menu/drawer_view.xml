@@ -31,15 +31,15 @@
             android:title="Search" />
     </group>
 
-    <item android:title="Sub items">
+    <item android:title="More">
         <menu>
             <item
                 android:id="@+id/nav_setting"
-                android:icon="@mipmap/ic_headset"
+                android:icon="@mipmap/ic_action_setting"
                 android:title="Setting" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@mipmap/ic_headset"
+                android:icon="@mipmap/ic_action_about"
                 android:title="About" />
         </menu>
     </item>

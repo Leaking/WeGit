@@ -532,17 +532,17 @@ public class GithubImpl implements Github {
         ArrayList<User> userList = new ArrayList<User>();
         try {
             JSONArray users = response.json().getJSONArray("items");
+            userList = gson.fromJson(users.toString(),
+                    new TypeToken<List<User>>() {
+                    }.getType());
             /**
              * Add a first item to save the total_count,It do not mean  a user!!!
              */
             int total_count = response.json().getInt("total_count");
+            System.out.println("search users total_count = " + total_count);
             User user = new User();
             user.setFollowers(total_count);
-            userList = gson.fromJson(users.toString(),
-                    new TypeToken<List<User>>() {
-                    }.getType());
-            System.out.println("search users 1 = " + userList);
-
+            userList.add(0, user);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -550,9 +550,42 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Repository> searchRepo(List<String> keywords,int page) {
-        String url = API_HOST + "" + "";
-        return null;
+    public List<Repository> searchRepo(List<String> keywords,int page) throws GithubError {
+        //GET /search/repositories
+        StringBuilder keywordsParams = new StringBuilder();
+        for(int i = 0; i < keywords.size();i++){
+            if(i != keywords.size()-1)
+                keywordsParams.append(keywords.get(i) + "+");
+            else
+                keywordsParams.append(keywords.get(i));
+        }
+        String url = API_HOST + "search/repositories?q=" + keywordsParams.toString();
+        System.out.println("search Repo url : " + url);
+        Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
+        if (response.isSuccess() == false)
+            throw githubError;
+        else {
+            testResult(response);
+        }
+        Gson gson = new Gson();
+        ArrayList<Repository> userList = new ArrayList<Repository>();
+        try {
+            JSONArray repos = response.json().getJSONArray("items");
+            userList = gson.fromJson(repos.toString(),
+                    new TypeToken<List<Repository>>() {
+                    }.getType());
+            /**
+             * Add a first item to save the total_count,It do not mean  a user!!!
+             */
+            int total_count = response.json().getInt("total_count");
+            System.out.println("search repos total_count = " + total_count);
+            Repository repo = new Repository();
+            repo.setForks_count(total_count);
+            userList.add(0,repo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userList;
     }
 
     @Override

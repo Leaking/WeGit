@@ -22,4 +22,5 @@ public interface FindItemsInteractor {
     public void loadCollaborators(String owner,String repo, int page);
     public void loadTree(String owner,String repo,String sha);
     public void searchUsers(List<String> keywords,int page);
+    public void searchRepos(List<String> keywords,int page);
 }

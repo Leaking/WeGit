@@ -78,7 +78,10 @@
         <activity
             android:name=".ui.activity.SearchActivity"
             android:label="@string/title_activity_search" >
-
+        </activity>
+        <activity
+            android:name=".ui.activity.SearchResultActivity"
+            android:label="@string/title_activity_search_result" >
         </activity>
     </application>
 

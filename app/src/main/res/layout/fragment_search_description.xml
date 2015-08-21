@@ -9,12 +9,13 @@
     <ImageView
         android:id="@+id/searchImg"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dip"
-        android:layout_width="300dip"
-        android:layout_height="300dip" />
+        android:layout_marginTop="120dip"
+        android:layout_width="200dip"
+        android:layout_height="200dip" />
 
     <TextView
         android:id="@+id/searchDescription"
+        android:layout_marginTop="20dip"
         android:text="@string/search_warning"
         android:layout_below="@id/searchImg"
         android:layout_centerHorizontal="true"

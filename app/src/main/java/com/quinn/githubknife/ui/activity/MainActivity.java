@@ -126,11 +126,12 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        menuItem.setChecked(true);
         if(doneAuth) {
             L.i(TAG, "menuItem id = " + menuItem.getItemId() + " order = " + menuItem.getOrder());
             mDrawerLayout.closeDrawers();
             setUpTab(menuItem.getItemId());
+            if(menuItem.getItemId() == R.id.nav_home || menuItem.getItemId() == R.id.nav_friends)
+                menuItem.setChecked(true);
         }
         return true;
     }
@@ -146,6 +147,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
                 adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
                 adapter.notifyDataSetChanged();
                 tab.setupWithViewPager(viewpager);
+
                 break;
             case R.id.nav_friends:
                 adapter.clear();
