@@ -31,6 +31,10 @@ Android Studio
 
 - Setting Module
 
+# Bug
+
+- Crush after login in some phone.
+
 # Contact me
 
 chenhuazhaoao@gmail.com

@@ -21,6 +21,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInput"
+        android:layout_marginTop="5dip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -42,6 +43,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="password" />
 
     </android.support.design.widget.TextInputLayout>
@@ -52,7 +54,9 @@
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_margin="5dip"
+        android:textColor="@color/color_white"
+        android:background="@color/color_accent"
         android:text="submit" />
 
 </LinearLayout>
