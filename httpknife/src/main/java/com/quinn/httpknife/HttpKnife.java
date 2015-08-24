@@ -522,8 +522,8 @@ public class HttpKnife {
 			headersFromConnection(httpResponse);
 			Response response = new Response(httpResponse);
 			int statusCode = statusLine.getStatusCode();
-			if(statusCode >= 400 && statusCode <= 500)
-				response.setSuccess(false);
+//			if(statusCode >= 400 && statusCode <= 500)
+//				response.setSuccess(false);
 			return response;
 		} catch (IOException e) {
 			e.printStackTrace();

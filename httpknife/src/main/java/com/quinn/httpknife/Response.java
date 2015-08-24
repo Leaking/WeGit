@@ -36,6 +36,8 @@ public class Response {
         this();
         this.response = response;
         parseStatusCode().parseReasonPhrase().parseHeaders().parseContent();
+        System.out.println("status code = " + this.statusCode);
+        System.out.println("reasonPhrase  = " + this.reasonPhrase);
     }
 
     private Response parseStatusCode() {
@@ -45,8 +47,8 @@ public class Response {
 
     private Response parseReasonPhrase() {
         this.statusCode = response.getStatusLine().getStatusCode();
-        if(this.statusCode >= 400 && this.statusCode <= 500)
-            this.requestSuccess = false;
+//        if(this.statusCode >= 400 && this.statusCode <= 500)
+//            this.requestSuccess = false;
         return this;
     }
 
