@@ -104,7 +104,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                     user = github.user(username);
                     L.i(TAG, user.toString());
                 } catch (GithubError e) {
-                    L.i(TAG, "userinfo fail");
+                    L.i(TAG, "userinfo fail");//f
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
                     msg.obj = context.getString(R.string.fail_load_userInfo) + username;
