@@ -1,11 +1,15 @@
 package com.quinn.githubknife.interactor;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnCodeListener;
+import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
@@ -22,10 +26,16 @@ public class CodeInteractorImpl implements CodeInteractor{
     private Context context;
     private Github github;
     private Handler handler;
+    private GitHubAccount gitHubAccount;
 
     public CodeInteractorImpl(final Context context, final OnCodeListener listener){
         this.listener = listener;
         this.context = context;
+        String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
+        if (name.isEmpty())
+            name = "NO_ACCOUNT";
+        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
+        this.gitHubAccount = new GitHubAccount(account, context);
         this.github = new GithubImpl(this.context);
         handler = new Handler(){
             @Override
@@ -49,6 +59,8 @@ public class CodeInteractorImpl implements CodeInteractor{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
                 try {
                     String content = github.getRawContent(owner,repo,path);
                     Message msg = new Message();
@@ -60,6 +72,10 @@ public class CodeInteractorImpl implements CodeInteractor{
                     Message msg = new Message();
                     msg.what = FAILURE;
                     handler.sendMessage(msg);
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    getContent(owner,repo,path);
                 }
             }
         }).start();;

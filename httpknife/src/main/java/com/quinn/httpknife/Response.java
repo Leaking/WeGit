@@ -36,19 +36,15 @@ public class Response {
         this();
         this.response = response;
         parseStatusCode().parseReasonPhrase().parseHeaders().parseContent();
-        System.out.println("status code = " + this.statusCode);
-        System.out.println("reasonPhrase  = " + this.reasonPhrase);
     }
 
     private Response parseStatusCode() {
-        this.reasonPhrase = response.getStatusLine().getReasonPhrase();
+        this.statusCode = response.getStatusLine().getStatusCode();
         return this;
     }
 
     private Response parseReasonPhrase() {
-        this.statusCode = response.getStatusLine().getStatusCode();
-//        if(this.statusCode >= 400 && this.statusCode <= 500)
-//            this.requestSuccess = false;
+        this.reasonPhrase = response.getStatusLine().getReasonPhrase();
         return this;
     }
 
@@ -116,7 +112,6 @@ public class Response {
             }
         }
 
-
         if (this.charset == null || this.contentBytes == null) {
             throw new IOException();
         }
@@ -131,6 +126,7 @@ public class Response {
     }
 
     private Response parseHeaders() {
+        HttpLog.v("Begin ParseHeaders");
         Header[] rawHeaders = response.getAllHeaders();
         headers = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
         for (int i = 0; i < rawHeaders.length; i++) {
@@ -138,6 +134,7 @@ public class Response {
         }
         hasParseHeader = true;
         parseCharset();
+        HttpLog.v("Headers = " + headers);
         return this;
     }
 

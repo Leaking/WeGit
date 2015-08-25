@@ -93,6 +93,10 @@ public class GitHubAccount {
         }
     }
 
+    public void invalidateToken(String token){
+        manager.invalidateAuthToken(ACCOUNT_TYPE,token);
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + '[' + account.name + ']';

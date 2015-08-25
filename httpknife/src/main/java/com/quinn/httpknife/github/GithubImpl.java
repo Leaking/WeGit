@@ -47,13 +47,32 @@ public class GithubImpl implements Github {
     private HttpKnife http;
     private Context context;
     private GithubError githubError;
+    private AuthError authError;
+
+
+    private final static int _422 = 422; //Sending invalid fields
+    private final static int _400 = 400; //Sending the wrong type of JSON;Sending invalid JSON
+    private final static int _401 = 401; //Bad credentials
+    private final static int _403 = 403; //Maximum number of login attempts exceeded. Please try again later.
+
+
+
+
 
     public GithubImpl(Context context) {
         this.context = context;
         this.http = new HttpKnife(context);
         githubError = new GithubError(context.getString(R.string.network_error));
+        authError = new AuthError("Token 失效");
     }
 
+    public void filterError(Response response) throws GithubError,AuthError{
+        if (response.isSuccess() == false)
+            throw githubError;
+        if (response.statusCode() == 401) {
+            throw authError;
+        }
+    }
 
     @Override
     public String createToken(String username, String password)
@@ -72,27 +91,22 @@ public class GithubImpl implements Github {
         if (response.isSuccess() == false)
             throw githubError;
         if (response.statusCode() == 401) {
-            //账号密码错误
             throw new AuthError("username or password is incorrect");
         }
-        testResult(response);
         if (response.statusCode() == 422) {
             removeToken(username, password);
             return createToken(username, password);
         }
-
         Token token = new Gson().fromJson(response.body(), Token.class);
-        System.out.println("token gson = " + token);
         return token.getToken();
     }
 
     @Override
     public String findCertainTokenID(String username, String password)
-            throws GithubError {
+            throws GithubError, AuthError {
         Response response = http.get(LIST_TOKENS).headers(configreHttpHeader())
                 .basicAuthorization(username, password).response();
-        if (response.isSuccess() == false)
-            throw githubError;
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Token> tokenList = gson.fromJson(response.body(),
                 new TypeToken<List<Token>>() {
@@ -108,22 +122,19 @@ public class GithubImpl implements Github {
 
     @Override
     public void removeToken(String username, String password)
-            throws GithubError {
+            throws GithubError,AuthError{
         String id = findCertainTokenID(username, password);
         Response response = http.delete(REMOVE_TOKEN + id)
                 .headers(configreHttpHeader())
                 .basicAuthorization(username, password).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        testResult(response);
+        filterError(response);
+
     }
 
     @Override
-    public User authUser(String token) throws GithubError {
+    public User authUser(String token) throws GithubError ,AuthError{
         Response response = http.get(LOGIN_USER).headers(configreHttpHeader()).tokenAuthorization(token).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        testResult(response);
+        filterError(response);
         Gson gson = new Gson();
         User user = gson.fromJson(response.body(), User.class);
         return user;
@@ -154,45 +165,13 @@ public class GithubImpl implements Github {
         return params;
     }
 
-    @Override
-    public List<User> myFollwers(String token, int page) throws GithubError {
-        Response response = http.get(MY_FOLLOWERS, pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        testResult(response);
-        Gson gson = new Gson();
-        List<User> tokenList = gson.fromJson(response.body(),
-                new TypeToken<List<User>>() {
-                }.getType());
-        System.out.println("tuserlis = " + tokenList);
 
-        return tokenList;
-    }
 
     @Override
-    public List<User> myFollwerings(String token, int page) throws GithubError {
-        Response response = http.get(MY_FOLLOWERSINGS, pagination(page)).headers(configreHttpHeader()).tokenAuthorization(token).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
-        Gson gson = new Gson();
-        ArrayList<User> tokenList = gson.fromJson(response.body(),
-                new TypeToken<List<User>>() {
-                }.getType());
-        return tokenList;
-    }
-
-    @Override
-    public List<User> follwerings(String user, int page) throws GithubError {
+    public List<User> follwerings(String user, int page) throws GithubError,AuthError {
         String url = API_HOST + "users/" + user + "/following";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<User> tokenList = gson.fromJson(response.body(),
                 new TypeToken<List<User>>() {
@@ -201,14 +180,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<User> followers(String user, int page) throws GithubError {
+    public List<User> followers(String user, int page) throws GithubError,AuthError {
         String url = API_HOST + "users/" + user + "/followers";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<User> tokenList = gson.fromJson(response.body(),
                 new TypeToken<List<User>>() {
@@ -217,14 +192,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Repository> repo(String user, int page) throws GithubError {
+    public List<Repository> repo(String user, int page) throws GithubError,AuthError {
         String url = API_HOST + "users/" + user + "/repos?sort=pushed";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+         filterError(response);
         Gson gson = new Gson();
         ArrayList<Repository> repoList = gson.fromJson(response.body(),
                 new TypeToken<List<Repository>>() {
@@ -235,14 +206,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Repository> starred(String user, int page) throws GithubError {
+    public List<Repository> starred(String user, int page) throws GithubError,AuthError {
         String url = API_HOST + "users/" + user + "/starred";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+       filterError(response);
         Gson gson = new Gson();
         ArrayList<Repository> repoList = gson.fromJson(response.body(),
                 new TypeToken<List<Repository>>() {
@@ -252,30 +219,22 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public User user(String username) throws GithubError {
+    public User user(String username) throws GithubError,AuthError {
         String url = API_HOST + "users/" + username;
         Response response = http.get(url).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         User user = gson.fromJson(response.body(), User.class);
         return user;
     }
 
     @Override
-    public List<Event> receivedEvent(String user, int page) throws GithubError {
+    public List<Event> receivedEvent(String user, int page) throws GithubError,AuthError {
         Map<String, String> params = new HashMap<String, String>();
         params.put(PAGE, String.valueOf(page));
         String url = API_HOST + "users/" + user + "/received_events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
@@ -285,16 +244,12 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Event> userEvent(String user, int page) throws GithubError {
+    public List<Event> userEvent(String user, int page) throws GithubError,AuthError {
         Map<String, String> params = new HashMap<String, String>();
         params.put(PAGE, String.valueOf(page));
         String url = API_HOST + "users/" + user + "/events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
@@ -304,16 +259,12 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Event> repoEvent(String user, String repo, int page) throws GithubError {
+    public List<Event> repoEvent(String user, String repo, int page) throws GithubError,AuthError {
         Map<String, String> params = new HashMap<String, String>();
         params.put(PAGE, String.valueOf(page));
         String url = API_HOST + "repos/" + user + "/" + repo + "/events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
@@ -323,16 +274,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean hasFollow(String targetUser) throws GithubError {
+    public boolean hasFollow(String targetUser) throws GithubError,AuthError {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.get(url).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            System.out.println("header = " + response.headers());
-            System.out.println("header = " + response.statusCode());
-
-        }
+        filterError(response);
         if (response.statusCode() == 204) {
             return true;
         } else {
@@ -341,16 +286,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean follow(String targetUser) throws GithubError {
+    public boolean follow(String targetUser) throws GithubError,AuthError {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.put(url).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else
-            System.out.println("header = " + response.headers());
-            System.out.println("header = " + response.statusCode());
-
-
+        filterError(response);
         if (response.statusCode() == 204) {
             return true;
         } else {
@@ -359,15 +298,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean unfollow(String targetUser) throws GithubError {
+    public boolean unfollow(String targetUser) throws GithubError,AuthError {
         String url = API_HOST + "user/following/" + targetUser;
         Response response = http.delete(url).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            System.out.println("header = " + response.headers());
-            System.out.println("header = " + response.statusCode());
-        }
+        filterError(response);
         if (response.statusCode() == 204) {
             return true;
         } else {
@@ -376,24 +310,18 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public String readme(String owner, String repo) throws GithubError {
+    public String readme(String owner, String repo) throws GithubError,AuthError {
         String url = API_HOST + "repos/" + owner + "/" +repo + "/readme";
         Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
-        if (response.isSuccess() == false)
-            throw githubError;
-
-
-
+        filterError(response);
         return response.body();
     }
 
     @Override
-    public boolean hasStarRepo(String owner, String repo) throws GithubError {
+    public boolean hasStarRepo(String owner, String repo) throws GithubError,AuthError {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.get(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        System.out.println("hasStarRepo statusCode " + response.statusCode());
+        filterError(response);
         if(response.statusCode() == 204){
             return true;
         }else{
@@ -402,12 +330,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean starRepo(String owner, String repo) throws GithubError {
+    public boolean starRepo(String owner, String repo) throws GithubError,AuthError {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.put(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        System.out.println("starRepo statusCode " + response.statusCode());
+        filterError(response);
         if(response.statusCode() == 204){
             return true;
         }else{
@@ -416,12 +342,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean unStarRepo(String owner, String repo) throws GithubError {
+    public boolean unStarRepo(String owner, String repo) throws GithubError,AuthError {
         String url = API_HOST + "user/starred/" + owner + "/" +repo;
         Response response = http.delete(url).headers(configreHttpHeader()).accept("application/vnd.github.VERSION.html").response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        System.out.println("unStarRepo statusCode " + response.statusCode());
+        filterError(response);
         if(response.statusCode() == 204){
             return true;
         }else{
@@ -436,9 +360,6 @@ public class GithubImpl implements Github {
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
         if (response.isSuccess() == false)
             throw githubError;
-        else {
-            testResult(response);
-        }
         Gson gson = new Gson();
         ArrayList<User> userList = gson.fromJson(response.body(),
                 new TypeToken<List<User>>() {
@@ -447,14 +368,10 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<User> forkers(String owner, String repo,int page) throws GithubError {
+    public List<User> forkers(String owner, String repo,int page) throws GithubError,AuthError {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/forks";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Repository> repoList = gson.fromJson(response.body(),
                 new TypeToken<List<Repository>>() {
@@ -467,19 +384,15 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public boolean fork(String owner, String repo) throws GithubError {
+    public boolean fork(String owner, String repo) throws GithubError,AuthError {
         return false;
     }
 
     @Override
-    public List<User> collaborators(String owner,String repo,int page) throws GithubError {
+    public List<User> collaborators(String owner,String repo,int page) throws GithubError,AuthError {
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/collaborators";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         if(response.statusCode() == 403){
             JSONObject body = response.json();
             try {
@@ -496,22 +409,18 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public Tree getTree(String owner, String repo, String ref) throws GithubError {
+    public Tree getTree(String owner, String repo, String ref) throws GithubError,AuthError {
          //GET /repos/:owner/:repo/git/trees/:sha
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/git/trees/" + ref;
         Response response = http.get(url).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         Tree tree = gson.fromJson(response.body(),Tree.class);
         return tree;
     }
 
     @Override
-    public List<User> searchUser(List<String> keywords,int page)  throws GithubError {
+    public List<User> searchUser(List<String> keywords,int page)  throws GithubError,AuthError {
         //GET /search/users
         StringBuilder keywordsParams = new StringBuilder();
         for(int i = 0; i < keywords.size();i++){
@@ -523,11 +432,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "search/users?q=" + keywordsParams.toString();
         System.out.println("searchUser url : " + url);
         Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<User> userList = new ArrayList<User>();
         try {
@@ -550,7 +455,7 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public List<Repository> searchRepo(List<String> keywords,int page) throws GithubError {
+    public List<Repository> searchRepo(List<String> keywords,int page) throws GithubError,AuthError {
         //GET /search/repositories
         StringBuilder keywordsParams = new StringBuilder();
         for(int i = 0; i < keywords.size();i++){
@@ -560,13 +465,8 @@ public class GithubImpl implements Github {
                 keywordsParams.append(keywords.get(i));
         }
         String url = API_HOST + "search/repositories?q=" + keywordsParams.toString();
-        System.out.println("search Repo url : " + url);
         Response response = http.get(url,pagination(page)).headers(configreHttpHeader()).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         Gson gson = new Gson();
         ArrayList<Repository> userList = new ArrayList<Repository>();
         try {
@@ -589,23 +489,15 @@ public class GithubImpl implements Github {
     }
 
     @Override
-    public String getRawContent(String owner, String repo, String path) throws GithubError {
+    public String getRawContent(String owner, String repo, String path) throws GithubError,AuthError {
         ///repos/:owner/:repo/contents/:path
         String url = API_HOST + "repos/" + owner + "/" + repo  + "/contents/" + path;
         Response response = http.get(url).headers(configreHttpHeader()).header("Accept", ACCEPT_RAW).response();
-        if (response.isSuccess() == false)
-            throw githubError;
-        else {
-            testResult(response);
-        }
+        filterError(response);
         return response.body();
     }
 
 
-    public void testResult(Response response) {
-        System.out.println(response.statusCode());
-        System.out.println(response.headers());
-        System.out.println(response.body());
-    }
+
 
 }

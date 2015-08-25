@@ -9,6 +9,7 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
@@ -92,6 +93,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadFollowerings(user,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -125,6 +130,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadFollwers(user,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -168,6 +177,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     }
                     return;
 
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadRepo(user,page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;
@@ -200,6 +213,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     }
                     return;
 
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadStarredRepo(user,page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;
@@ -232,6 +249,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadReceivedEvents(user,page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = events;
@@ -264,6 +285,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     }
                     return;
 
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadUserEvents(user,page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = events;
@@ -298,6 +323,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadStargazers(owner,repo,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -329,6 +358,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadForkers(owner,repo,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -359,6 +392,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadCollaborators(owner,repo,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -387,6 +424,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     msg.obj = e.getMessage();
                     handler.sendMessage(msg);
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadTree(owner,repo,sha);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = treeItems;
@@ -415,6 +456,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    searchRepos(keywords,page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -445,6 +490,10 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    searchRepos(keywords,page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;

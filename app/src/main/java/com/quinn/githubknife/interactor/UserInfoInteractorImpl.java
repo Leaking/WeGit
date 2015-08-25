@@ -10,6 +10,7 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
@@ -31,23 +32,23 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     private OnLoadUserInfoListener listener;
     private Handler handler;
 
-    public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener){
+    public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener) {
         this.context = context;
         String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
-        if(name.isEmpty())
+        if (name.isEmpty())
             name = "NO_ACCOUNT";
         Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
-        this.gitHubAccount = new GitHubAccount(account,context);
+        this.gitHubAccount = new GitHubAccount(account, context);
         this.github = new GithubImpl(context);
         this.listener = listener;
 
-        this.handler = new Handler(){
+        this.handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case USER_MSG:
-                        User user = (User)msg.obj;
+                        User user = (User) msg.obj;
                         listener.onFinish(user);
                         break;
                     case FOLLOW_STATE_MSG:
@@ -55,7 +56,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                         listener.updateFollowState(isFollow);
                         break;
                     case FAIL_MSG:
-                        listener.onError((String)msg.obj);
+                        listener.onError((String) msg.obj);
                         break;
 
                 }
@@ -65,21 +66,22 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     }
 
 
-
     @Override
     public void auth() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String token = gitHubAccount.getAuthToken();
-                L.i(TAG,"token = " + token);
+                L.i(TAG, "token = " + token);
                 User user = null;
                 try {
-                     user = github.authUser(token);
-                    L.i(TAG,user.toString());
+                    user = github.authUser(token);
+                    L.i(TAG, user.toString());
                     L.i("Get new avatar = " + user.getAvatar_url());
-                }catch (GithubError e) {
+                } catch (GithubError e) {
                     L.i("update avatar url fail");
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
                 }
                 Message msg = new Message();
                 msg.what = 1;
@@ -100,14 +102,18 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 User user = null;
                 try {
                     user = github.user(username);
-                    L.i(TAG,user.toString());
-                }catch (GithubError e){
-                    L.i(TAG,"userinfo fail");
+                    L.i(TAG, user.toString());
+                } catch (GithubError e) {
+                    L.i(TAG, "userinfo fail");
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
                     msg.obj = context.getString(R.string.fail_load_userInfo) + username;
                     handler.sendMessage(msg);
                     return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    userInfo(username);
                 }
                 Message msg = new Message();
                 msg.what = USER_MSG;
@@ -127,12 +133,16 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 boolean ifFollow = false;
                 try {
                     ifFollow = github.hasFollow(targetUser);
-                }catch (GithubError e){
+                } catch (GithubError e) {
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
                     msg.obj = context.getString(R.string.fail_load_relation);
                     handler.sendMessage(msg);
                     return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    hasFollow(targetUser);
                 }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
@@ -152,12 +162,16 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 boolean ifFollow = false;
                 try {
                     ifFollow = github.follow(targetUser);
-                }catch (GithubError e){
+                } catch (GithubError e) {
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
                     msg.obj = context.getString(R.string.fail_follow) + targetUser;
                     handler.sendMessage(msg);
                     return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    follow(targetUser);
                 }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
@@ -178,12 +192,17 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 try {
                     unFollow = github.unfollow(targetUser);
                     unFollow = !unFollow;
-                }catch (GithubError e){
+                } catch (GithubError e) {
                     Message msg = new Message();
                     msg.what = FAIL_MSG;
                     msg.obj = context.getString(R.string.fail_unfollow) + targetUser;
                     handler.sendMessage(msg);
-                    return;                }
+                    return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    unFollow(targetUser);
+                }
                 Message msg = new Message();
                 msg.what = FOLLOW_STATE_MSG;
                 msg.obj = unFollow;

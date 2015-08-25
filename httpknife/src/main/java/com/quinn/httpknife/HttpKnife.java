@@ -216,18 +216,14 @@ public class HttpKnife {
 		return this;
 	}
 
-	/**
-	 * post请求，mutipart类型
-	 * 
-	 * @param url
-	 * @param params
-	 * @param filename
-	 * @param fileParamName
-	 * @param file
-	 * @return
-	 */
 
+	/**
+	 * Get Response
+	 * @return
+	 * @throws IOException
+	 */
 	public OutputStream openOutput() throws IOException {
+		HttpLog.i("Request URL : " + connection.getURL());
 		if (connect)
 			return output;
 		else {
@@ -521,14 +517,19 @@ public class HttpKnife {
 			httpResponse.setEntity(entityFromConnection());
 			headersFromConnection(httpResponse);
 			Response response = new Response(httpResponse);
-			int statusCode = statusLine.getStatusCode();
-//			if(statusCode >= 400 && statusCode <= 500)
-//				response.setSuccess(false);
+			HttpLog.i("=====Got Respose=====");
+			HttpLog.i("Response success : " + response.isSuccess());
+			HttpLog.i("Response statusCode  : " + response.statusCode());
+			HttpLog.i("Response reasonPhrase : " + response.reasonPhrase());
+			HttpLog.i("=====Got Respose=====");
 			return response;
 		} catch (IOException e) {
 			e.printStackTrace();
 			Response response = new Response();
 			response.setSuccess(false);
+			HttpLog.i("=====Got Respose Fail=====");
+			HttpLog.i("Response success : " + response.isSuccess());
+			HttpLog.i("=====Got Respose Fail=====");
 			return response;
 		}
 	}

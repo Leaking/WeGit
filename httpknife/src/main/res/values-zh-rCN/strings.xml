@@ -4,6 +4,7 @@
 
     <string name="app_name">httpknife</string>
     <string name="network_error">请检查网络，或稍后重试</string>
+    <string name="credential_error">认证失败</string>
 
 
 </resources>

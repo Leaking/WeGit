@@ -9,6 +9,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadRepoListener;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
@@ -67,9 +68,9 @@ public class RepoInteractorImpl implements RepoInteractor{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
                 try {
-                    String token = gitHubAccount.getAuthToken();
-                    github.makeAuthRequest(token);
                     boolean hasStar = github.hasStarRepo(owner, repo);
                     Message msg = new Message();
                     msg.what = STAR_STATE;
@@ -81,6 +82,10 @@ public class RepoInteractorImpl implements RepoInteractor{
                     msg.what = FAIL;
                     msg.obj = context.getResources().getString(R.string.network_error);
                     handler.sendMessage(msg);
+                }  catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    hasStar(owner,repo);
                 }
             }
         }).start();
@@ -91,8 +96,9 @@ public class RepoInteractorImpl implements RepoInteractor{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String token = gitHubAccount.getAuthToken();
+
                 try {
-                    String token = gitHubAccount.getAuthToken();
                     github.makeAuthRequest(token);
                     boolean hasStar = github.starRepo(owner, repo);
                     Message msg = new Message();
@@ -105,6 +111,10 @@ public class RepoInteractorImpl implements RepoInteractor{
                     msg.what = FAIL;
                     msg.obj = context.getResources().getString(R.string.network_error);
                     handler.sendMessage(msg);
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    star(owner,repo);
                 }
             }
         }).start();
@@ -115,8 +125,8 @@ public class RepoInteractorImpl implements RepoInteractor{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String token = gitHubAccount.getAuthToken();
                 try {
-                    String token = gitHubAccount.getAuthToken();
                     github.makeAuthRequest(token);
                     boolean unstar = github.unStarRepo(owner, repo);
                     Message msg = new Message();
@@ -129,6 +139,10 @@ public class RepoInteractorImpl implements RepoInteractor{
                     msg.what = FAIL;
                     msg.obj = context.getResources().getString(R.string.network_error);
                     handler.sendMessage(msg);
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    unStar(owner,repo);
                 }
             }
         }).start();
