@@ -19,10 +19,11 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AccountsException;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.quinn.githubknife.ui.BaseActivity;
 
 import java.io.IOException;
 
@@ -40,7 +41,7 @@ public class GitHubAccount {
 
     private final AccountManager manager;
 
-        Context context;
+    Context context;
     /**
      * Create account wrapper
      *
@@ -77,11 +78,12 @@ public class GitHubAccount {
      */
     public String getAuthToken() {
 
-        final AccountManagerFuture<Bundle> future = manager.getAuthToken(account, ACCOUNT_TYPE, null, (Activity)context, null, null);
+        final AccountManagerFuture<Bundle> future = manager.getAuthToken(account, ACCOUNT_TYPE, null, (BaseActivity)context, null, null);
 
         try {
             Bundle result = future.getResult();
             return result.getString(AccountManager.KEY_AUTHTOKEN);
+
         } catch (AccountsException e) {
             Log.e(TAG, "Auth token lookup failed", e);
             return null;

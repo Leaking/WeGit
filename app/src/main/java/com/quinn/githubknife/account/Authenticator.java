@@ -64,12 +64,15 @@ public class Authenticator extends AbstractAccountAuthenticator {
         final AccountManager am = AccountManager.get(context);
         Log.i(TAG, "Try to get AuthToken");
         String authToken = am.peekAuthToken(account, authTokenType);
+
         if (TextUtils.isEmpty(authToken)) {
+            Log.i(TAG, "Try to get AuthToken authToken is empty");
             final String password = am.getPassword(account);
             if (password != null) {
+                Log.i(TAG, "Try to get AuthToken password isn't empty");
                 Github github = new GithubImpl(context);
                 try {
-                    github.createToken(account.name,password);
+                    authToken = github.createToken(account.name,password);
                 } catch (GithubError githubError) {
                     githubError.printStackTrace();
                     authToken = "";
@@ -77,10 +80,13 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     authError.printStackTrace();
                     authToken = "";
                 }
+            }else {
+                Log.i(TAG, "Try to get AuthToken password is empty");
             }
         }
 
         if (!TextUtils.isEmpty(authToken)) {
+            Log.i(TAG, "Try to get AuthToken authToken has been got!!");
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
@@ -90,12 +96,14 @@ public class Authenticator extends AbstractAccountAuthenticator {
         // If we get here, then we couldn't access the user's password - so we
         // need to re-prompt them for their credentials. We do that by creating
         // an intent to display our AuthenticatorActivity.
+        Log.i(TAG, "Try to get AuthToken ,get authToken fail, jump to login UI 1");
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         intent.putExtra(ARG_ACCOUNT_TYPE, account.type);
         intent.putExtra(ARG_AUTH_TYPE, authTokenType);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        Log.i(TAG, "Try to get AuthToken ,get authToken fail, jump to login UI 2");
         return bundle;
     }
 
