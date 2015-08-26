@@ -8,8 +8,8 @@ android {
         applicationId "com.quinn.githubknife"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 2
-        versionName "0.6"
+        versionCode 3
+        versionName "0.7"
     }
     buildTypes {
         release {

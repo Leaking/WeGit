@@ -31,6 +31,15 @@ Android Studio
 
 - Setting Module
 
+# APK
+
+1. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.7.apk)
+
+2. You can also scan the below QR code to download apk in your mobile phone.
+
+<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
+
+
 # Bug
 
 - Crush after login in some phone.
