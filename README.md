@@ -42,7 +42,9 @@ Android Studio
 
 # Bug
 
-- Crush after login in some phone.
+- Q:Crush after login in some phone.
+
+- A:Fix! It's caused by email-login logic error.
 
 # Contact me
 
