@@ -70,14 +70,14 @@ public class GithubImpl implements Github {
     public void filterError(Response response) throws GithubError,AuthError{
         if (response.isSuccess() == false)
             throw githubError;
-        if (response.statusCode() == 401) {
+        if (response.statusCode() == _401) {
             throw authError;
         }
     }
 
     @Override
     public String createToken(String username, String password)
-            throws GithubError,AuthError {
+            throws GithubError,AuthError,OverAuthError {
         JSONObject json = new JSONObject();
         try {
             json.put("note", TOKEN_NOTE);
@@ -91,10 +91,13 @@ public class GithubImpl implements Github {
                 .basicAuthorization(username, password).json(json).response();
         if (response.isSuccess() == false)
             throw githubError;
-        if (response.statusCode() == 401) {
+        if (response.statusCode() == _401) {
             throw new AuthError("username or password is incorrect");
         }
-        if (response.statusCode() == 422) {
+        if(response.statusCode() == _403){
+            throw new OverAuthError();
+        }
+        if (response.statusCode() == _422) {
             removeToken(username, password);
             return createToken(username, password);
         }

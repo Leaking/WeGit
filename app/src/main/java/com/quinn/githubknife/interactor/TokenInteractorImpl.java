@@ -10,6 +10,7 @@ import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.OverAuthError;
 
 /**
  * Created by Quinn on 8/1/15.
@@ -70,6 +71,12 @@ public class TokenInteractorImpl implements TokenInteractor {
                     Message msg = new Message();
                     msg.what = ERROR;
                     msg.obj = context.getResources().getString(R.string.auth_error);
+                    handler.sendMessage(msg);
+                } catch (OverAuthError overAuthError) {
+                    overAuthError.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = ERROR;
+                    msg.obj = context.getResources().getString(R.string.over_auth_error);
                     handler.sendMessage(msg);
                 }
             }

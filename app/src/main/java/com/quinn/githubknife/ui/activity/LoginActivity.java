@@ -3,7 +3,6 @@ package com.quinn.githubknife.ui.activity;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.Authenticator;
 import com.quinn.githubknife.presenter.CreateTokenPresenter;
@@ -33,13 +33,17 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
-    @Nullable @Bind(R.id.toolbar)
+    @Nullable
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Nullable @Bind(R.id.username)
+    @Nullable
+    @Bind(R.id.username)
     EditText username;
-    @Nullable @Bind(R.id.password)
+    @Nullable
+    @Bind(R.id.password)
     EditText password;
-    @Nullable @Bind(R.id.submit)
+    @Nullable
+    @Bind(R.id.submit)
     Button submit;
 
     private String accountName;
@@ -47,7 +51,8 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
     private String accountType;
     private AccountManager mAccountManager;
     private CreateTokenPresenter presenter;
-    private ProgressDialog progressDialog;
+    private MaterialDialog progressDialog;
+    private MaterialDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        presenter = new CreateTokenPresenterImpl(this,this);
+        presenter = new CreateTokenPresenterImpl(this, this);
         mAccountManager = AccountManager.get(getBaseContext());
         Intent intent = getIntent();
         mAccountAuthenticatorResponse =
@@ -68,13 +73,20 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         accountType = intent.getStringExtra(Authenticator.ARG_ACCOUNT_TYPE);
 
         mAuthTokenType = Authenticator.AUTHTOKEN_TYPE_FULL_ACCESS;
-
+        builder = new MaterialDialog.Builder(this)
+                .content(R.string.login)
+                .cancelable(false)
+                .progress(true, 0);
     }
 
 
     @OnClick(R.id.submit)
     void sumbit() {
-        presenter.createToken(username.getText().toString(),password.getText().toString());
+        if (username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+            ToastUtils.showMsg(this, R.string.input_complete);
+            return;
+        }
+        presenter.createToken(username.getText().toString(), password.getText().toString());
     }
 
     @Override
@@ -100,11 +112,11 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
     }
 
 
-
     /**
      * Set the result that is to be sent as the result of the request that caused this
      * Activity to be launched. If result is null or this method is never called then
      * the request will be canceled.
+     *
      * @param result this is returned as the result of the AbstractAccountAuthenticator request
      */
     public final void setAccountAuthenticatorResult(Bundle result) {
@@ -133,20 +145,19 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
 
     @Override
     public void showProgress() {
-        progressDialog = ProgressDialog.show(this, "提示", "正在登陆中", true);
-        progressDialog.setProgressStyle(R.style.AppCompatAlertDialogStyle);
+        progressDialog = builder.show();
     }
 
     @Override
     public void hideProgress() {
-        progressDialog.hide();
+        progressDialog.dismiss();
     }
 
     @Override
     public void tokenCreated(String token) {
         String accountName = username.getText().toString();
         String accountPassword = password.getText().toString();
-        PreferenceUtils.putString(this,PreferenceUtils.Key.ACCOUNT,accountName);
+        PreferenceUtils.putString(this, PreferenceUtils.Key.ACCOUNT, accountName);
         final Account account = new Account(accountName, accountType);
         if (getIntent().getBooleanExtra(Authenticator.ARG_IS_ADDING_NEW_ACCOUNT, true)) {
             mAccountManager.addAccountExplicitly(account, accountPassword, null);
@@ -155,7 +166,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
             mAccountManager.setPassword(account, accountPassword);
         }
         Bundle bundle = new Bundle();
-        bundle.putString(AccountManager.KEY_ACCOUNT_NAME,accountName);
+        bundle.putString(AccountManager.KEY_ACCOUNT_NAME, accountName);
         bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
         bundle.putString(AccountManager.KEY_AUTHTOKEN, token);
         bundle.putString(Authenticator.PARAM_USER_PASS, accountPassword);
@@ -166,8 +177,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
 
     @Override
     public void onError(String msg) {
-        ToastUtils.showMsg(this,msg);
+        ToastUtils.showMsg(this, msg);
     }
-
 
 }

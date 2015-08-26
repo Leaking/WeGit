@@ -28,16 +28,20 @@
     <string name="developing">This module is under development!</string>
     <string name="network_error">Please check your network</string>
     <string name="auth_error">Username or password is incorrect</string>
+    <string name="over_auth_error">Maximum number of login attempts exceeded. Please try again later.</string>
     <string name="fail_follow">Fail to follow </string>
     <string name="fail_unfollow">Fail to unfollow </string>
     <string name="fail_load_relation">Fail to load relation</string>
     <string name="fail_load_userInfo">Fail to load information of </string>
     <string name="fail_auth_user">Fail to init your information,You have to check you network condition or try it later. </string>
     <string name="fail_load_content">Fail to load file content</string>
-    <string name="try_again">Try Again</string>
     <string name="fail_init_warning">Fail to initial</string>
 
 
+    <!--warning-->
+    <string name="try_again">Try Again</string>
+    <string name="input_complete">Input your username and password</string>
+    <string name="login">Login...</string>
 
 
     <!--Description-->

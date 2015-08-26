@@ -19,7 +19,7 @@ public interface Github {
      *
      * @return
      */
-    public String createToken(String username, String password) throws GithubError, AuthError;
+    public String createToken(String username, String password) throws GithubError, AuthError,OverAuthError;
 
 
     /**
