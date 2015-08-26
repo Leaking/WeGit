@@ -23,7 +23,7 @@ Android Studio
 
 1. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.5.apk)
 
-2. You can also scan the below QR code to download apk in your mobile phone.
+2. You can also scan the below QR code to download apk in your mobile phone.(Ps：Don't use WeChat to scan,it doesn't support)
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.png" width="340" />
 
@@ -52,7 +52,7 @@ chenhuazhaoao@gmail.com
 
 # Support Development
 
-Use WeChat to scan the below QR Code to tip me.
+Use WeChat to scan the below QR Code to tip me.(拿出你的手机，打开微信，打开扫一扫，拿钱砸我)
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git7.pic.jpg" width="340" />
 
