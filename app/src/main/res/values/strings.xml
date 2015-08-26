@@ -3,6 +3,7 @@
     <!--App Name and Activity Name-->
     <string name="app_name">WeGit</string>
 
+    <string name="title_activity_login">Login</string>
     <string name="title_activity_main">WeGit</string>
     <string name="title_activity_user_info">UserInfoActivity</string>
     <string name="title_activity_fo">FoActivity</string>
@@ -31,10 +32,21 @@
     <string name="fail_unfollow">Fail to unfollow </string>
     <string name="fail_load_relation">Fail to load relation</string>
     <string name="fail_load_userInfo">Fail to load information of </string>
+    <string name="fail_auth_user">Fail to init your information,You have to check you network condition or try it later. </string>
     <string name="fail_load_content">Fail to load file content</string>
+    <string name="try_again">Try Again</string>
+    <string name="fail_init_warning">Fail to initial</string>
+
+
+
 
     <!--Description-->
     <string name="search_warning">You can input keywords to search user or repository，，，</string>
+    <string name="username_or_email">Username or Email</string>
+    <string name="password">Password</string>
+
+    <!--Button Text-->
+    <string name="btn_login">Login</string>
 
 
     <!--Search-->

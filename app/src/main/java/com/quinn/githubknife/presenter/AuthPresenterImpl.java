@@ -45,6 +45,6 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void onError(String msg) {
-
+        view.onError(msg);
     }
 }

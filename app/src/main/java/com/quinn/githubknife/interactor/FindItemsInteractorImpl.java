@@ -165,6 +165,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<Repository> repos = new ArrayList<Repository>();
                 Message msg = new Message();
                 try {
+                    L.i("loadRepo user : " + user);
                     repos = github.repo(user, page);
                 } catch (GithubError e) {
                     L.i(TAG,"网络问题 loadStarredRepo");

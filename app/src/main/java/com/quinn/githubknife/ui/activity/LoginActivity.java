@@ -54,7 +54,6 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        toolbar.setTitle("Login");
         setSupportActionBar(toolbar);
         presenter = new CreateTokenPresenterImpl(this,this);
         mAccountManager = AccountManager.get(getBaseContext());

@@ -14,7 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/theme_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:title="Login"
+        android:title="@string/title_activity_login"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -30,7 +30,7 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="username or email" />
+            android:hint="@string/username_or_email" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -44,10 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="password" />
+            android:hint="@string/password" />
 
     </android.support.design.widget.TextInputLayout>
-
 
 
     <Button
@@ -56,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:textColor="@color/color_white"
-        android:background="@color/color_accent"
-        android:text="submit" />
+        android:background="@color/theme_color"
+        android:text="@string/btn_login" />
 
 </LinearLayout>

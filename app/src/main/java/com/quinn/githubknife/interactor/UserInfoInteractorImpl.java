@@ -78,15 +78,22 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                     user = github.authUser(token);
                     L.i(TAG, user.toString());
                     L.i("Get new avatar = " + user.getAvatar_url());
+                    Message msg = new Message();
+                    msg.what = 1;
+                    msg.obj = user;
+                    handler.sendMessage(msg);
                 } catch (GithubError e) {
-                    L.i("update avatar url fail");
+                    L.i(TAG, "auth fail");//f
+                    Message msg = new Message();
+                    msg.what = FAIL_MSG;
+                    msg.obj = context.getString(R.string.fail_auth_user);
+                    handler.sendMessage(msg);
+                    return;
                 } catch (AuthError authError) {
                     authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    auth();
                 }
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = user;
-                handler.sendMessage(msg);
             }
         }).start();
 

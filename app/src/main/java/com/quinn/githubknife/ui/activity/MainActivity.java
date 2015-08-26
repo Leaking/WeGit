@@ -1,5 +1,6 @@
 package com.quinn.githubknife.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,6 @@ import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.utils.L;
-import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
@@ -43,8 +44,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity implements MainAuthView,NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-
+public class MainActivity extends BaseActivity implements MainAuthView, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
     @Bind(R.id.toolbar_main)
@@ -79,8 +79,8 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         ButterKnife.bind(this);
 
         img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
-        txt_user = (TextView)navigationVIew.findViewById(R.id.headerText);
-        headerView = (View)navigationVIew.findViewById(R.id.nav_header);
+        txt_user = (TextView) navigationVIew.findViewById(R.id.headerText);
+        headerView = (View) navigationVIew.findViewById(R.id.nav_header);
 
 
         imageLoader = ImageLoader.getInstance();
@@ -98,18 +98,16 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         navigationVIew.setNavigationItemSelectedListener(this);
         adapter = new Adapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
-        presenter = new AuthPresenterImpl(this,this);
+        presenter = new AuthPresenterImpl(this, this);
         presenter.auth();
         headerView.setOnClickListener(this);
-
     }
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.menu_main, menu);
+        // getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -126,25 +124,25 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        if(doneAuth) {
+        if (doneAuth) {
             L.i(TAG, "menuItem id = " + menuItem.getItemId() + " order = " + menuItem.getOrder());
             mDrawerLayout.closeDrawers();
             setUpTab(menuItem.getItemId());
-            if(menuItem.getItemId() == R.id.nav_home || menuItem.getItemId() == R.id.nav_friends)
+            if (menuItem.getItemId() == R.id.nav_home || menuItem.getItemId() == R.id.nav_friends)
                 menuItem.setChecked(true);
         }
         return true;
     }
 
-    public void setUpTab(int id){
+    public void setUpTab(int id) {
 
-        switch (id){
+        switch (id) {
             case R.id.nav_home:
                 adapter.clear();
                 viewpager.setOffscreenPageLimit(3);
                 adapter.addFragment(ReceivedEventFragment.getInstance(loginUser), "Events");
-                adapter.addFragment(StarredRepoFragment.getInstance(loginUser),"Starred");
-                adapter.addFragment(UserRepoFragment.getInstance(loginUser),"Repository");
+                adapter.addFragment(StarredRepoFragment.getInstance(loginUser), "Starred");
+                adapter.addFragment(UserRepoFragment.getInstance(loginUser), "Repository");
                 adapter.notifyDataSetChanged();
                 tab.setupWithViewPager(viewpager);
 
@@ -152,13 +150,13 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
             case R.id.nav_friends:
                 adapter.clear();
                 viewpager.setOffscreenPageLimit(2);
-                adapter.addFragment(FollowerFragment.getInstance(loginUser),"Follower");
-                adapter.addFragment(FollowingFragment.getInstance(loginUser),"Following");
+                adapter.addFragment(FollowerFragment.getInstance(loginUser), "Follower");
+                adapter.addFragment(FollowingFragment.getInstance(loginUser), "Following");
                 adapter.notifyDataSetChanged();
                 tab.setupWithViewPager(viewpager);
                 break;
-            case R.id.nav_search:{
-                Intent intent = new Intent(this,SearchActivity.class);
+            case R.id.nav_search: {
+                Intent intent = new Intent(this, SearchActivity.class);
                 this.startActivity(intent);
                 //ToastUtils.showMsg(this, R.string.developing);
                 break;
@@ -167,7 +165,7 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
                 ToastUtils.showMsg(this, R.string.developing);
                 return;
             case R.id.nav_about:
-                Intent intent = new Intent(this,AboutActivity.class);
+                Intent intent = new Intent(this, AboutActivity.class);
                 this.startActivity(intent);
                 break;
         }
@@ -176,27 +174,12 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
     }
 
 
-
     @Override
     public void doneAuth(User user) {
-        if(user == null){
-            this.user = new User();
-        }else {
-            this.user = user;
-        }
-        String avatar = "";
-        if(user != null && user.getAvatar_url() != null && !user.getAvatar_url().isEmpty())
-            avatar = user.getAvatar_url();
-        if(avatar.isEmpty() == false)
-            PreferenceUtils.putString(this, PreferenceUtils.Key.AVATAR,avatar);
-        else{
-            avatar = PreferenceUtils.getString(this, PreferenceUtils.Key.AVATAR);
-        }
-        loginUser = PreferenceUtils.getString(this, PreferenceUtils.Key.ACCOUNT);
-        this.user.setAvatar_url(avatar);
-        this.user.setLogin(loginUser);
+        this.user = user;
+        loginUser = user.getLogin();
         txt_user.setText(loginUser);
-        imageLoader.displayImage(avatar,img_avatar,option,animateFirstListener);
+        imageLoader.displayImage(this.user.getAvatar_url(), img_avatar, option, animateFirstListener);
         tab.setupWithViewPager(viewpager);
         setUpTab(R.id.nav_home);
         doneAuth = true;
@@ -205,11 +188,27 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
     @Override
     public void onClick(View v) {
-        if(doneAuth){
+        if (doneAuth) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", user);
             UserInfoActivity.launch(this, bundle);
         }
+    }
+
+    @Override
+    public void onError(String msg) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
+        builder.setTitle(R.string.fail_init_warning);
+        builder.setMessage(msg);
+        builder.setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.auth();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
 
@@ -232,8 +231,10 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
 
             mFragmentTitles.add(title);
         }
-        public void clear(){
-            mFragmentTitles.clear();;
+
+        public void clear() {
+            mFragmentTitles.clear();
+            ;
             mFragments.clear();
             notifyDataSetChanged();
         }
@@ -255,12 +256,10 @@ public class MainActivity extends BaseActivity implements MainAuthView,Navigatio
         }
 
         @Override
-        public int getItemPosition(Object object){
+        public int getItemPosition(Object object) {
             return PagerAdapter.POSITION_NONE;
         }
     }
-
-
 
 
 }

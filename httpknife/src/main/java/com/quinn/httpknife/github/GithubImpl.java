@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.quinn.httpknife.HttpKnife;
+import com.quinn.httpknife.HttpLog;
 import com.quinn.httpknife.R;
 import com.quinn.httpknife.Response;
 
@@ -196,6 +197,8 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/repos?sort=pushed";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
          filterError(response);
+        HttpLog.i("repo  : " + response.body());
+
         Gson gson = new Gson();
         ArrayList<Repository> repoList = gson.fromJson(response.body(),
                 new TypeToken<List<Repository>>() {
@@ -209,7 +212,8 @@ public class GithubImpl implements Github {
     public List<Repository> starred(String user, int page) throws GithubError,AuthError {
         String url = API_HOST + "users/" + user + "/starred";
         Response response = http.get(url, pagination(page)).headers(configreHttpHeader()).response();
-       filterError(response);
+        filterError(response);
+        HttpLog.i("starred repo : " + response.body());
         Gson gson = new Gson();
         ArrayList<Repository> repoList = gson.fromJson(response.body(),
                 new TypeToken<List<Repository>>() {
@@ -235,6 +239,7 @@ public class GithubImpl implements Github {
         String url = API_HOST + "users/" + user + "/received_events";
         Response response = http.get(url, params).headers(configreHttpHeader()).response();
         filterError(response);
+        HttpLog.i("receivedEvent  : " + response.body());
         Gson gson = new Gson();
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
