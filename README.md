@@ -33,13 +33,15 @@ Android Studio
 
 # APK
 
-1. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.7.apk)
+1. 腾讯应用宝搜索"WeGit"
 
-2. You can also scan the below QR code to download apk in your mobile phone.
+2. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.7.apk)
+
+3. You can also scan the below QR code to download apk in your mobile phone.
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
 
-3. 腾讯应用宝搜索"WeGit"
+
 
 # Bug
 
