@@ -39,6 +39,7 @@ Android Studio
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
 
+3. 腾讯应用宝搜索"WeGit"
 
 # Bug
 
