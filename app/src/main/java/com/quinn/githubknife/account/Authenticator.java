@@ -16,6 +16,7 @@ import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.OverAuthError;
 
 
 /**
@@ -78,6 +79,9 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     authToken = "";
                 } catch (AuthError authError) {
                     authError.printStackTrace();
+                    authToken = "";
+                } catch (OverAuthError overAuthError) {
+                    overAuthError.printStackTrace();
                     authToken = "";
                 }
             }else {

@@ -33,7 +33,6 @@ import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.utils.L;
-import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
@@ -162,7 +161,8 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
                 break;
             }
             case R.id.nav_setting:
-                ToastUtils.showMsg(this, R.string.developing);
+                SettingActivity.launch(this);
+                //ToastUtils.showMsg(this, R.string.developing);
                 return;
             case R.id.nav_about:
                 Intent intent = new Intent(this, AboutActivity.class);

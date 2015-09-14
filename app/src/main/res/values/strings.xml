@@ -12,8 +12,9 @@
     <string name="title_activity_code">CodeActivity</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_image">ImageActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Search</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_setting">Setting</string>
 
 
 
@@ -83,6 +84,8 @@
     <string name="icon_code" translatable="false">\uf05f</string>
     <string name="icon_issue" translatable="false">\uf026</string>
     <string name="icon_tag" translatable="false">\uf015</string>
+
+    <string name="hello_world">Hello world!</string>
 
 
 

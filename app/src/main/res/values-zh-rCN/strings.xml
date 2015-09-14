@@ -14,7 +14,7 @@
     <string name="title_activity_code">CodeActivity</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_image">ImageActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">搜索</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
 
 

@@ -8,6 +8,7 @@ import com.quinn.httpknife.github.User;
  */
 public interface MainAuthView extends ErrorView {
 
+
     public void doneAuth(User user);
 
 
