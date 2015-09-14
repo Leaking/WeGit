@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
@@ -183,6 +184,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         tab.setupWithViewPager(viewpager);
         setUpTab(R.id.nav_home);
         doneAuth = true;
+        ((GithubApplication)getApplication()).setUser(user);
     }
 
 

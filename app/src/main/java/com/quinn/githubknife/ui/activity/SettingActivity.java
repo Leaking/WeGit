@@ -4,14 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.widget.SettingLabel;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  *
@@ -22,6 +24,11 @@ public class SettingActivity extends BaseActivity {
     //feature branch
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+
+    @Bind(R.id.version)
+    SettingLabel version;
+
 
 
     public static void launch(Context context){
@@ -38,14 +45,9 @@ public class SettingActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        version.setValue(((GithubApplication) getApplication()).getAPKVersion().getVersionName());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_setting, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -56,4 +58,24 @@ public class SettingActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    @OnClick(R.id.author)
+    void author(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user",app.getUser());
+        UserInfoActivity.launch(this,bundle);
+    }
+
+    @OnClick(R.id.repo)
+    void repo(){
+
+
+
+    }
+
+
+
+
+
 }

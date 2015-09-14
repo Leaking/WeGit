@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <declare-styleable name="label_layout">
+        <attr name="label_name" format="string" />
+        <attr name="label_value" format="string" />
+    </declare-styleable>
+
+</resources>

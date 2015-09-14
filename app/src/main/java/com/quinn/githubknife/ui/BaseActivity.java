@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 
 
@@ -17,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     protected DisplayImageOptions option;
     protected ImageLoader imageLoader;
+    protected GithubApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class BaseActivity extends AppCompatActivity {
         imageLoader = ImageLoader.getInstance();
         option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
                 .considerExifParams(true).build();
+        app = (GithubApplication) getApplication();
        // github = new GithubImpl(this);
 
     }

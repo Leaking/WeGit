@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:label_layout="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -20,11 +21,51 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:background="@color/color_white"
         android:orientation="vertical"
         >
 
+        <com.quinn.githubknife.ui.widget.SettingLabel
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            label_layout:label_name="Author"
+            label_layout:label_value="Quinn"
+            />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="@color/color_gray"
+            >
 
+        </View>
+
+        <com.quinn.githubknife.ui.widget.SettingLabel
+            android:id="@+id/repo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            label_layout:label_name="Github Repo"
+            label_layout:label_value="WeGit"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="@color/color_gray"
+            >
+
+        </View>
+
+        <com.quinn.githubknife.ui.widget.SettingLabel
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            label_layout:label_name="Version"
+            label_layout:label_value="V0.7"
+            />
 
 
     </LinearLayout>
