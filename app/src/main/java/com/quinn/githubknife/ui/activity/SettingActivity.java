@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class SettingActivity extends BaseActivity {
 
 
-
+    //feature branch
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
