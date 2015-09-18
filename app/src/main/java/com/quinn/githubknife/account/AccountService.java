@@ -7,7 +7,7 @@ import android.os.IBinder;
 public class AccountService extends Service {
 
     private Authenticator authenticator;
-
+//
     public AccountService() {
     }
 
