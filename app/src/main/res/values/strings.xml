@@ -66,6 +66,11 @@
 
 
 
+    <!--Email-->
+    <string name="email_body">This is Content</string>
+    <string name="email_title">This is Titl</string>
+
+
 
 
     <!-- TTF fonts-->

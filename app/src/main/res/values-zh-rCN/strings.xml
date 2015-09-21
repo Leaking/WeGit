@@ -44,6 +44,10 @@
     <string name="login">登陆中...</string>
     <string name="initial">初始化...</string>
 
+    <!--Email-->
+    <string name="email_body">这是内容</string>
+    <string name="email_title">这是标题</string>
+
 
 
     <!--说明-->

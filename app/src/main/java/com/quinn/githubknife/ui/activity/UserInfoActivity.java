@@ -301,8 +301,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @OnClick(R.id.emailWrap)
     public void sendEmail(){
-//        if(email.getText().toString().isEmpty() == false)
-//            sendEmail(email.getText().toString());
+        if(email.getText().toString().isEmpty() == false)
+            sendEmail(email.getText().toString());
     }
 
 
