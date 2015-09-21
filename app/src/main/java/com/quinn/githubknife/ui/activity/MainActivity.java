@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -57,6 +58,9 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
     ViewPager viewpager;
     @Bind(R.id.tabs)
     TabLayout tab;
+
+    private MaterialDialog progressDialog;
+    private MaterialDialog.Builder builder;
 
     private View headerView;
     private TextView txt_user;
@@ -98,9 +102,17 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         navigationVIew.setNavigationItemSelectedListener(this);
         adapter = new Adapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
+        builder = new MaterialDialog.Builder(this)
+                .content(R.string.initial)
+                .cancelable(false)
+                .progress(true, 0);
+
+
         presenter = new AuthPresenterImpl(this, this);
         presenter.auth();
         headerView.setOnClickListener(this);
+
+
     }
 
 
@@ -212,6 +224,17 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         builder.setCancelable(false);
         builder.show();
     }
+
+    @Override
+    public void showProgress() {
+        progressDialog = builder.show();
+    }
+
+    @Override
+    public void hideProgress() {
+        progressDialog.dismiss();
+    }
+
 
 
     static class Adapter extends FragmentStatePagerAdapter {

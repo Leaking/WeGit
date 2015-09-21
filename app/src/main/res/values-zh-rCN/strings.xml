@@ -42,6 +42,7 @@
     <string name="try_again">重试</string>
     <string name="input_complete">请输入账号密码</string>
     <string name="login">登陆中...</string>
+    <string name="initial">初始化...</string>
 
 
 

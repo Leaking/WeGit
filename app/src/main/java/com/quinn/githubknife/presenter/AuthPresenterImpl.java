@@ -25,6 +25,7 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void auth() {
+        this.view.showProgress();
         this.authInteractor.auth();;
     }
 
@@ -34,6 +35,7 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void onFinish(User user) {
+        view.hideProgress();
         view.doneAuth(user);
     }
 
@@ -45,6 +47,7 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void onError(String msg) {
+        view.hideProgress();
         view.onError(msg);
     }
 }

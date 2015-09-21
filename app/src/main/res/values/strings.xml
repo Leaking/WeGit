@@ -43,6 +43,7 @@
     <string name="try_again">Try Again</string>
     <string name="input_complete">Input your username and password</string>
     <string name="login">Login...</string>
+    <string name="initial">Initialing...</string>
 
 
     <!--Description-->
