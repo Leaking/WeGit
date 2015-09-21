@@ -34,7 +34,6 @@ import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
-import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
@@ -48,6 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends BaseActivity implements MainAuthView, NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
+    //UI
     @Bind(R.id.toolbar_main)
     Toolbar toolbar;
     @Bind(R.id.nav_view)
@@ -58,20 +58,17 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
     ViewPager viewpager;
     @Bind(R.id.tabs)
     TabLayout tab;
-
     private MaterialDialog progressDialog;
     private MaterialDialog.Builder builder;
-
     private View headerView;
     private TextView txt_user;
     private CircleImageView img_avatar;
-    private boolean doneAuth = false;
-
     private Adapter adapter;
-    private ActionBarDrawerToggle mDrawerToggle;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
+    //Logic
+    private boolean doneAuth = false;
     private AuthPresenter presenter;
     private String loginUser;
     private User user;
@@ -81,12 +78,10 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        //UI
         img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
         txt_user = (TextView) navigationVIew.findViewById(R.id.headerText);
         headerView = (View) navigationVIew.findViewById(R.id.nav_header);
-
-
         imageLoader = ImageLoader.getInstance();
         option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
                 .considerExifParams(true).build();
@@ -106,13 +101,10 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
                 .content(R.string.initial)
                 .cancelable(false)
                 .progress(true, 0);
-
-
+        //logic
         presenter = new AuthPresenterImpl(this, this);
         presenter.auth();
         headerView.setOnClickListener(this);
-
-
     }
 
 
@@ -137,7 +129,6 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         if (doneAuth) {
-            L.i(TAG, "menuItem id = " + menuItem.getItemId() + " order = " + menuItem.getOrder());
             mDrawerLayout.closeDrawers();
             setUpTab(menuItem.getItemId());
             if (menuItem.getItemId() == R.id.nav_home || menuItem.getItemId() == R.id.nav_friends)
@@ -170,12 +161,10 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
             case R.id.nav_search: {
                 Intent intent = new Intent(this, SearchActivity.class);
                 this.startActivity(intent);
-                //ToastUtils.showMsg(this, R.string.developing);
                 break;
             }
             case R.id.nav_setting:
                 SettingActivity.launch(this);
-                //ToastUtils.showMsg(this, R.string.developing);
                 return;
             case R.id.nav_about:
                 Intent intent = new Intent(this, AboutActivity.class);

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.UserInfoPresenter;
 import com.quinn.githubknife.presenter.UserInfoPresenterImpl;
@@ -28,6 +27,8 @@ import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
+import com.quinn.githubknife.ui.widget.UserLabel;
+import com.quinn.githubknife.utils.BitmapUtils;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.UserInfoView;
@@ -55,33 +56,28 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     FloatingActionButton relationBtn;
 
 
-    @Bind(R.id.repoWrap)
-    CardView repoWrap;
-    @Bind(R.id.followerWrap)
-    CardView followerWrap;
-    @Bind(R.id.followingWrap)
-    CardView followingWrap;
+    @Bind(R.id.repoLabel)
+    UserLabel repoLabel;
+    @Bind(R.id.followersLabel)
+    UserLabel followersLabel;
+    @Bind(R.id.followingsLabel)
+    UserLabel followingsLabel;
 
-    @Bind(R.id.repoNum)
-    TextView repoNum;
-    @Bind(R.id.followersNum)
-    TextView followerNum;
-    @Bind(R.id.followingNum)
-    TextView followingNum;
+
 
 
     @Bind(R.id.iconStar)
-    TextView iconStar;
+    ImageView iconStar;
     @Bind(R.id.iconEmail)
-    TextView iconEmail;
+    ImageView iconEmail;
     @Bind(R.id.iconBlog)
-    TextView iconBlog;
+    ImageView iconBlog;
     @Bind(R.id.iconCompany)
-    TextView iconCompany;
+    ImageView iconCompany;
     @Bind(R.id.iconLocation)
-    TextView iconLocation;
+    ImageView iconLocation;
     @Bind(R.id.iconJoinTime)
-    TextView iconJoin;
+    ImageView iconJoin;
 
     @Bind(R.id.email)
     TextView email;
@@ -131,25 +127,25 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(user.getLogin());
         paletteToolbar();
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "octicons.ttf");
-        iconStar.setTypeface(typeface);
-        iconEmail.setTypeface(typeface);
-        iconBlog.setTypeface(typeface);
-        iconCompany.setTypeface(typeface);
-        iconLocation.setTypeface(typeface);
-        iconJoin.setTypeface(typeface);
-        followState = FollowState.UNKNOWN;
+
+        BitmapUtils.setIconFont(this, iconStar, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, iconEmail, OctIcon.EMAIL, R.color.theme_color);
+        BitmapUtils.setIconFont(this, iconBlog, OctIcon.BLOG, R.color.theme_color);
+        BitmapUtils.setIconFont(this, iconCompany, OctIcon.COMPANY, R.color.theme_color);
+        BitmapUtils.setIconFont(this, iconLocation, OctIcon.LOCATE, R.color.theme_color);
+        BitmapUtils.setIconFont(this, iconJoin, OctIcon.JOIN, R.color.theme_color);
+
     }
 
 
     public void paletteToolbar(){
         //collapsingToolbar.setcon
-        imageLoader.displayImage(user.getAvatar_url(), backDrop, option, new AnimateFirstDisplayListener(){
+        imageLoader.displayImage(user.getAvatar_url(), backDrop, option, new AnimateFirstDisplayListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
 
-                Palette.generateAsync(loadedImage,24, new Palette.PaletteAsyncListener() {
+                Palette.generateAsync(loadedImage, 24, new Palette.PaletteAsyncListener() {
                     @Override
                     public void onGenerated(Palette palette) {
 
@@ -160,14 +156,15 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                         Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
                         Palette.Swatch lightMuted = palette.getLightMutedSwatch();
                         Palette.Swatch swatch = vibrant;
-                        swatch = (swatch == null) ? muted:swatch;
-                        swatch = (swatch == null) ? darkVibrant:swatch;
-                        swatch = (swatch == null) ? darkMuted:swatch;
-                        swatch = (swatch == null) ? lightVibrant:swatch;
-                        swatch = (swatch == null) ? lightMuted:swatch;
+                        swatch = (swatch == null) ? muted : swatch;
+                        swatch = (swatch == null) ? darkVibrant : swatch;
+                        swatch = (swatch == null) ? darkMuted : swatch;
+                        swatch = (swatch == null) ? lightVibrant : swatch;
+                        swatch = (swatch == null) ? lightMuted : swatch;
                         collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
                         // 使用颜色
-                    }});
+                    }
+                });
             }
         });
     }
@@ -181,9 +178,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -203,9 +198,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
          * 处理返回为空的请看
          */
 
-        followerNum.setText("" + user.getFollowers());
-        followingNum.setText("" + user.getFollowing());
-        repoNum.setText("" + user.getPublic_repos());
+        followersLabel.setValue("" + user.getFollowers());
+        followingsLabel.setValue("" + user.getFollowing());
+        repoLabel.setValue("" + user.getPublic_repos());
+
+
+
         email.setText(user.getEmail());
         company.setText(user.getCompany());
         blog.setText(user.getBlog());
@@ -254,6 +252,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         viewDetail(StarredRepoFragment.TAG);
     }
 
+
     @OnClick(R.id.relation)
     void changeRelation() {
         L.i(TAG, "try to changeRelation");
@@ -293,12 +292,27 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     }
 
+    @OnClick(R.id.blogWrap)
+    void directToBlog(){
+        L.i(TAG,"click blog");
+        if(blog.getText().toString().isEmpty() == false)
+            redirectToBrowser(blog.getText().toString());
+    }
+
+    @OnClick(R.id.emailWrap)
+    public void sendEmail(){
+//        if(email.getText().toString().isEmpty() == false)
+//            sendEmail(email.getText().toString());
+    }
+
+
     public void viewDetail(String contentType) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", user.getLogin());
         bundle.putString("fragment", contentType);
         FoActivity.launch(this, bundle);
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

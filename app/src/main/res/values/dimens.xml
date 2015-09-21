@@ -8,6 +8,15 @@
 
     <dimen name="item_content_textsize">16sp</dimen>
 
+    <!-- 列表与手机侧边的坚决 -->
+    <dimen name="item_to_left_right_margin">8dip</dimen>
+
+
+    <!--用户信息 -->
+    <dimen name="three_userlabel_height">80dip</dimen>
+    <dimen name="three_userlabel_wrap_height">90dip</dimen>
+    <dimen name="user_info_icon_size">25dip</dimen>
+
 
     <!-- http://developer.android.com/design/style/metrics-grids.html -->
     <dimen name="gapMicro">2dp</dimen>

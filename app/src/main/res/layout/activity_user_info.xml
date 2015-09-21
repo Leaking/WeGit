@@ -1,5 +1,6 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:userlabel="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,108 +51,74 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:paddingLeft="@dimen/item_to_left_right_margin"
+            android:paddingRight="@dimen/item_to_left_right_margin"
             android:paddingTop="24dp">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_margin"
+                android:layout_height="@dimen/three_userlabel_wrap_height"
                 android:layout_marginBottom="@dimen/card_margin"
+                android:layout_marginTop="@dimen/card_margin"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/repoWrap"
                     android:layout_width="0dip"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/three_userlabel_height"
+                    android:layout_marginRight="10dip"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:layout_weight="1">
 
-                    <LinearLayout
-                        style="@style/Widget.CardContent"
+                    <com.quinn.githubknife.ui.widget.UserLabel
+                        android:id="@+id/repoLabel"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/repoNum"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dip"
-                            android:text=""
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Respositroy"
-
-                            />
-
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        userlabel:name="Repos"
+                        userlabel:value="00" />
 
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/followerWrap"
                     android:layout_width="0dip"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/three_userlabel_height"
+                    android:layout_marginRight="10dip"
                     android:layout_weight="1"
+
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center_horizontal">
 
-                    <LinearLayout
-                        style="@style/Widget.CardContent"
+                    <com.quinn.githubknife.ui.widget.UserLabel
+                        android:id="@+id/followersLabel"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/followersNum"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dip"
-                            android:text=""
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Follower" />
-
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        userlabel:name="Repos"
+                        userlabel:value="50" />
 
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/followingWrap"
                     android:layout_width="0dip"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/three_userlabel_height"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:layout_weight="1">
 
-                    <LinearLayout
-                        style="@style/Widget.CardContent"
+                    <com.quinn.githubknife.ui.widget.UserLabel
+                        android:id="@+id/followingsLabel"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        userlabel:name="Followings"
+                        userlabel:value="50" />
 
-                        <TextView
-                            android:id="@+id/followingNum"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="5dip"
-                            android:text=""
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Following"
-
-                            />
-
-                    </LinearLayout>
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -161,6 +128,8 @@
                 android:id="@+id/starWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
@@ -169,24 +138,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         style="@style/ListIcon"
-                        android:text="@string/icon_star"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        />
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/iconStar"
                         android:text="Starred"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        />
-
-
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
                 </RelativeLayout>
@@ -197,22 +160,21 @@
                 android:id="@+id/emailWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconEmail"
                         style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_email"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size"
                         />
 
                     <TextView
@@ -222,13 +184,14 @@
                         android:text="Email"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
+
                     <TextView
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize"
-                        />
+                        android:textSize="@dimen/item_content_textsize" />
+
 
                 </RelativeLayout>
 
@@ -238,27 +201,28 @@
                 android:id="@+id/blogWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconBlog"
                         style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_blog" />
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Blog"
                         android:layout_toRightOf="@id/iconBlog"
+                        android:text="Blog"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
@@ -267,8 +231,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize"
-                        android:text="" />
+                        android:text=""
+                        android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -277,27 +241,28 @@
                 android:id="@+id/CompanyWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconCompany"
                         style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_company" />
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Company"
                         android:layout_toRightOf="@id/iconCompany"
+                        android:text="Company"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
@@ -306,8 +271,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize"
-                        android:text="" />
+                        android:text=""
+                        android:textSize="@dimen/item_content_textsize" />
 
                 </RelativeLayout>
 
@@ -317,6 +282,8 @@
                 android:id="@+id/LocationWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
@@ -325,12 +292,12 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconLocation"
                         style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_locate" />
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -344,8 +311,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize"
-                        android:text="" />
+                        android:text=""
+                        android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -354,27 +321,28 @@
                 android:id="@+id/joinTimeWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
                     style="@style/Widget.CardContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    >
+                    android:gravity="center_vertical">
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/iconJoinTime"
                         style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_join" />
+                        android:layout_width="@dimen/user_info_icon_size"
+                        android:layout_height="@dimen/user_info_icon_size"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Join"
                         android:layout_toRightOf="@id/iconJoinTime"
+                        android:text="Join"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
@@ -383,8 +351,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize"
-                        android:text="" />
+                        android:text=""
+                        android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -400,8 +368,8 @@
         android:layout_margin="40dip"
         android:clickable="true"
         android:hapticFeedbackEnabled="true"
-        app:rippleColor="@color/color_ripple"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        app:rippleColor="@color/color_ripple" />
 
 </android.support.design.widget.CoordinatorLayout>

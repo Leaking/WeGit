@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.utils.L;
 
 /**
  * Created by Quinn on 9/14/15.
@@ -37,8 +36,6 @@ public class SettingLabel extends LinearLayout {
         label_name = a.getString(R.styleable.label_layout_label_name);
         label_value = a.getString(R.styleable.label_layout_label_value);
 
-        L.i(TAG, "label_name = " + label_name);
-        L.i(TAG, "label_value = " + label_value);
 
         LayoutInflater.from(context).inflate(R.layout.label_layout, this);
         label_name_tv = (TextView) findViewById(R.id.label_name);

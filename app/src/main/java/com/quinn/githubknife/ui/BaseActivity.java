@@ -1,5 +1,7 @@
 package com.quinn.githubknife.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -29,5 +31,19 @@ public class BaseActivity extends AppCompatActivity {
         app = (GithubApplication) getApplication();
        // github = new GithubImpl(this);
 
+    }
+
+    public void redirectToBrowser(String url){
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+    public void sendEmail(String email){
+        Intent data=new Intent(Intent.ACTION_SENDTO);
+        data.setData(Uri.parse(email));
+        startActivity(data);
     }
 }

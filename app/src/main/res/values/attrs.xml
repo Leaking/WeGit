@@ -8,4 +8,10 @@
         <attr name="label_value" format="string" />
     </declare-styleable>
 
+
+    <declare-styleable name="user_verical_label">
+        <attr name="name" format="string" />
+        <attr name="value" format="string"/>
+    </declare-styleable>
+
 </resources>
