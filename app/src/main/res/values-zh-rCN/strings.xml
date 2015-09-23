@@ -43,6 +43,8 @@
     <string name="input_complete">请输入账号密码</string>
     <string name="login">登陆中...</string>
     <string name="initial">初始化...</string>
+    <string name="forked">"这个项目你已经Fork过了"</string>
+
 
     <!--Email-->
     <string name="email_body">这是内容</string>

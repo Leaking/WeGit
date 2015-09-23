@@ -27,7 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RepoActivity extends BaseActivity implements RepoView{
+public class RepoActivity extends BaseActivity implements RepoView {
 
     private static final String TAG = RepoActivity.class.getSimpleName();
 
@@ -64,6 +64,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
     private Menu menu;
 
     StarState starState;
+
     enum StarState {
         UNKNOWN,
         STARRED,
@@ -74,8 +75,8 @@ public class RepoActivity extends BaseActivity implements RepoView{
     private Repository repo;
     private RepoPresenter presenter;
 
-    public static void launch(Context context, Bundle bundle){
-        Intent intent = new Intent(context,RepoActivity.class);
+    public static void launch(Context context, Bundle bundle) {
+        Intent intent = new Intent(context, RepoActivity.class);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -95,7 +96,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
         description.setText(repo.getDescription());
         starNum.setText("" + repo.getStargazers_count());
         forkNum.setText("" + repo.getForks_count());
-        Typeface typeface = Typeface.createFromAsset(getAssets(),"octicons.ttf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "octicons.ttf");
         starIcon.setTypeface(typeface);
         forkIcon.setTypeface(typeface);
         codeIcon.setTypeface(typeface);
@@ -118,11 +119,10 @@ public class RepoActivity extends BaseActivity implements RepoView{
         tagIcon.setText(getResources().getString(R.string.icon_tag) + " Tag");
 
         starState = StarState.UNKNOWN;
-        presenter = new RepoPresenterImpl(this,this);
-        presenter.hasStar(repo.getOwner().getLogin(),repo.getName());
+        presenter = new RepoPresenterImpl(this, this);
+        presenter.hasStar(repo.getOwner().getLogin(), repo.getName());
 
     }
-
 
 
     @Override
@@ -139,9 +139,9 @@ public class RepoActivity extends BaseActivity implements RepoView{
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void updateStarMenuItem(){
+    public void updateStarMenuItem() {
         MenuItem starItem = menu.findItem(R.id.action_star);
-        switch (starState){
+        switch (starState) {
             case STARRED:
                 starItem.setTitle("UNSTAR");
                 break;
@@ -152,7 +152,6 @@ public class RepoActivity extends BaseActivity implements RepoView{
                 break;
         }
     }
-
 
 
     @Override
@@ -168,18 +167,42 @@ public class RepoActivity extends BaseActivity implements RepoView{
             case R.id.action_star:
                 star();
                 return true;
+            case R.id.action_fork:
+                fork();
+                break;
 
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    void fork() {
+        L.i(TAG, "Click Fork icon");
+        if(repo.isFork() == false) {
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(this);
+            L.i(TAG, "try to Fork " + repo.getName());
+            builder.setTitle("Fork A Repo");
+            builder.setMessage("Sure to Fork " + repo.getName() + "?");
+            builder.setPositiveButton("Fork", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    presenter.fork(repo.getOwner().getLogin(), repo.getName());
+                }
+            });
+            builder.setNegativeButton("Cancel", null);
+            builder.show();
+        }else{
+            ToastUtils.showMsg(this,R.string.forked);
+        }
+    }
 
-    void star(){
-        L.i(TAG,"Click star icon");
+
+    void star() {
+        L.i(TAG, "Click star icon");
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
-        switch (starState){
+        switch (starState) {
             case UNSTARRED:
                 L.i(TAG, "try to star " + repo.getName());
                 builder.setTitle("Star A Repo");
@@ -214,7 +237,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
 
 
     @OnClick(R.id.starWrap)
-    void stargazers(){
+    void stargazers() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
@@ -223,7 +246,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
     }
 
     @OnClick(R.id.forkWrap)
-    void forkers(){
+    void forkers() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
@@ -233,7 +256,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
 
 
     @OnClick(R.id.contributeWrap)
-    void collaborators(){
+    void collaborators() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
@@ -242,7 +265,7 @@ public class RepoActivity extends BaseActivity implements RepoView{
     }
 
     @OnClick(R.id.codeWrap)
-    void code(){
+    void code() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
@@ -250,48 +273,53 @@ public class RepoActivity extends BaseActivity implements RepoView{
     }
 
     @OnClick(R.id.commitWrap)
-    void commit(){
-        ToastUtils.showMsg(this,R.string.developing);
+    void commit() {
+        ToastUtils.showMsg(this, R.string.developing);
     }
+
     @OnClick(R.id.issueWrap)
-    void issue(){
-        ToastUtils.showMsg(this,R.string.developing);
+    void issue() {
+        ToastUtils.showMsg(this, R.string.developing);
     }
+
     @OnClick(R.id.pullRequestWrap)
-    void pullRequest(){
-        ToastUtils.showMsg(this,R.string.developing);
+    void pullRequest() {
+        ToastUtils.showMsg(this, R.string.developing);
     }
+
     @OnClick(R.id.branchWrap)
-    void branch(){
-        ToastUtils.showMsg(this,R.string.developing);
+    void branch() {
+        ToastUtils.showMsg(this, R.string.developing);
     }
+
     @OnClick(R.id.tagWrap)
-    void tag(){
-        ToastUtils.showMsg(this,R.string.developing);
+    void tag() {
+        ToastUtils.showMsg(this, R.string.developing);
     }
-
-
 
 
     @Override
     public void onError(String msg) {
-        ToastUtils.showMsg(this,msg);
+        ToastUtils.showMsg(this, msg);
     }
 
     @Override
     public void setStarState(boolean isStar) {
-        if(isStar) {
+        if (isStar) {
             starIcon.setText(getResources().getString(R.string.icon_star) + " unStar");
             starState = StarState.STARRED;
-        }
-        else {
+        } else {
             starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
             starState = StarState.UNSTARRED;
         }
         updateStarMenuItem();
     }
 
-
+    @Override
+    public void forkResult(boolean success) {
+        String result = success?"Success":"Fail";
+        ToastUtils.showMsg(this, result + "Fork");
+    }
 
 
 }

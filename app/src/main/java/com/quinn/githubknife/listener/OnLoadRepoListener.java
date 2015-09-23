@@ -6,4 +6,5 @@ package com.quinn.githubknife.listener;
 public interface OnLoadRepoListener {
     public void setStarState(boolean isStar);
     public void onError(String errorMsg);
+    public void forkResult(boolean success);
 }

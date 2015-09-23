@@ -22,6 +22,7 @@ public class RepoInteractorImpl implements RepoInteractor{
 
     private final static int STAR_STATE = 1;
     private final static int FAIL = 2;
+    private final static int FORK_RESULT = 3;
 
     private Context context;
     private GitHubAccount gitHubAccount;
@@ -52,6 +53,10 @@ public class RepoInteractorImpl implements RepoInteractor{
                             String errorMsg = (String) msg.obj;
                             listener.onError(errorMsg);
                             break;
+                        case FORK_RESULT:
+                            boolean forkMsg = (boolean)msg.obj;
+                            listener.forkResult(forkMsg);
+
                     }
                 }
 
@@ -143,6 +148,34 @@ public class RepoInteractorImpl implements RepoInteractor{
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
                     unStar(owner,repo);
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public void fork(final String owner, final String repo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                try {
+                    github.makeAuthRequest(token);
+                    boolean success = github.fork(owner, repo);
+                    Message msg = new Message();
+                    msg.what = FORK_RESULT;
+                    msg.obj = success;
+                    handler.sendMessage(msg);
+                } catch (GithubError githubError) {
+                    githubError.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = FAIL;
+                    msg.obj = context.getResources().getString(R.string.network_error);
+                    handler.sendMessage(msg);
+                }catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    fork(owner,repo);
                 }
             }
         }).start();

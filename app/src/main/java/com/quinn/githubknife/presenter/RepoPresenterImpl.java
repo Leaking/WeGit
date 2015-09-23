@@ -29,19 +29,17 @@ public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
 
     @Override
     public void fork(String owner, String repo) {
-
+        this.interactor.fork(owner,repo);
     }
 
     @Override
     public void star(String owner, String repo) {
         interactor.star(owner, repo);
-
     }
 
     @Override
     public void unStar(String owner, String repo) {
         interactor.unStar(owner, repo);
-
     }
 
     @Override
@@ -52,5 +50,10 @@ public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
     @Override
     public void onError(String errorMsg) {
         this.view.onError(errorMsg);
+    }
+
+    @Override
+    public void forkResult(boolean success) {
+        this.view.forkResult(success);
     }
 }

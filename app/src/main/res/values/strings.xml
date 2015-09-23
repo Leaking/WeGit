@@ -44,6 +44,7 @@
     <string name="input_complete">Input your username and password</string>
     <string name="login">Login...</string>
     <string name="initial">Initialing...</string>
+    <string name="forked">"You have forked this repo"</string>
 
 
     <!--Description-->

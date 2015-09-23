@@ -6,5 +6,6 @@ package com.quinn.githubknife.view;
 public interface RepoView extends ErrorView{
 
     public void setStarState(boolean isStar);
+    public void forkResult(boolean success);
 
 }

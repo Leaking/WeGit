@@ -393,7 +393,16 @@ public class GithubImpl implements Github {
 
     @Override
     public boolean fork(String owner, String repo) throws GithubError,AuthError {
-        return false;
+        //POST /repos/:owner/:repo/forks
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/forks";
+        Response response = http.post(url).headers(configreHttpHeader()).response();
+        filterError(response);
+        if (response.statusCode() == 202){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @Override
