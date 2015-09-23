@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -134,6 +135,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         BitmapUtils.setIconFont(this, iconCompany, OctIcon.COMPANY, R.color.theme_color);
         BitmapUtils.setIconFont(this, iconLocation, OctIcon.LOCATE, R.color.theme_color);
         BitmapUtils.setIconFont(this, iconJoin, OctIcon.JOIN, R.color.theme_color);
+
+        blog.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        blog.getPaint().setAntiAlias(true);//抗锯齿
+        email.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        email.getPaint().setAntiAlias(true);//抗锯齿
 
     }
 
@@ -292,14 +298,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     }
 
-    @OnClick(R.id.blogWrap)
+    @OnClick(R.id.blog)
     void directToBlog(){
         L.i(TAG,"click blog");
         if(blog.getText().toString().isEmpty() == false)
             redirectToBrowser(blog.getText().toString());
     }
 
-    @OnClick(R.id.emailWrap)
+    @OnClick(R.id.email)
     public void sendEmail(){
         if(email.getText().toString().isEmpty() == false)
             sendEmail(email.getText().toString());

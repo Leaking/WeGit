@@ -68,7 +68,6 @@
                     android:layout_width="0dip"
                     android:layout_height="@dimen/three_userlabel_height"
                     android:layout_marginRight="10dip"
-                    android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:layout_weight="1">
 
@@ -88,8 +87,6 @@
                     android:layout_height="@dimen/three_userlabel_height"
                     android:layout_marginRight="10dip"
                     android:layout_weight="1"
-
-                    android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center_horizontal">
 
@@ -98,8 +95,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        userlabel:name="Repos"
-                        userlabel:value="50" />
+                        userlabel:name="Followers"
+                        userlabel:value="00" />
 
                 </android.support.v7.widget.CardView>
 
@@ -107,7 +104,6 @@
                     android:id="@+id/followingWrap"
                     android:layout_width="0dip"
                     android:layout_height="@dimen/three_userlabel_height"
-                    android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:layout_weight="1">
 
@@ -117,7 +113,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         userlabel:name="Followings"
-                        userlabel:value="50" />
+                        userlabel:value="00" />
 
 
                 </android.support.v7.widget.CardView>
@@ -128,7 +124,6 @@
                 android:id="@+id/starWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
@@ -160,8 +155,6 @@
                 android:id="@+id/emailWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
                 <RelativeLayout
@@ -189,6 +182,7 @@
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/color_accent"
                         android:layout_alignParentRight="true"
                         android:textSize="@dimen/item_content_textsize" />
 
@@ -201,7 +195,6 @@
                 android:id="@+id/blogWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
@@ -232,6 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text=""
+                        android:textColor="@color/color_accent"
                         android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>
 
@@ -241,7 +235,6 @@
                 android:id="@+id/CompanyWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
@@ -271,6 +264,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:textColor="@color/color_accent"
                         android:text=""
                         android:textSize="@dimen/item_content_textsize" />
 
@@ -282,7 +276,6 @@
                 android:id="@+id/LocationWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
@@ -311,6 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:textColor="@color/color_accent"
                         android:text=""
                         android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>
@@ -321,7 +315,6 @@
                 android:id="@+id/joinTimeWrap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="@dimen/card_margin">
 
@@ -351,6 +344,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:textColor="@color/color_accent"
                         android:text=""
                         android:textSize="@dimen/item_content_textsize" />
                 </RelativeLayout>

@@ -9,7 +9,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.GithubApplication;
-import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 
 
@@ -43,10 +42,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void sendEmail(String email) {
-        Intent data=new Intent(Intent.ACTION_SENDTO);
-        data.setData(Uri.parse(email));
-        data.putExtra(Intent.EXTRA_SUBJECT, R.string.email_title);
-        data.putExtra(Intent.EXTRA_TEXT, R.string.email_body);
-        startActivity(data);
+//        Intent data = new Intent(Intent.ACTION_SEND);
+//        data.setData(Uri.parse(email));
+//        data.putExtra(Intent.EXTRA_SUBJECT, R.string.email_title);
+//        data.putExtra(Intent.EXTRA_TEXT, R.string.email_body);
+//        startActivity(data);
     }
+
+
 }

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.UIUtils;
 
 /**
@@ -45,19 +46,16 @@ public class UserLabel extends View{
         label_value = a.getString(R.styleable.user_verical_label_value);
 
         a.recycle();
+
         nameRect = new Rect();
         namePaint = new Paint();
         namePaint.setTextSize(UIUtils.sp2px(this.getContext(), 15));
         namePaint.setColor(getResources().getColor(R.color.theme_color));
-        namePaint.getTextBounds(label_name, 0, label_name.length(), nameRect);
 
         valueRect = new Rect();
         valuePaint = new Paint();
         valuePaint.setTextSize(UIUtils.sp2px(this.getContext(), 25));
         valuePaint.setColor(getResources().getColor(R.color.color_accent));
-
-        valuePaint.getTextBounds(label_value, 0, label_value.length(), valueRect);
-
 
     }
 
@@ -65,6 +63,16 @@ public class UserLabel extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        L.i(TAG, "valueRect.width() = " + valueRect.width());
+
+
+
+        namePaint.getTextBounds(label_name, 0, label_name.length(), nameRect);
+
+        valuePaint.getTextBounds(label_value, 0, label_value.length(), valueRect);
+
+
 
         int valueX = getMeasuredWidth() / 2 - valueRect.width() / 2;
         int valueY = getMeasuredWidth() / 2 - (valueRect.height() + nameRect.height())/2;
@@ -85,6 +93,9 @@ public class UserLabel extends View{
         int width = measureDimension(200, widthMeasureSpec);
         int height = measureDimension(200, heightMeasureSpec);
         setMeasuredDimension(width, height);
+
+
+
     }
 
     public int measureDimension(int defaultSize, int measureSpec){
