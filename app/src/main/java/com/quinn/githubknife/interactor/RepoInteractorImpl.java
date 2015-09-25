@@ -8,21 +8,27 @@ import android.os.Message;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadRepoListener;
+import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.AuthError;
+import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Quinn on 8/1/15.
  */
 public class RepoInteractorImpl implements RepoInteractor{
 
-
+    private final static String TAG = RepoInteractorImpl.class.getSimpleName();
     private final static int STAR_STATE = 1;
     private final static int FAIL = 2;
     private final static int FORK_RESULT = 3;
+    private final static int BRANCHES = 4;
 
     private Context context;
     private GitHubAccount gitHubAccount;
@@ -56,6 +62,11 @@ public class RepoInteractorImpl implements RepoInteractor{
                         case FORK_RESULT:
                             boolean forkMsg = (boolean)msg.obj;
                             listener.forkResult(forkMsg);
+                            break;
+                        case BRANCHES:
+                            List<Branch> branches = (List<Branch>)msg.obj;
+                            listener.setBranches(branches);
+                            break;
 
                     }
                 }
@@ -119,7 +130,7 @@ public class RepoInteractorImpl implements RepoInteractor{
                 }catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    star(owner,repo);
+                    star(owner, repo);
                 }
             }
         }).start();
@@ -147,7 +158,7 @@ public class RepoInteractorImpl implements RepoInteractor{
                 }catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    unStar(owner,repo);
+                    unStar(owner, repo);
                 }
             }
         }).start();
@@ -175,10 +186,41 @@ public class RepoInteractorImpl implements RepoInteractor{
                 }catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    fork(owner,repo);
+                    fork(owner, repo);
                 }
             }
         }).start();
     }
 
+
+    @Override
+    public void loadBranches(final String owner, final String repo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                L.i(TAG, "loadBranches ");
+
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                List<Branch> branches = new ArrayList<Branch>();
+                Message msg = new Message();
+                try {
+                    branches = github.getBranches(owner, repo);
+                    L.i(TAG,"branches = " + branches);
+                } catch (GithubError e) {
+                    msg.what = FAIL;
+                    msg.obj = e.getMessage();
+                    handler.sendMessage(msg);
+                    return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadBranches(owner, repo);
+                }
+                msg.what = BRANCHES;
+                msg.obj = branches;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
 }

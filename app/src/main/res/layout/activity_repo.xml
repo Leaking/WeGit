@@ -16,357 +16,383 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:scrollbars="vertical">
+        >
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/failTxt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/fail_load"
+            android:visibility="gone" />
 
-            
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_gravity="center" />
 
-            
-            <android.support.v7.widget.CardView
-                android:id="@+id/descriptionWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+        <ScrollView
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/item_to_left_right_margin"
+                android:paddingRight="@dimen/item_to_left_right_margin">
 
-                <LinearLayout
-                    style="@style/Widget.CardContent"
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/descriptionWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:layout_marginTop="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    <TextView
+                    <LinearLayout
+                        style="@style/Widget.CardContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dip"
-                        android:text="Description"
-                        style="@style/ListIcon"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/description"
+                        <TextView
+                            style="@style/ListIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dip"
+                            android:text="Description"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dip" />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/starWrap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dip" />
+                        android:orientation="horizontal">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/iconStar"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_star"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/starWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                        <TextView
+                            android:id="@+id/numStar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/item_content_textsize" />
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/forkWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/iconStar"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_star"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/iconFork"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_fork"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
-                    <TextView
-                        android:id="@+id/numStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize" />
+                        <TextView
+                            android:id="@+id/numFork"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textSize="@dimen/item_content_textsize" />
 
-                </RelativeLayout>
+                    </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/forkWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/commitWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconFork"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_fork"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/iconCommit"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_commit" />
 
 
-                    <TextView
-                        android:id="@+id/numFork"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/item_content_textsize" />
+                        <TextView
+                            android:id="@+id/commit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
 
-                </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/commitWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/codeWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconCommit"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_commit" />
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/iconCode"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_code" />
 
 
-                    <TextView
-                        android:id="@+id/commit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
 
-            </android.support.v7.widget.CardView>
+                    </RelativeLayout>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/codeWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                </android.support.v7.widget.CardView>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/contributeWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconCode"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_code" />
+                        android:gravity="center_vertical">
 
+                        <TextView
+                            android:id="@+id/iconContribute"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_organization" />
 
-                    <TextView
-                        android:id="@+id/code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
+                        <TextView
+                            android:id="@+id/contribute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
 
-                </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/contributeWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/issueWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconContribute"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_organization" />
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/contribute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/iconIssue"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_issue" />
 
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/issue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/issueWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/pullRequestWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconIssue"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_issue" />
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/issue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/iconPullRequest"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_pullRequest" />
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/pullRequestWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                        <TextView
+                            android:id="@+id/pullRequest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
+                </android.support.v7.widget.CardView>
 
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/branchWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/iconPullRequest"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_pullRequest" />
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/pullRequest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/iconBranch"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_branch" />
 
-            </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/branchWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
+                        <TextView
+                            android:id="@+id/branch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
 
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/tagWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    <TextView
-                        android:id="@+id/iconBranch"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/icon_branch" />
+                        android:gravity="center_vertical">
 
+                        <TextView
+                            android:id="@+id/iconTag"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_tag" />
 
-                    <TextView
-                        android:id="@+id/branch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
+            </LinearLayout>
+        </ScrollView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/tagWrap"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/card_margin">
-
-                <RelativeLayout
-                    style="@style/Widget.CardContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/iconTag"
-                        style="@style/ListIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/icon_tag" />
-
-                    <TextView
-                        android:id="@+id/tag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=""
-                        android:textSize="@dimen/item_content_textsize" />
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 
 </LinearLayout>

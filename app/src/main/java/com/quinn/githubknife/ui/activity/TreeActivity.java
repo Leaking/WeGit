@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearBreadcrumb;
 
@@ -30,6 +29,7 @@ public class TreeActivity extends BaseActivity implements PathCallback, LinearBr
 
     private String user;
     private String repo;
+    private String branch;
     private TreeFragment fragment;
 
 
@@ -48,31 +48,29 @@ public class TreeActivity extends BaseActivity implements PathCallback, LinearBr
         if (bundle != null) {
             user = (String) bundle.getString("user");
             repo = (String) bundle.getString("repo");
+            branch = (String) bundle.getString("branch");
         } else if (savedInstanceState != null) {
             user = (String) savedInstanceState.getString("user");
             repo = (String) savedInstanceState.getString("repo");
+            branch = (String) savedInstanceState.getString("branch");
         }
         breadCrumbs.initRootCrumb();
         breadCrumbs.setCallback(this);
         toolbar.setTitle(repo);
+        toolbar.setSubtitle(branch);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragment = TreeFragment.getInstance(user, repo);
+        fragment = TreeFragment.getInstance(user, repo, branch);
         fragmentTransaction.add(R.id.container, fragment);
         fragmentTransaction.commit();
 
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fo, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

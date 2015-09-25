@@ -51,6 +51,7 @@
     <string name="search_warning">You can input keywords to search user or repository，，，</string>
     <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
+    <string name="branches">Branch</string>
 
     <!--Button Text-->
     <string name="btn_login">Login</string>
@@ -93,6 +94,9 @@
     <string name="icon_tag" translatable="false">\uf015</string>
 
 
+    <!--Commom-->
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 
 
 </resources>

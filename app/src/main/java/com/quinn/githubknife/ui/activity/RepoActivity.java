@@ -9,20 +9,29 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.RepoPresenter;
 import com.quinn.githubknife.presenter.RepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
-import com.quinn.githubknife.ui.fragments.BranchesFragment;
 import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.ForkersFragment;
 import com.quinn.githubknife.ui.fragments.StargazersFragment;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.LogicUtils;
 import com.quinn.githubknife.utils.ToastUtils;
+import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.RepoView;
+import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,13 +43,16 @@ public class RepoActivity extends BaseActivity implements RepoView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.description)
     TextView description;
     @Bind(R.id.numStar)
     TextView starNum;
     @Bind(R.id.numFork)
     TextView forkNum;
+    @Bind(R.id.branch)
+    TextView tv_branch;
+
+
 
 
     @Bind(R.id.iconStar)
@@ -62,9 +74,31 @@ public class RepoActivity extends BaseActivity implements RepoView {
     @Bind(R.id.iconContribute)
     TextView contributeIcon;
 
-    private Menu menu;
 
+    @Bind(R.id.body)
+    ScrollView body;
+    @Bind(R.id.failTxt)
+    TextView failTxt;
+    @Bind(R.id.progress)
+    ProgressBar progress;
+
+    private Menu menu;
+    private List<Branch> branches;
+    private Branch currentBranch;
+    private boolean hasFinishedInitial = false;
     StarState starState;
+
+    @Override
+    public void showProgress() {
+        L.i(TAG,"show Progress");
+        UIUtils.crossfade(body, progress);
+    }
+
+    @Override
+    public void hideProgress() {
+        UIUtils.crossfade(progress,body);
+        hasFinishedInitial = true;
+    }
 
     enum StarState {
         UNKNOWN,
@@ -122,7 +156,8 @@ public class RepoActivity extends BaseActivity implements RepoView {
         starState = StarState.UNKNOWN;
         presenter = new RepoPresenterImpl(this, this);
         presenter.hasStar(repo.getOwner().getLogin(), repo.getName());
-
+        branches = new ArrayList<Branch>();
+        currentBranch = new Branch();
     }
 
 
@@ -136,12 +171,12 @@ public class RepoActivity extends BaseActivity implements RepoView {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         return super.onPrepareOptionsMenu(menu);
     }
 
     public void updateStarMenuItem() {
         MenuItem starItem = menu.findItem(R.id.action_star);
+
         switch (starState) {
             case STARRED:
                 starItem.setTitle("UNSTAR");
@@ -166,10 +201,12 @@ public class RepoActivity extends BaseActivity implements RepoView {
                 finish();
                 return true;
             case R.id.action_star:
-                star();
+                if(hasFinishedInitial)
+                    star();
                 return true;
             case R.id.action_fork:
-                fork();
+                if(hasFinishedInitial)
+                    fork();
                 break;
 
         }
@@ -270,6 +307,7 @@ public class RepoActivity extends BaseActivity implements RepoView {
         Bundle bundle = new Bundle();
         bundle.putSerializable("user", repo.getOwner().getLogin());
         bundle.putSerializable("repo", repo.getName());
+        bundle.putSerializable("branch",currentBranch.getName());
         TreeActivity.launch(this, bundle);
     }
 
@@ -290,14 +328,25 @@ public class RepoActivity extends BaseActivity implements RepoView {
 
     @OnClick(R.id.branchWrap)
     void branch() {
-        ToastUtils.showMsg(this, R.string.developing);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", repo.getOwner().getLogin());
-        bundle.putSerializable("repo", repo.getName());
-        bundle.putString("fragment", BranchesFragment.TAG);
-        FoActivity.launch(this, bundle);
-
+        final String[] branchNames = new String[branches.size()];
+        for(int i = 0; i < branches.size(); i++){
+            branchNames[i] = branches.get(i).getName();
+        }
+        new MaterialDialog.Builder(this)
+                .title(R.string.branches)
+                .items(branchNames)
+                .itemsCallbackSingleChoice(branches.indexOf(currentBranch), new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        currentBranch = branches.get(which);
+                        tv_branch.setText(currentBranch.getName());
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .cancelable(true)
+                .show();
     }
 
     @OnClick(R.id.tagWrap)
@@ -308,7 +357,8 @@ public class RepoActivity extends BaseActivity implements RepoView {
 
     @Override
     public void onError(String msg) {
-        ToastUtils.showMsg(this, msg);
+        UIUtils.crossfade(progress, failTxt);
+        //ToastUtils.showMsg(this, msg);
     }
 
     @Override
@@ -321,12 +371,31 @@ public class RepoActivity extends BaseActivity implements RepoView {
             starState = StarState.UNSTARRED;
         }
         updateStarMenuItem();
+        presenter.branches(repo.getOwner().getLogin(), repo.getName());
     }
 
     @Override
     public void forkResult(boolean success) {
         String result = success?"Success":"Fail";
         ToastUtils.showMsg(this, result + "Fork");
+    }
+
+    @Override
+    public void reLoad() {
+        presenter.hasStar(repo.getOwner().getLogin(), repo.getName());
+    }
+
+    @OnClick(R.id.failTxt)
+    void failTxt(){
+        L.i(TAG,"click the fail text");
+        reLoad();
+    }
+    @Override
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
+        this.currentBranch = LogicUtils.defaultBranch(this.branches);
+        tv_branch.setText(this.currentBranch.getName());
+
     }
 
 

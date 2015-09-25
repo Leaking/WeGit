@@ -47,11 +47,12 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         }
     }
 
-    public static TreeFragment getInstance(String owner, String repo) {
+    public static TreeFragment getInstance(String owner, String repo, String branch) {
         TreeFragment treeFragment = new TreeFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user", owner);
         bundle.putString("repo", repo);
+        bundle.putString("branch",branch);
         treeFragment.setArguments(bundle);
         return treeFragment;
     }
@@ -93,10 +94,10 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         super.intoItem(position);
         TreeItem item = (TreeItem) dataItems.get(position);
         callback.onPathChoosen(item.getPath(), item.getSha());
-        sha = item.getSha();
+        branch = item.getSha();
         dataItems.clear();
         adapter.notifyDataSetChanged();
-        presenter.onTreeLoad(user, repo, sha);
+        presenter.onTreeLoad(user, repo, branch);
     }
 
     @Override

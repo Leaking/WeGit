@@ -512,6 +512,7 @@ public class HttpKnife {
 				output.close();
 				connect = false;
 			}
+			HttpLog.i( "url == " + connection.getURL().toString());
 			StatusLine statusLine = statusLineFromConnection();
 			BasicHttpResponse httpResponse = new BasicHttpResponse(statusLine);
 			httpResponse.setEntity(entityFromConnection());

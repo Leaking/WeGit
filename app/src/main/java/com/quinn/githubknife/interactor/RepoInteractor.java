@@ -9,4 +9,6 @@ public interface RepoInteractor {
     public void star(String owner,String repo);
     public void unStar(String owner,String repo);
     public void fork(String owner,String repo);
+    public void loadBranches(String owner,String repo);
+
 }

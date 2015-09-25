@@ -57,6 +57,7 @@
     <string name="search_warning">你可以输入关键字搜索用户或项目，，，</string>
     <string name="username_or_email">用户名或邮箱</string>
     <string name="password">密码</string>
+    <string name="branches">分支</string>
 
 
     <!--Button Text-->
@@ -71,6 +72,9 @@
     <string name="search_repository">搜索项目</string>
     <string name="search_result_count">个搜索结果</string>
 
+    <!--Commom-->
+    <string name="ok">确认</string>
+    <string name="cancel">取消</string>
 
 
 </resources>

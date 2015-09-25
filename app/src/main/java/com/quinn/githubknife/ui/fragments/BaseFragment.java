@@ -60,7 +60,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     private LinearLayoutManager layoutManager;
     protected String user;
     protected String repo;
-    protected String sha = "master";
+    protected String branch = "master";
     protected String presenterType;
     protected List<String>  keywords;
     protected ListFragmentPresenter presenter;
@@ -83,6 +83,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         if(bundle != null) {
             user = bundle.getString("user");
             repo = bundle.getString("repo");
+            branch = bundle.getString("branch");
             presenterType = bundle.getString("presenter");
             String keywordsStr = bundle.getString("keywords");
             if(keywordsStr != null)
@@ -198,7 +199,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         }else if(presenter instanceof SearchUserPresenterImpl || presenter instanceof SearchRepoPresenterImpl){
             presenter.onPageLoad(keywords, currPage);
         } else if(presenter instanceof TreePresenterImpl){
-            presenter.onTreeLoad(user, repo, sha);
+            presenter.onTreeLoad(user, repo, branch);
         }else{
             presenter.onPageLoad(currPage,user);
         }
