@@ -15,6 +15,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.RepoPresenter;
 import com.quinn.githubknife.presenter.RepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.BranchesFragment;
 import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.ForkersFragment;
 import com.quinn.githubknife.ui.fragments.StargazersFragment;
@@ -291,7 +292,11 @@ public class RepoActivity extends BaseActivity implements RepoView {
     void branch() {
         ToastUtils.showMsg(this, R.string.developing);
 
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", repo.getOwner().getLogin());
+        bundle.putSerializable("repo", repo.getName());
+        bundle.putString("fragment", BranchesFragment.TAG);
+        FoActivity.launch(this, bundle);
 
     }
 

@@ -7,11 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.fragments.BranchesFragment;
 import com.quinn.githubknife.ui.fragments.CollaboratorsFragment;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
@@ -95,6 +95,8 @@ public class FoActivity extends BaseActivity {
             return CollaboratorsFragment.getInstance(user, repo);
         }else if(type.equals(TreeFragment.TAG)){
             return TreeFragment.getInstance(user,repo);
+        }else if(type.equals(BranchesFragment.TAG)){
+            return BranchesFragment.getInstance(user,repo);
         }
 
         return null;
@@ -117,17 +119,13 @@ public class FoActivity extends BaseActivity {
             return "Contributors";
         }else if (type.equals(TreeFragment.TAG)){
             return "Code";
+        }else if(type.equals(BranchesFragment.TAG)){
+            return "Branch";
         }
         return null;
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fo, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

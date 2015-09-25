@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.presenter.BranchesPresenterImpl;
 import com.quinn.githubknife.presenter.CollaboratorsPresenterImpl;
 import com.quinn.githubknife.presenter.ForkersPresenterImpl;
 import com.quinn.githubknife.presenter.ListFragmentPresenter;
@@ -192,12 +193,12 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
 
     public void loadPage(){
-        if(presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
+        if(presenter instanceof BranchesPresenterImpl || presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
             presenter.onPageLoad(user, repo, currPage);
         }else if(presenter instanceof SearchUserPresenterImpl || presenter instanceof SearchRepoPresenterImpl){
-            presenter.onPageLoad(keywords,currPage);
+            presenter.onPageLoad(keywords, currPage);
         } else if(presenter instanceof TreePresenterImpl){
-            presenter.onTreeLoad(user, repo,sha);
+            presenter.onTreeLoad(user, repo, sha);
         }else{
             presenter.onPageLoad(currPage,user);
         }

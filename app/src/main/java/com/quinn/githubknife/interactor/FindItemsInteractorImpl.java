@@ -506,6 +506,8 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                L.i(TAG,"loadBranches ");
+
                 String token = gitHubAccount.getAuthToken();
                 github.makeAuthRequest(token);
                 List<Branch> branches = new ArrayList<Branch>();

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quinn.githubknife.presenter.BranchesPresenterImpl;
-import com.quinn.githubknife.ui.adapter.UsersAdapter;
+import com.quinn.githubknife.ui.adapter.BranchAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Branch;
@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class BranchesFragment extends BaseFragment implements RecycleItemClickListener {
 
-    public final static String TAG = StargazersFragment.class.getSimpleName();
-    private UsersAdapter adapter;
+    public final static String TAG = BranchesFragment.class.getSimpleName();
+    private BranchAdapter adapter;
 
 
     public static BranchesFragment getInstance(String owner,String repo){
@@ -40,7 +40,7 @@ public class BranchesFragment extends BaseFragment implements RecycleItemClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataItems = new ArrayList<Branch>();
-        adapter = new UsersAdapter(dataItems);
+        adapter = new BranchAdapter(dataItems);
     }
 
 
@@ -61,8 +61,8 @@ public class BranchesFragment extends BaseFragment implements RecycleItemClickLi
     public void setItems(List items) {
         super.setItems(items);
 
-        for(Object user:items){
-            dataItems.add((Branch)user);
+        for(Object branch:items){
+            dataItems.add((Branch)branch);
         }
         loading = false;
         if(items.size() < GithubImpl.DEFAULT_PAGE_SIZE)
