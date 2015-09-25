@@ -514,7 +514,19 @@ public class GithubImpl implements Github {
         return response.body();
     }
 
-
+    @Override
+    public List<Branch> getBranches(String owner, String repo) throws GithubError, AuthError {
+        //GET /repos/:owner/:repo/branches
+        String url = API_HOST + "repos/" + owner + "/" + repo  + "/branches";
+        Response response = http.get(url).headers(configreHttpHeader()).response();
+        filterError(response);
+        ArrayList<Branch> branchList = new ArrayList<Branch>();
+        Gson gson = new Gson();
+        branchList = gson.fromJson(response.body(),
+                new TypeToken<List<Branch>>() {
+                }.getType());
+        return branchList;
+    }
 
 
 }

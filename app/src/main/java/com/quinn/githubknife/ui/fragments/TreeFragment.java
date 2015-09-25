@@ -108,7 +108,6 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
         } else if (treeItem.getType().equals(TreeItem.MODE_BLOB)) {
             if(FileUtils.isImage(treeItem.getPath())){
                 String path = callback.getAbosolutePath(position) + "/" + treeItem.getPath();
-                L.i(TAG,"图片路径 ＝ " + path);
                 Bundle bundle = new Bundle();
                 bundle.putString("path",path);
                 bundle.putString("repo",repo);

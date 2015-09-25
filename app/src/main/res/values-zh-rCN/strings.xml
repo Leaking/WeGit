@@ -16,6 +16,7 @@
     <string name="title_activity_image">ImageActivity</string>
     <string name="title_activity_search">搜索</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_setting">Setting</string>
 
 
     <!--menuitem名称-->

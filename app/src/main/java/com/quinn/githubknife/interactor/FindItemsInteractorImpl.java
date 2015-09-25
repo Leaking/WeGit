@@ -10,6 +10,7 @@ import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.httpknife.github.AuthError;
+import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
@@ -45,29 +46,26 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
         this.gitHubAccount = new GitHubAccount(account, context);
         this.github = new GithubImpl(context);
         this.listener = listener;
-        this.handler = new Handler(){
+        this.handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case LOAD_SUCCESS:
                         List items = (List) msg.obj;
                         listener.onFinished(items);
                         break;
                     case LOAD_FIRST_FAIL:
-                        listener.onError(true,(String)msg.obj);
+                        listener.onError(true, (String) msg.obj);
                         break;
                     case LOAD_MORE_FAIL:
-                        listener.onError(false,"");
+                        listener.onError(false, "");
                         break;
                 }
 
             }
         };
     }
-
-
-
 
 
     @Override
@@ -84,19 +82,19 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     users = github.follwerings(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadFollowerings");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadFollowerings");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadFollowerings(user,page);
+                    loadFollowerings(user, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -121,19 +119,19 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     users = github.followers(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadFollwers");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadFollwers");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
                 } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadFollwers(user,page);
+                    loadFollwers(user, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -168,20 +166,20 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     L.i("loadRepo user : " + user);
                     repos = github.repo(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadStarredRepo");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadStarredRepo");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
 
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadRepo(user,page);
+                    loadRepo(user, page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;
@@ -204,20 +202,20 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     repos = github.starred(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadStarredRepo");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadStarredRepo");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
 
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadStarredRepo(user,page);
+                    loadStarredRepo(user, page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;
@@ -241,19 +239,19 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     events = github.receivedEvent(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadReceivedEvents");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadReceivedEvents");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadReceivedEvents(user,page);
+                    loadReceivedEvents(user, page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = events;
@@ -276,20 +274,20 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     events = github.userEvent(user, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadReceivedEvents");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadReceivedEvents");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
 
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadUserEvents(user,page);
+                    loadUserEvents(user, page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = events;
@@ -313,21 +311,21 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<User> users = new ArrayList<User>();
                 Message msg = new Message();
                 try {
-                    users = github.stargazers(owner, repo,page);
+                    users = github.stargazers(owner, repo, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadFollwers");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadFollwers");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadStargazers(owner,repo,page);
+                    loadStargazers(owner, repo, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -350,19 +348,19 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     users = github.forkers(owner, repo, page);
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadFollwers");
-                    if(page == 1){
+                    L.i(TAG, "网络问题 loadFollwers");
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadForkers(owner,repo,page);
+                    loadForkers(owner, repo, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -385,18 +383,18 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     users = github.collaborators(owner, repo, page);
                 } catch (GithubError e) {
-                    if(page == 1){
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadCollaborators(owner,repo,page);
+                    loadCollaborators(owner, repo, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -408,7 +406,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
     }
 
     @Override
-    public void loadTree(final String owner,final String repo, final String sha) {
+    public void loadTree(final String owner, final String repo, final String sha) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -417,18 +415,18 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<TreeItem> treeItems = new ArrayList<TreeItem>();
                 Message msg = new Message();
                 try {
-                    Tree tree  = github.getTree(owner, repo, sha);
+                    Tree tree = github.getTree(owner, repo, sha);
                     treeItems = tree.getTree();
                 } catch (GithubError e) {
-                    L.i(TAG,"网络问题 loadFollwers");
+                    L.i(TAG, "网络问题 loadFollwers");
                     msg.what = LOAD_FIRST_FAIL;
                     msg.obj = e.getMessage();
                     handler.sendMessage(msg);
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    loadTree(owner,repo,sha);
+                    loadTree(owner, repo, sha);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = treeItems;
@@ -438,7 +436,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
     }
 
     @Override
-    public void searchUsers(final List<String> keywords,final int page) {
+    public void searchUsers(final List<String> keywords, final int page) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -447,20 +445,20 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 List<User> users = new ArrayList<User>();
                 Message msg = new Message();
                 try {
-                    users = github.searchUser(keywords,page);
+                    users = github.searchUser(keywords, page);
                 } catch (GithubError e) {
-                    if(page == 1){
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    searchRepos(keywords,page);
+                    searchUsers(keywords, page);
                 }
 
                 msg.what = LOAD_SUCCESS;
@@ -483,18 +481,18 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     repos = github.searchRepo(keywords, page);
                 } catch (GithubError e) {
-                    if(page == 1){
+                    if (page == 1) {
                         msg.what = LOAD_FIRST_FAIL;
                         msg.obj = e.getMessage();
                         handler.sendMessage(msg);
-                    }else{
+                    } else {
                         handler.sendEmptyMessage(LOAD_MORE_FAIL);
                     }
                     return;
-                }catch (AuthError authError) {
+                } catch (AuthError authError) {
                     authError.printStackTrace();
                     gitHubAccount.invalidateToken(token);
-                    searchRepos(keywords,page);
+                    searchRepos(keywords, page);
                 }
                 msg.what = LOAD_SUCCESS;
                 msg.obj = repos;
@@ -502,5 +500,35 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
             }
         }).start();
     }
+
+    @Override
+    public void loadBranches(final String owner, final String repo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String token = gitHubAccount.getAuthToken();
+                github.makeAuthRequest(token);
+                List<Branch> branches = new ArrayList<Branch>();
+                Message msg = new Message();
+                try {
+                    branches = github.getBranches(owner, repo);
+                    L.i(TAG,"branches = " + branches);
+                } catch (GithubError e) {
+                    msg.what = LOAD_FIRST_FAIL;
+                    msg.obj = e.getMessage();
+                    handler.sendMessage(msg);
+                    return;
+                } catch (AuthError authError) {
+                    authError.printStackTrace();
+                    gitHubAccount.invalidateToken(token);
+                    loadBranches(owner, repo);
+                }
+                msg.what = LOAD_SUCCESS;
+                msg.obj = branches;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
 
 }

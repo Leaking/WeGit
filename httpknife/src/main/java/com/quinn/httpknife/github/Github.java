@@ -95,5 +95,7 @@ public interface Github {
     ///repos/:owner/:repo/contents/:path
     public String getRawContent(String owner, String repo, String path) throws GithubError, AuthError;
 
+    //GET /repos/:owner/:repo/branches
+    public List<Branch> getBranches(String owner, String repo) throws GithubError, AuthError;
 
 }

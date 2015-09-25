@@ -290,6 +290,9 @@ public class RepoActivity extends BaseActivity implements RepoView {
     @OnClick(R.id.branchWrap)
     void branch() {
         ToastUtils.showMsg(this, R.string.developing);
+
+
+
     }
 
     @OnClick(R.id.tagWrap)
@@ -306,10 +309,10 @@ public class RepoActivity extends BaseActivity implements RepoView {
     @Override
     public void setStarState(boolean isStar) {
         if (isStar) {
-            starIcon.setText(getResources().getString(R.string.icon_star) + " unStar");
+            //starIcon.setText(getResources().getString(R.string.icon_star) + " unStar");
             starState = StarState.STARRED;
         } else {
-            starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
+            //starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
             starState = StarState.UNSTARRED;
         }
         updateStarMenuItem();
