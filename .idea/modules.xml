@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GIthubKnife.iml" filepath="$PROJECT_DIR$/GIthubKnife.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MaterialSearch/MaterialSearch.iml" filepath="$PROJECT_DIR$/MaterialSearch/MaterialSearch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/breadcrumbs/breadcrumbs.iml" filepath="$PROJECT_DIR$/breadcrumbs/breadcrumbs.iml" />
       <module fileurl="file://$PROJECT_DIR$/httpknife/httpknife.iml" filepath="$PROJECT_DIR$/httpknife/httpknife.iml" />

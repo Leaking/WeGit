@@ -67,7 +67,6 @@ public class TreeActivity extends BaseActivity implements PathCallback, LinearBr
         fragmentTransaction.add(R.id.container, fragment);
         fragmentTransaction.commit();
 
-
     }
 
 

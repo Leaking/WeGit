@@ -52,6 +52,7 @@
     <string name="username_or_email">Username or Email</string>
     <string name="password">Password</string>
     <string name="branches">Branch</string>
+    <string name="searchType">Search Setting</string>
 
     <!--Button Text-->
     <string name="btn_login">Login</string>

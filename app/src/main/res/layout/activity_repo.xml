@@ -154,8 +154,9 @@
 
                 </android.support.v7.widget.CardView>
 
+
                 <android.support.v7.widget.CardView
-                    android:id="@+id/commitWrap"
+                    android:id="@+id/branchWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -170,23 +171,26 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:id="@+id/iconCommit"
+                            android:id="@+id/iconBranch"
                             style="@style/ListIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/icon_commit" />
+                            android:text="@string/icon_branch" />
 
 
                         <TextView
-                            android:id="@+id/commit"
+                            android:id="@+id/branch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text=""
                             android:textSize="@dimen/item_content_textsize" />
+
+
                     </RelativeLayout>
 
                 </android.support.v7.widget.CardView>
+
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/codeWrap"
@@ -223,11 +227,46 @@
 
                 </android.support.v7.widget.CardView>
 
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/commitWrap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="@dimen/card_margin"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <RelativeLayout
+                        style="@style/Widget.CardContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/iconCommit"
+                            style="@style/ListIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_commit" />
+
+
+                        <TextView
+                            android:id="@+id/commit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text=""
+                            android:textSize="@dimen/item_content_textsize" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+
                 <android.support.v7.widget.CardView
                     android:id="@+id/contributeWrap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginBottom="@dimen/card_margin"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
@@ -321,41 +360,6 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/branchWrap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginBottom="@dimen/card_margin"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/iconBranch"
-                            style="@style/ListIcon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/icon_branch" />
-
-
-                        <TextView
-                            android:id="@+id/branch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text=""
-                            android:textSize="@dimen/item_content_textsize" />
-
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
 
 
                 <android.support.v7.widget.CardView

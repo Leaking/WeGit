@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/MaterialSearch" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/breadcrumbs" />
             <option value="$PROJECT_DIR$/httpknife" />

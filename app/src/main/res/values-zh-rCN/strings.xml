@@ -58,6 +58,8 @@
     <string name="username_or_email">用户名或邮箱</string>
     <string name="password">密码</string>
     <string name="branches">分支</string>
+    <string name="searchType">搜索设置</string>
+
 
 
     <!--Button Text-->

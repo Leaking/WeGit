@@ -6,26 +6,26 @@
     android:orientation="vertical"
     tools:context="com.quinn.githubknife.ui.activity.SearchActivity">
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+
         android:background="@color/theme_color"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <FrameLayout
-        android:id="@+id/container"
+    <ListView
+        android:id="@+id/searchSuggest"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
 
-
-
-
-
-    </FrameLayout>
+    </ListView>
 
 
 

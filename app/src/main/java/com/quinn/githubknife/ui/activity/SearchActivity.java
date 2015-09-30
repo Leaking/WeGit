@@ -2,11 +2,7 @@ package com.quinn.githubknife.ui.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -14,21 +10,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
-import com.quinn.githubknife.ui.fragments.SearchDescriptionFragment;
+import com.quinn.githubknife.ui.adapter.SuggestAdapter;
 import com.quinn.githubknife.ui.fragments.SearchUserFragment;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.UIUtils;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SearchActivity extends BaseActivity implements SearchUserFragment.TotalCountCallback{
+public class SearchActivity extends BaseActivity implements SearchUserFragment.TotalCountCallback, AdapterView.OnItemClickListener {
 
     private final static  String TAG = SearchActivity.class.getSimpleName();
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        searchView.setQuery(suggestDataItems.get(position),true);
+    }
 
     public enum SEARCH_TYPE{
         SEARCH_USER,
@@ -40,13 +45,16 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.container)
-    FrameLayout container;
+    @Bind(R.id.searchSuggest)
+    ListView suggestListview;
+
+    private ArrayList<String> suggestDataItems;
+    private SuggestAdapter adapter;
 
     private Menu menu;
     private SearchView searchView = null;
-    private Fragment searchDescriptionrFragment;
-    private Fragment searchUserFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +66,22 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        searchDescriptionrFragment = new SearchDescriptionFragment();
-        fragmentTransaction.replace(R.id.container, searchDescriptionrFragment);
-        fragmentTransaction.commit();
+        //
+        suggestDataItems = new ArrayList<>();
+        suggestDataItems.add("WeG");
+        suggestDataItems.add("rr");
+        suggestDataItems.add("hh");
+        suggestDataItems.add("bbbb");
+
+        adapter = new SuggestAdapter(this,suggestDataItems);
+        suggestListview.setAdapter(adapter);
+        suggestListview.setVisibility(View.GONE);
+        suggestListview.setOnItemClickListener(this);
+
+
+
+
+
     }
 
     @Override
@@ -70,13 +89,9 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_search, menu);
         this.menu = menu;
-
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final MenuItem setItem = menu.findItem(R.id.action_set);
-
         SearchManager searchManager = (SearchManager) SearchActivity.this.getSystemService(Context.SEARCH_SERVICE);
-
-
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
@@ -84,12 +99,15 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
             searchView.setSearchableInfo(searchManager.getSearchableInfo(SearchActivity.this.getComponentName()));
         }
 
+        searchView.setQueryHint(getResources().getString(R.string.search_user));
+
+
         //searchView.setQueryHint("");
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                L.i(TAG, "click action_search");
                 setItem.setVisible(false);
+                suggestListview.setVisibility(View.VISIBLE);
             }
         });
 
@@ -100,15 +118,15 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
                 searchView.setIconified(true);
                 setItem.setVisible(true);
                 Bundle bundle = new Bundle();
-                bundle.putString("query",query);
+                bundle.putString("query", query);
                 bundle.putSerializable("search_type", search_type);
-                SearchResultActivity.launch(SearchActivity.this,bundle);
+                SearchResultActivity.launch(SearchActivity.this, bundle);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                L.i(TAG,"onQueryTextChange : " + newText);
+                L.i(TAG, "onQueryTextChange : " + newText);
                 return false;
             }
         });
@@ -118,7 +136,18 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
             public boolean onClose() {
                 setItem.setVisible(true);
                 invalidateOptionsMenu();
+                suggestListview.setVisibility(View.GONE);
                 return true;
+            }
+        });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    suggestListview.setVisibility(View.VISIBLE);
+                } else {
+                    suggestListview.setVisibility(View.GONE);
+                }
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -148,23 +177,31 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         int currentIndex = 0;
         if(search_type == SEARCH_TYPE.SEARCH_USER){
             currentIndex = 0;
-        }else{
+        }else {
             currentIndex = 1;
         }
-        builder.setSingleChoiceItems(R.array.search_type, currentIndex, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(which == 0){
-                    searchView.setQueryHint(getResources().getString(R.string.search_user));
-                    search_type = SEARCH_TYPE.SEARCH_USER;
-                }else if(which == 1){
-                    searchView.setQueryHint(getResources().getString(R.string.search_repository));
-                    search_type = SEARCH_TYPE.SEARCH_REPO;
-                }
-                dialog.dismiss();
-            }
-        });
-        builder.show();
+
+        new MaterialDialog.Builder(this)
+                .title(R.string.branches)
+                .items(R.array.search_type)
+                .itemsCallbackSingleChoice(currentIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if(which == 0){
+                            searchView.setQueryHint(getResources().getString(R.string.search_user));
+                            search_type = SEARCH_TYPE.SEARCH_USER;
+                        }else if(which == 1){
+                            searchView.setQueryHint(getResources().getString(R.string.search_repository));
+
+                            search_type = SEARCH_TYPE.SEARCH_REPO;
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .cancelable(true)
+                .show();
     }
 
     @Override
