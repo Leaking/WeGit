@@ -18,10 +18,13 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.adapter.SuggestAdapter;
 import com.quinn.githubknife.ui.fragments.SearchUserFragment;
+import com.quinn.githubknife.utils.Constants;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.PreferenceUtils;
 import com.quinn.githubknife.utils.UIUtils;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +35,7 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        searchView.setQuery(suggestDataItems.get(position),true);
+        searchView.setQuery(suggestDataItems.get(position),false);
     }
 
     public enum SEARCH_TYPE{
@@ -68,10 +71,10 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
 
         //
         suggestDataItems = new ArrayList<>();
-        suggestDataItems.add("WeG");
-        suggestDataItems.add("rr");
-        suggestDataItems.add("hh");
-        suggestDataItems.add("bbbb");
+//        suggestDataItems.add("WeG");
+//        suggestDataItems.add("rr");
+//        suggestDataItems.add("hh");
+//        suggestDataItems.add("bbbb");
 
         adapter = new SuggestAdapter(this,suggestDataItems);
         suggestListview.setAdapter(adapter);
@@ -120,13 +123,23 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
                 Bundle bundle = new Bundle();
                 bundle.putString("query", query);
                 bundle.putSerializable("search_type", search_type);
+                PreferenceUtils.appendStringToSet(SearchActivity.this, Constants.SEARCH_SUGGESTION, query);
+
                 SearchResultActivity.launch(SearchActivity.this, bundle);
+
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 L.i(TAG, "onQueryTextChange : " + newText);
+                suggestDataItems.clear();
+                Set<String> set = PreferenceUtils.getStringSet(SearchActivity.this, Constants.SEARCH_SUGGESTION);
+                for (String string : set) {
+                    if(string.startsWith(newText) && !suggestDataItems.contains(string))
+                        suggestDataItems.add(string);
+                }
+                adapter.notifyDataSetChanged();
                 return false;
             }
         });

@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * SharedPreferences工具类
  * @author Quinn
@@ -94,6 +97,31 @@ public class PreferenceUtils {
 		final SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		return settings.getLong(key, DEFAULT_LONG);
+	}
+
+	public static Set<String> getStringSet(Context context, final String key){
+		final SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		return settings.getStringSet(key, new HashSet<String>());
+	}
+
+	public static void putStringSet(Context context, final String key,
+									final Set<String> value){
+		final SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		settings.edit().putStringSet(key, value).commit();
+	}
+
+	public static void appendStringToSet(Context context, final String key,
+										 String value){
+		final SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		Set<String> set = settings.getStringSet(key, null);
+		if(set == null){
+			set = new HashSet<String>();
+		}
+		set.add(value);
+		settings.edit().putStringSet(key, set).commit();
 	}
 
 	public static void clearPreference(Context context,
