@@ -71,10 +71,6 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
 
         //
         suggestDataItems = new ArrayList<>();
-//        suggestDataItems.add("WeG");
-//        suggestDataItems.add("rr");
-//        suggestDataItems.add("hh");
-//        suggestDataItems.add("bbbb");
 
         adapter = new SuggestAdapter(this,suggestDataItems);
         suggestListview.setAdapter(adapter);
@@ -134,12 +130,14 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
             public boolean onQueryTextChange(String newText) {
                 L.i(TAG, "onQueryTextChange : " + newText);
                 suggestDataItems.clear();
-                Set<String> set = PreferenceUtils.getStringSet(SearchActivity.this, Constants.SEARCH_SUGGESTION);
-                for (String string : set) {
-                    if(string.startsWith(newText) && !suggestDataItems.contains(string))
-                        suggestDataItems.add(string);
+                if (!newText.isEmpty()) {
+                    Set<String> set = PreferenceUtils.getStringSet(SearchActivity.this, Constants.SEARCH_SUGGESTION);
+                    for (String string : set) {
+                        if (string.startsWith(newText) && !suggestDataItems.contains(string))
+                            suggestDataItems.add(string);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
                 return false;
             }
         });

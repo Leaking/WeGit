@@ -1,13 +1,18 @@
 package com.quinn.httpknife.github;
 
+import com.quinn.httpknife.payload.Payload;
+
 import java.util.Date;
 
 public class Event {
+
+
     private String id;
     private String type;
     private User actor;
     private Repository repo;
     private Date created_at;
+    private Payload payload;
 
 
     public User getActor() {
@@ -50,6 +55,14 @@ public class Event {
         this.type = type;
     }
 
+    public Payload getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Payload payload) {
+        this.payload = payload;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -58,6 +71,7 @@ public class Event {
                 ", type='" + type + '\'' +
                 ", repo=" + repo +
                 ", created_at=" + created_at +
+                ", payload=" + payload +
                 '}';
     }
 }

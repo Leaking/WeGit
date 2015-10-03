@@ -1,4 +1,4 @@
-package com.quinn.httpknife;
+package com.quinn.httpknife.http;
 
 import java.util.Map;
 

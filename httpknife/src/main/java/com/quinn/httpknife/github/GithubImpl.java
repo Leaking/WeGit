@@ -3,11 +3,13 @@ package com.quinn.httpknife.github;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.quinn.httpknife.HttpKnife;
-import com.quinn.httpknife.HttpLog;
 import com.quinn.httpknife.R;
-import com.quinn.httpknife.Response;
+import com.quinn.httpknife.http.HttpKnife;
+import com.quinn.httpknife.http.HttpLog;
+import com.quinn.httpknife.http.Response;
+import com.quinn.httpknife.payload.EventFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -244,10 +246,17 @@ public class GithubImpl implements Github {
         filterError(response);
         HttpLog.i("receivedEvent  : " + response.body());
         Gson gson = new Gson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Event.class, new EventFormatter());
+        gson = builder.create();
+
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
                 }.getType());
-        System.out.println("events = " + events);
+        for(Event eve: events){
+            System.out.println("events = " + eve);
+        }
+
         return events;
     }
 
@@ -262,7 +271,10 @@ public class GithubImpl implements Github {
         ArrayList<Event> events = gson.fromJson(response.body(),
                 new TypeToken<List<Event>>() {
                 }.getType());
-        System.out.println("events = " + events);
+        for(Event eve: events){
+            System.out.println("eve====== = " + eve);
+
+        }
         return events;
     }
 

@@ -26,7 +26,7 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent"};
+    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent","MemberEvent"};
     private List<Event> dataItems;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();

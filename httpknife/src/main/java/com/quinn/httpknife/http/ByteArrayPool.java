@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.quinn.httpknife;
+package com.quinn.httpknife.http;
 
 import java.util.ArrayList;
 import java.util.Collections;

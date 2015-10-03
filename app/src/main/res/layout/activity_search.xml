@@ -18,6 +18,8 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+
+
     <ListView
         android:id="@+id/searchSuggest"
         android:layout_width="match_parent"
