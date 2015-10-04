@@ -31,7 +31,9 @@ public class EventFormatter implements JsonDeserializer<Event> {
                     Class payloadClass;
                     if("MemberEvent".equals(type)) {
                         payloadClass = MenberPayload.class;
-                    } else {
+                    } else if("IssuesEvent".equals(type)){
+                        payloadClass = IssuePayload.class;
+                    }else {
                         payloadClass = Payload.class;
                     }
                     try {

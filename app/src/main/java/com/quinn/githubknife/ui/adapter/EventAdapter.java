@@ -17,6 +17,8 @@ import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.TimeUtils;
 import com.quinn.httpknife.github.Event;
+import com.quinn.httpknife.payload.IssuePayload;
+import com.quinn.httpknife.payload.MenberPayload;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent","MemberEvent"};
+    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent","MemberEvent","IssuesEvent"};
     private List<Event> dataItems;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -56,11 +58,9 @@ public class EventAdapter extends
         imageLoader.displayImage(event.getActor().getAvatar_url(),holder.avatar,option,animateFirstListener);
         holder.happenTime.setText(TimeUtils.getRelativeTime(event.getCreated_at()));
         holder.eventType.setText(getEventTypeIcon(event.getType()));
-        if(!holder.event.equals(EVENT_TYPE_ARRAY[3])){
-            holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
-        }else{
-            holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(event.getType()) + "</b> " + event.getRepo().getName()));
-        }
+
+        holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(position) + "</b> " + event.getRepo().getName()));
+
 
 
     }
@@ -71,7 +71,8 @@ public class EventAdapter extends
     }
 
 
-    public String getPureEventType(String eventType){
+    public String getPureEventType(int position){
+        String eventType = dataItems.get(position).getType();
         if(eventType.equals(EVENT_TYPE_ARRAY[0])){
             return "starred";
         }else if(eventType.equals(EVENT_TYPE_ARRAY[1])){
@@ -80,10 +81,13 @@ public class EventAdapter extends
             return "created repo";
         }else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
             return "opened pull request";
-        }else{
+        }else if(eventType.equals(EVENT_TYPE_ARRAY[4])){
+            return "add "+ ((MenberPayload)dataItems.get(position).getPayload()).getMember().getLogin() +  " to ";
+        }else if(eventType.equals(EVENT_TYPE_ARRAY[5])){
+            return ((IssuePayload)(dataItems.get(position).getPayload())).getAction() + " issue ";
+        }else {
             return "XXXXX";   // I will add more eventtype later
         }
-
     }
 
     public int getEventTypeIcon(String eventType) {

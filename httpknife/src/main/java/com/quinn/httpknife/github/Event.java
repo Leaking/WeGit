@@ -13,6 +13,8 @@ public class Event {
     private Repository repo;
     private Date created_at;
     private Payload payload;
+    private User org;
+
 
 
     public User getActor() {
@@ -63,6 +65,14 @@ public class Event {
         this.payload = payload;
     }
 
+    public User getOrg() {
+        return org;
+    }
+
+    public void setOrg(User org) {
+        this.org = org;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -72,6 +82,7 @@ public class Event {
                 ", repo=" + repo +
                 ", created_at=" + created_at +
                 ", payload=" + payload +
+                ", org=" + org +
                 '}';
     }
 }
