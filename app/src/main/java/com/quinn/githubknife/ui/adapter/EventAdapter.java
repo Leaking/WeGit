@@ -1,6 +1,6 @@
 package com.quinn.githubknife.ui.adapter;
 
-import android.graphics.Typeface;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
+import com.quinn.githubknife.utils.BitmapUtils;
 import com.quinn.githubknife.utils.TimeUtils;
 import com.quinn.httpknife.github.Event;
+import com.quinn.httpknife.github.GithubConstants;
 import com.quinn.httpknife.payload.IssuePayload;
 import com.quinn.httpknife.payload.MenberPayload;
 
@@ -28,7 +31,10 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-    public final static String[] EVENT_TYPE_ARRAY = {"WatchEvent","ForkEvent","CreateEvent","PullRequestEvent","MemberEvent","IssuesEvent"};
+
+
+    private Context context;
+
     private List<Event> dataItems;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -36,7 +42,8 @@ public class EventAdapter extends
     private RecycleItemClickListener itemClickListener;
 
 
-    public EventAdapter(List<Event> dataItems){
+    public EventAdapter(Context context,List<Event> dataItems){
+        this.context = context;
         this.dataItems = dataItems;
         this.imageLoader = ImageLoader.getInstance();
         this.option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
@@ -55,12 +62,12 @@ public class EventAdapter extends
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = dataItems.get(position);
-        imageLoader.displayImage(event.getActor().getAvatar_url(),holder.avatar,option,animateFirstListener);
+        imageLoader.displayImage(event.getActor().getAvatar_url(), holder.avatar, option, animateFirstListener);
         holder.happenTime.setText(TimeUtils.getRelativeTime(event.getCreated_at()));
-        holder.eventType.setText(getEventTypeIcon(event.getType()));
+        getEventTypeIcon(holder.eventType, event.getType());
 
-        holder.event.setText(Html.fromHtml(event.getActor().getLogin() + " <b>" + getPureEventType(position) + "</b> " + event.getRepo().getName()));
-
+       // holder.event.setText(setItemTextAndIcon(position));
+        setItemTextAndIcon(holder.event,holder.eventType,position);
 
 
     }
@@ -71,36 +78,53 @@ public class EventAdapter extends
     }
 
 
-    public String getPureEventType(int position){
-        String eventType = dataItems.get(position).getType();
-        if(eventType.equals(EVENT_TYPE_ARRAY[0])){
-            return "starred";
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[1])){
-            return "forked";
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[2])){
-            return "created repo";
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
-            return "opened pull request";
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[4])){
-            return "add "+ ((MenberPayload)dataItems.get(position).getPayload()).getMember().getLogin() +  " to ";
-        }else if(eventType.equals(EVENT_TYPE_ARRAY[5])){
-            return ((IssuePayload)(dataItems.get(position).getPayload())).getAction() + " issue ";
+    public void setItemTextAndIcon(TextView tv,ImageView img,int position){
+        Event event = dataItems.get(position);
+        String eventType = event.getType();
+        if(eventType.equals(GithubConstants.WATCH_EVENT)){
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b>starred</b> " + event.getRepo().getName()));
+            BitmapUtils.setIconFont(context, img, OctIcon.STAR, R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.ForkEvent)){
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b>forked</b> " + event.getRepo().getName()));
+            BitmapUtils.setIconFont(context, img, OctIcon.FORK, R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.CreateEvent)){
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b>created repo</b> " + event.getRepo().getName()));
+            BitmapUtils.setIconFont(context, img, OctIcon.REPO, R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.PullRequestEvent)){
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b>opened pull request</b> " + event.getRepo().getName()));
+            BitmapUtils.setIconFont(context, img, OctIcon.PUSH, R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.MemberEvent)){
+            MenberPayload payload = (MenberPayload)dataItems.get(position).getPayload();
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b> add " + payload.getMember().getLogin()  + " to </b> " + event.getRepo().getName()));
+            BitmapUtils.setIconFont(context, img, OctIcon.PERSON, R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.IssuesEvent)){
+            IssuePayload payload = (IssuePayload)dataItems.get(position).getPayload();
+            tv.setText(Html.fromHtml(event.getActor().getLogin() + " <b> " + payload.getAction()  + " issue </b> " + event.getRepo().getName() + "#" + payload.getIssue().getNumber()));
+            if(payload.getAction().equals("opened")){
+                BitmapUtils.setIconFont(context, img, OctIcon.ISSUE_OPNE, R.color.theme_color);
+            }else if(payload.getAction().equals("closed")){
+                BitmapUtils.setIconFont(context, img, OctIcon.ISSUE_CLOSE, R.color.theme_color);
+            }
         }else {
-            return "XXXXX";   // I will add more eventtype later
+            tv.setText("XXXXX");   // I will add more eventtype later
         }
     }
 
-    public int getEventTypeIcon(String eventType) {
-        if (eventType.equals(EVENT_TYPE_ARRAY[0])) {
-            return R.string.icon_star;
-        } else if (eventType.equals(EVENT_TYPE_ARRAY[1])) {
-            return R.string.icon_branch;
-        } else if (eventType.equals(EVENT_TYPE_ARRAY[2])) {
-            return R.string.icon_repo;
-        } else if(eventType.equals(EVENT_TYPE_ARRAY[3])){
-            return R.string.icon_pullRequest;
-        } else {
-            return R.string.icon_star;
+    public void getEventTypeIcon(ImageView img,String eventType) {
+        if (eventType.equals(GithubConstants.WATCH_EVENT)) {
+            BitmapUtils.setIconFont(context,img, OctIcon.STAR,R.color.theme_color);
+        } else if (eventType.equals(GithubConstants.ForkEvent)) {
+            BitmapUtils.setIconFont(context,img, OctIcon.FORK,R.color.theme_color);
+        } else if (eventType.equals(GithubConstants.CreateEvent)) {
+            BitmapUtils.setIconFont(context,img, OctIcon.REPO,R.color.theme_color);
+        } else if(eventType.equals(GithubConstants.PullRequestEvent)){
+            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
+        } else if(eventType.equals(GithubConstants.MemberEvent)){
+            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
+        }else if(eventType.equals(GithubConstants.IssuesEvent)){
+            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
+        }else {
+            BitmapUtils.setIconFont(context,img, OctIcon.STAR,R.color.theme_color);
         }
     }
 
@@ -111,19 +135,17 @@ public class EventAdapter extends
         private RecycleItemClickListener mItemClickListener;
 
         public ImageView avatar;
-        public TextView eventType;
+        public ImageView eventType;
         public TextView event;
         public TextView happenTime;
 
         public ViewHolder(View view,RecycleItemClickListener itemClickListener){
             super(view);
             avatar = (ImageView) view.findViewById(R.id.avatar);
-            eventType = (TextView) view.findViewById(R.id.eventType);
+            eventType = (ImageView) view.findViewById(R.id.eventType);
             happenTime = (TextView) view.findViewById(R.id.happenTime);
             event = (TextView) view.findViewById(R.id.event);
             mItemClickListener = itemClickListener;
-            Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),"octicons.ttf");
-            eventType.setTypeface(typeface);
             view.setOnClickListener(this);
 
         }

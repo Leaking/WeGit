@@ -35,7 +35,7 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
         super.onCreate(savedInstanceState);
         presenter = new ReceivedEventPresenterImpl(this.getActivity(),this);
         dataItems = new ArrayList<Event>();
-        adapter = new EventAdapter(dataItems);
+        adapter = new EventAdapter(this.getActivity(),dataItems);
     }
 
     @Override

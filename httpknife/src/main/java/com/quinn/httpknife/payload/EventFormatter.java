@@ -7,6 +7,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.quinn.httpknife.github.GithubConstants;
 import com.quinn.httpknife.github.Event;
 
 import java.lang.reflect.Type;
@@ -29,9 +30,9 @@ public class EventFormatter implements JsonDeserializer<Event> {
                 String type = event.getType();
                 if(type != null && type.length() != 0) {
                     Class payloadClass;
-                    if("MemberEvent".equals(type)) {
+                    if(GithubConstants.MemberEvent.equals(type)) {
                         payloadClass = MenberPayload.class;
-                    } else if("IssuesEvent".equals(type)){
+                    } else if(GithubConstants.IssuesEvent.equals(type)){
                         payloadClass = IssuePayload.class;
                     }else {
                         payloadClass = Payload.class;

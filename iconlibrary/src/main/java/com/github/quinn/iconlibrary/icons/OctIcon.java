@@ -22,7 +22,10 @@ public enum OctIcon implements Icon {
 	COMMIT(0xf07e),
 	CODE(0xf05f),
 	ISSUE(0xf026),
-	TAG(0xf015);
+	TAG(0xf015),
+	PERSON(0xf018),
+	ISSUE_CLOSE(0xf028),
+	ISSUE_OPNE(0xf026);
 
 
 

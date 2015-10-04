@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
 
 
     /**
-     * Sends the result or a Constants.ERROR_CODE_CANCELED error if a result isn't present.
+     * Sends the result or a GithubConstants.ERROR_CODE_CANCELED error if a result isn't present.
      */
     @Override
     public void finish() {
