@@ -522,6 +522,7 @@ public class HttpKnife {
 			HttpLog.i("Response success : " + response.isSuccess());
 			HttpLog.i("Response statusCode  : " + response.statusCode());
 			HttpLog.i("Response reasonPhrase : " + response.reasonPhrase());
+			HttpLog.i("Response body : " + response.body());
 			HttpLog.i("=====Got Respose=====");
 			return response;
 		} catch (IOException e) {

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.utils.PreferenceUtils;
 
 import java.io.IOException;
 
@@ -41,7 +42,29 @@ public class GitHubAccount {
 
     private final AccountManager manager;
 
-    Context context;
+    private volatile static GitHubAccount instance;
+
+    private Context context;
+
+
+    // Returns singleton class instance
+    public static GitHubAccount getInstance(final Context context) {
+        if (instance == null) {
+            synchronized (GitHubAccount.class) {
+                if (instance == null) {
+                    String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
+                    if (name.isEmpty())
+                        name = "NO_ACCOUNT";
+                    Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
+                    instance = new GitHubAccount(account, context);
+                }
+            }
+        }
+        return instance;
+    }
+
+
+
     /**
      * Create account wrapper
      *
