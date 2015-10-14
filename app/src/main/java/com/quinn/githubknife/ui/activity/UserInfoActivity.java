@@ -5,18 +5,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -156,8 +157,16 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         if (this.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
         }
-
         scrollWrap.setMinimumHeight(screenHeight - actionBarHeight);
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
+        }
 
     }
 
@@ -169,26 +178,30 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
 
-                Palette.generateAsync(loadedImage, 24, new Palette.PaletteAsyncListener() {
-                    @Override
-                    public void onGenerated(Palette palette) {
-
-                        Palette.Swatch vibrant = palette.getVibrantSwatch();
-                        Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
-                        Palette.Swatch lightVibrant = palette.getLightVibrantSwatch();
-                        Palette.Swatch muted = palette.getMutedSwatch();
-                        Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
-                        Palette.Swatch lightMuted = palette.getLightMutedSwatch();
-                        Palette.Swatch swatch = vibrant;
-                        swatch = (swatch == null) ? muted : swatch;
-                        swatch = (swatch == null) ? darkVibrant : swatch;
-                        swatch = (swatch == null) ? darkMuted : swatch;
-                        swatch = (swatch == null) ? lightVibrant : swatch;
-                        swatch = (swatch == null) ? lightMuted : swatch;
-                        collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
-                        // 使用颜色
-                    }
-                });
+//                Palette.generateAsync(loadedImage, 24, new Palette.PaletteAsyncListener() {
+//                    @Override
+//                    public void onGenerated(Palette palette) {
+//
+//                        Palette.Swatch vibrant = palette.getVibrantSwatch();
+//                        Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
+//                        Palette.Swatch lightVibrant = palette.getLightVibrantSwatch();
+//                        Palette.Swatch muted = palette.getMutedSwatch();
+//                        Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
+//                        Palette.Swatch lightMuted = palette.getLightMutedSwatch();
+//                        Palette.Swatch swatch = vibrant;
+//                        swatch = (swatch == null) ? muted : swatch;
+//                        swatch = (swatch == null) ? darkVibrant : swatch;
+//                        swatch = (swatch == null) ? darkMuted : swatch;
+//                        swatch = (swatch == null) ? lightVibrant : swatch;
+//                        swatch = (swatch == null) ? lightMuted : swatch;
+//                        collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
+//                        // 使用颜色
+//
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                            getWindow().setStatusBarColor(swatch.getRgb());
+//                        }
+//                    }
+//                });
             }
         });
     }
