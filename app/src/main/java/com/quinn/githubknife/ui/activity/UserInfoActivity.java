@@ -11,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -29,7 +30,6 @@ import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
-import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.UserLabel;
 import com.quinn.githubknife.utils.BitmapUtils;
@@ -60,18 +60,17 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     FloatingActionButton relationBtn;
 
 
-    @Bind(R.id.repoLabel)
-    UserLabel repoLabel;
+    @Bind(R.id.starLabel)
+    UserLabel starLabel;
     @Bind(R.id.followersLabel)
     UserLabel followersLabel;
     @Bind(R.id.followingsLabel)
     UserLabel followingsLabel;
 
 
+    @Bind(R.id.nickname)
+    TextView nickname;
 
-
-    @Bind(R.id.iconStar)
-    ImageView iconStar;
     @Bind(R.id.iconEmail)
     ImageView iconEmail;
     @Bind(R.id.iconBlog)
@@ -136,7 +135,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         collapsingToolbar.setTitle(user.getLogin());
         paletteToolbar();
 
-        BitmapUtils.setIconFont(this, iconStar, OctIcon.STAR, R.color.theme_color);
         BitmapUtils.setIconFont(this, iconEmail, OctIcon.EMAIL, R.color.theme_color);
         BitmapUtils.setIconFont(this, iconBlog, OctIcon.BLOG, R.color.theme_color);
         BitmapUtils.setIconFont(this, iconCompany, OctIcon.COMPANY, R.color.theme_color);
@@ -232,12 +230,17 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         if (user == null)
             return;
         /**
-         * 处理返回为空的请看
+         * 处理返回为空的
          */
-
+        String nicknameStr= this.user.getLogin();
+        if(TextUtils.isEmpty(user.getName())){
+            nickname.setText(this.user.getLogin());
+        }else{
+            nickname.setText(user.getName());
+        }
         followersLabel.setValue("" + user.getFollowers());
         followingsLabel.setValue("" + user.getFollowing());
-        repoLabel.setValue("" + user.getPublic_repos());
+        //repoLabel.setValue("" + user.getPublic_repos());
 
 
 
@@ -262,6 +265,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.follow));
             followState = FollowState.UNFOLLOWED;
         }
+
+        presenter.starredCount(user.getLogin());
+    }
+
+    @Override
+    public void setStarredCount(int count) {
+        starLabel.setValue("" + count);
     }
 
     @Override
@@ -277,11 +287,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @OnClick(R.id.followingWrap)
     void viewFollowing() {
         viewDetail(FollowingFragment.TAG);
-    }
-
-    @OnClick(R.id.repoWrap)
-    void viewRepo() {
-        viewDetail(UserRepoFragment.TAG);
     }
 
     @OnClick(R.id.starWrap)

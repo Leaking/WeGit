@@ -9,5 +9,6 @@ public interface OnLoadUserInfoListener extends OnErrorListener{
 
     public void onFinish(User user);
     public void updateFollowState(boolean isFollow);
+    public void loadStarredCount(int count);
 
 }

@@ -8,8 +8,12 @@ import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.model.GithubService;
 import com.quinn.githubknife.model.RetrofitUtil;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.LogicUtils;
 import com.quinn.httpknife.github.Empty;
+import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
+
+import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -158,4 +162,38 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
             }
         });
     }
+
+    @Override
+    public void starredCount(final String user) {
+        Call<List<Repository>> call = service.starredCount(user);
+        call.enqueue(new Callback<List<Repository>>() {
+            @Override
+            public void onResponse(Response<List<Repository>> response, Retrofit retrofit) {
+                RetrofitUtil.printResponse(response);
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
+                    starredCount(user);
+                }
+                if (response.isSuccess()) {
+                    String linkHeader = response.headers().get("Link");
+                    L.i(TAG,"linkHeader = " + linkHeader);
+                    //10-14 19:36:00.327    4224-4224/? I/UserInfoInteractorImpl﹕
+                    // //linkHeader = <https://api.github.com/user/6383426/starred?per_page=1&page=2>;
+                    // //rel="next", <https://api.github.com/user/6383426/starred?per_page=1&page=86>;
+                    // //rel="last"
+                    int count = LogicUtils.parseStarredCount(linkHeader);
+                    listener.loadStarredCount(count);
+                } else {
+                    listener.onError(context.getString(R.string.fail_unfollow) + user);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError(context.getString(R.string.fail_unfollow) + user);
+            }
+        });
+    }
+
+
 }

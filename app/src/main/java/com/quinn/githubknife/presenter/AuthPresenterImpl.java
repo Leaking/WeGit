@@ -44,6 +44,11 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     }
 
+    @Override
+    public void loadStarredCount(int count) {
+
+    }
+
 
     @Override
     public void onError(String msg) {

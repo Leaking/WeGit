@@ -43,6 +43,10 @@ public class UserInfoPresenterImpl implements UserInfoPresenter ,OnLoadUserInfoL
         interactor.unFollow(targetUser);
     }
 
+    @Override
+    public void starredCount(String user) {
+        interactor.starredCount(user);
+    }
 
 
     @Override
@@ -53,6 +57,11 @@ public class UserInfoPresenterImpl implements UserInfoPresenter ,OnLoadUserInfoL
     @Override
     public void updateFollowState(boolean isFollow) {
         view.setFollowState(isFollow);
+    }
+
+    @Override
+    public void loadStarredCount(int count) {
+        view.setStarredCount(count);
     }
 
     @Override

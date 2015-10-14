@@ -10,4 +10,5 @@ public interface UserInfoInteractor {
     public void hasFollow(String user);
     public void follow(String user);
     public void unFollow(String user);
+    public void starredCount(String user);
 }

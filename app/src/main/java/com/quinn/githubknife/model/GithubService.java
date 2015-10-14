@@ -32,19 +32,19 @@ public interface GithubService{
     @GET("/users/{username}")
     Call<User> user(@Path("username") String username);
 
-    @GET("/users/{user}/following?perpage=10")
+    @GET("/users/{user}/following?per_page=10")
     Call<List<User>> follwerings(@Path("user") String user,@Query("page") String page);
 
-    @GET("/users/{user}/followers?perpage=10")
+    @GET("/users/{user}/followers?per_page=10")
     Call<List<User>> followers(@Path("user") String user,@Query("page") String page);
 
-    @GET("/users/{user}/repos?sort=pushed&perpage=10")
+    @GET("/users/{user}/repos?sort=pushed&per_page=10")
     Call<List<Repository>> userRepo(@Path("user") String user,@Query("page") String page);
 
-    @GET("/users/{user}/starred?&perpage=10")
+    @GET("/users/{user}/starred?per_page=10")
     Call<List<Repository>> starredRepo(@Path("user") String user,@Query("page") String page);
 
-    @GET("/users/{user}/received_events?&perpage=10")
+    @GET("/users/{user}/received_events?per_page=10")
     Call<List<Event>> receivedEvent(@Path("user") String user,@Query("page") String page);
 
     @GET("/user/starred/{owner}/{repo}")
@@ -56,24 +56,26 @@ public interface GithubService{
     @DELETE("/user/starred/{owner}/{repo}")
     Call<List<User>> unStar(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
 
+    //Get count of starred repo of someone
+    @GET("/users/{user}/starred?&per_page=1")
+    Call<List<Repository>> starredCount(@Path("user") String user);
+
 
     //Api about repo
 
-
-
-    @GET("/repos/{owner}/{repo}/stargazers?&perpage=10")
+    @GET("/repos/{owner}/{repo}/stargazers?&per_page=10")
     Call<List<User>> stargazers(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
 
-    @GET("/repos/{owner}/{repo}/forks?&perpage=10")
+    @GET("/repos/{owner}/{repo}/forks?&per_page=10")
     Call<List<User>> forkers(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
 
-    @GET("/repos/{owner}/{repo}/collaborators?&perpage=10")
+    @GET("/repos/{owner}/{repo}/collaborators?&per_page=10")
     Call<List<User>> collaborators(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
 
     @GET("/repos/{owner}/{repo}/branches/")
     Call<List<Branch>> getBranches(@Path("owner") String owner, @Path("repo") String repo);
 
-    @GET("/repos/{owner}/{repo}/git/trees/{sha}?&perpage=10")
+    @GET("/repos/{owner}/{repo}/git/trees/{sha}?&per_page=10")
     Call<Tree> getTree(@Path("owner") String owner, @Path("repo") String repo,@Path("sha") String sha);
 
     @GET("/repos/{owner}/{repo}/contents/{path}")
@@ -83,7 +85,7 @@ public interface GithubService{
     @GET("/search/users?&perpage=10")
     Call<UserSearch> searchUser(@Query("q") String q, @Query("page") String page);
 
-    @GET("/search/repositories?&perpage=10")
+    @GET("/search/repositories?&per_page=10")
     Call<RepoSearch> searchRepo(@Query("q") String q, @Query("page") String page);
 
 

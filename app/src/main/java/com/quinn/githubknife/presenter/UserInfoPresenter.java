@@ -9,4 +9,5 @@ public interface UserInfoPresenter {
     public void hasFollow(String targetUser);
     public void follow(String targetUser);
     public void unFollow(String targetUser);
+    public void starredCount(String user);
 }
