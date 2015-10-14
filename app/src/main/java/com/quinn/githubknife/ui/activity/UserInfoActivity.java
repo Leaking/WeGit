@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,6 +93,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Bind(R.id.joinTime)
     TextView joinTime;
 
+
+    @Bind(R.id.scrollWrap)
+    View scrollWrap;
+
     FollowState followState;
 
 
@@ -140,6 +146,18 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         blog.getPaint().setAntiAlias(true);//抗锯齿
         email.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         email.getPaint().setAntiAlias(true);//抗锯齿
+
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenHeight = displaymetrics.heightPixels;
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (this.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        }
+
+        scrollWrap.setMinimumHeight(screenHeight - actionBarHeight);
 
     }
 
