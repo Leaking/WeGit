@@ -56,6 +56,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     ImageView backDrop;
 
 
+
+
     @Bind(R.id.relation)
     FloatingActionButton relationBtn;
 
@@ -70,32 +72,33 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Bind(R.id.nickname)
     TextView nickname;
-
-    @Bind(R.id.iconEmail)
-    ImageView iconEmail;
-    @Bind(R.id.iconBlog)
-    ImageView iconBlog;
-    @Bind(R.id.iconCompany)
-    ImageView iconCompany;
-    @Bind(R.id.iconLocation)
-    ImageView iconLocation;
-    @Bind(R.id.iconJoinTime)
-    ImageView iconJoin;
-
-    @Bind(R.id.email)
-    TextView email;
-    @Bind(R.id.company)
-    TextView company;
-    @Bind(R.id.location)
-    TextView location;
-    @Bind(R.id.blog)
-    TextView blog;
-    @Bind(R.id.joinTime)
-    TextView joinTime;
-
-
     @Bind(R.id.scrollWrap)
     View scrollWrap;
+
+
+    @Bind(R.id.emailLayout)
+    View emailLayout;
+    @Bind(R.id.blogLayout)
+    View blogLayout;
+    @Bind(R.id.companyLayout)
+    View companyLayout;
+    @Bind(R.id.locationLayout)
+    View locationLayout;
+    @Bind(R.id.joinLayout)
+    View joinLayout;
+
+    public static class IconKeyValueViewHolder {
+        @Bind(R.id.textIcon) public ImageView icon;
+        @Bind(R.id.textKey) public TextView textKey;
+        @Bind(R.id.textValue) public TextView textValue;
+    }
+
+    IconKeyValueViewHolder emailHolder = new IconKeyValueViewHolder();
+    IconKeyValueViewHolder blogHolder = new IconKeyValueViewHolder();
+    IconKeyValueViewHolder companyHolder = new IconKeyValueViewHolder();
+    IconKeyValueViewHolder joinHolder = new IconKeyValueViewHolder();
+    IconKeyValueViewHolder locationHolder = new IconKeyValueViewHolder();
+
 
     FollowState followState;
 
@@ -122,6 +125,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
+        ButterKnife.bind(joinHolder, joinLayout);
+        ButterKnife.bind(emailHolder, emailLayout);
+        ButterKnife.bind(companyHolder, companyLayout);
+        ButterKnife.bind(blogHolder, blogLayout);
+        ButterKnife.bind(locationHolder, locationLayout);
+
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             user = (User) bundle.getSerializable("user");
@@ -135,16 +145,36 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         collapsingToolbar.setTitle(user.getLogin());
         paletteToolbar();
 
-        BitmapUtils.setIconFont(this, iconEmail, OctIcon.EMAIL, R.color.theme_color);
-        BitmapUtils.setIconFont(this, iconBlog, OctIcon.BLOG, R.color.theme_color);
-        BitmapUtils.setIconFont(this, iconCompany, OctIcon.COMPANY, R.color.theme_color);
-        BitmapUtils.setIconFont(this, iconLocation, OctIcon.LOCATE, R.color.theme_color);
-        BitmapUtils.setIconFont(this, iconJoin, OctIcon.JOIN, R.color.theme_color);
+        BitmapUtils.setIconFont(this, emailHolder.icon, OctIcon.EMAIL, R.color.theme_color);
+        BitmapUtils.setIconFont(this, blogHolder.icon, OctIcon.BLOG, R.color.theme_color);
+        BitmapUtils.setIconFont(this, companyHolder.icon, OctIcon.COMPANY, R.color.theme_color);
+        BitmapUtils.setIconFont(this, locationHolder.icon, OctIcon.LOCATE, R.color.theme_color);
+        BitmapUtils.setIconFont(this, joinHolder.icon, OctIcon.JOIN, R.color.theme_color);
 
-        blog.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        blog.getPaint().setAntiAlias(true);//抗锯齿
-        email.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        email.getPaint().setAntiAlias(true);//抗锯齿
+        emailHolder.textKey.setText(R.string.email);
+        blogHolder.textKey.setText(R.string.blog);
+        companyHolder.textKey.setText(R.string.company);
+        joinHolder.textKey.setText(R.string.join);
+        locationHolder.textKey.setText(R.string.location);
+
+        emailHolder.textValue.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        emailHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
+        blogHolder.textValue.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        blogHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
+
+        emailHolder.textValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail();
+            }
+        });
+
+        blogHolder.textValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                directToBlog();
+            }
+        });
 
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -157,8 +187,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         }
         scrollWrap.setMinimumHeight(screenHeight - actionBarHeight);
 
-
-
+        //状态栏透明
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -240,17 +269,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         }
         followersLabel.setValue("" + user.getFollowers());
         followingsLabel.setValue("" + user.getFollowing());
-        //repoLabel.setValue("" + user.getPublic_repos());
-
-
-
-        email.setText(user.getEmail());
-        company.setText(user.getCompany());
-        blog.setText(user.getBlog());
-        location.setText(user.getLocation());
+        emailHolder.textValue.setText(user.getEmail());
+        companyHolder.textValue.setText(user.getCompany());
+        blogHolder.textValue.setText(user.getBlog());
+        locationHolder.textValue.setText(user.getLocation());
         Date date = user.getCreated_at();
 
-        joinTime.setText(date.toLocaleString());
+        joinHolder.textValue.setText(date.toLocaleString());
         presenter.hasFollow(user.getLogin());
     }
 
@@ -334,17 +359,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     }
 
-    @OnClick(R.id.blog)
     void directToBlog(){
-        L.i(TAG,"click blog");
-        if(blog.getText().toString().isEmpty() == false)
-            redirectToBrowser(blog.getText().toString());
+        if(blogHolder.textValue.getText().toString().isEmpty() == false)
+            redirectToBrowser(blogHolder.textValue.getText().toString());
     }
 
-    @OnClick(R.id.email)
     public void sendEmail(){
-        if(email.getText().toString().isEmpty() == false)
-            sendEmail(email.getText().toString());
+        if(emailHolder.textValue.getText().toString().isEmpty() == false)
+            sendEmail(emailHolder.textValue.getText().toString());
     }
 
 

@@ -156,169 +156,21 @@
 
 
 
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconEmail"
-                            style="@style/ListIcon"
-                            android:layout_width="@dimen/user_info_icon_size"
-                            android:layout_height="@dimen/user_info_icon_size"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iconEmail"
-                            android:text="Email"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="@dimen/item_content_textsize"
-                            />
-
-
-                        <TextView
-                            android:id="@+id/email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_accent"
-                            android:layout_alignParentRight="true"
-                            android:textSize="@dimen/item_content_textsize" />
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconBlog"
-                            style="@style/ListIcon"
-                            android:layout_width="@dimen/user_info_icon_size"
-                            android:layout_height="@dimen/user_info_icon_size"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iconBlog"
-                            android:text="Blog"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textSize="@dimen/item_content_textsize"
-                            />
-
-
-                        <TextView
-                            android:id="@+id/blog"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text=""
-                            android:textColor="@color/color_accent"
-                            android:textSize="@dimen/item_content_textsize" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconCompany"
-                            style="@style/ListIcon"
-                            android:layout_width="@dimen/user_info_icon_size"
-                            android:layout_height="@dimen/user_info_icon_size"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iconCompany"
-                            android:text="Company"
-                            android:textSize="@dimen/item_content_textsize"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-
-                        <TextView
-                            android:id="@+id/company"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textColor="@color/color_accent"
-                            android:text=""
-                            android:textSize="@dimen/item_content_textsize" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconLocation"
-                            style="@style/ListIcon"
-                            android:layout_width="@dimen/user_info_icon_size"
-                            android:layout_height="@dimen/user_info_icon_size"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iconLocation"
-                            android:text="Location"
-                            android:textSize="@dimen/item_content_textsize"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                        <TextView
-                            android:id="@+id/location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textColor="@color/color_accent"
-                            android:text=""
-                            android:textSize="@dimen/item_content_textsize" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        style="@style/Widget.CardContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/iconJoinTime"
-                            style="@style/ListIcon"
-                            android:layout_width="@dimen/user_info_icon_size"
-                            android:layout_height="@dimen/user_info_icon_size"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iconJoinTime"
-                            android:text="Join"
-                            android:textSize="@dimen/item_content_textsize"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-
-                        <TextView
-                            android:id="@+id/joinTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textColor="@color/color_accent"
-                            android:text=""
-                            android:textSize="@dimen/item_content_textsize" />
-                    </RelativeLayout>
-
+                    <include
+                        android:id="@+id/emailLayout"
+                        layout="@layout/include_img_key_value"/>
+                    <include
+                        android:id="@+id/blogLayout"
+                        layout="@layout/include_img_key_value"/>
+                    <include
+                        android:id="@+id/companyLayout"
+                        layout="@layout/include_img_key_value"/>
+                    <include
+                        android:id="@+id/locationLayout"
+                        layout="@layout/include_img_key_value"/>
+                    <include
+                        android:id="@+id/joinLayout"
+                        layout="@layout/include_img_key_value"/>
 
                 </LinearLayout>
 
