@@ -26,6 +26,7 @@ import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.UserInfoPresenter;
 import com.quinn.githubknife.presenter.UserInfoPresenterImpl;
+import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
@@ -35,16 +36,19 @@ import com.quinn.githubknife.ui.widget.UserLabel;
 import com.quinn.githubknife.utils.BitmapUtils;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
+import com.quinn.githubknife.view.ListFragmentView;
 import com.quinn.githubknife.view.UserInfoView;
+import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserInfoActivity extends BaseActivity implements UserInfoView {
+public class UserInfoActivity extends BaseActivity implements UserInfoView,ListFragmentView {
 
     private static final String TAG = UserInfoActivity.class.getSimpleName();
     private User user;
@@ -87,9 +91,70 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Bind(R.id.joinLayout)
     View joinLayout;
 
+
+    @Bind(R.id.repo_preivew_one)
+    View preview_1;
+    @Bind(R.id.repo_preivew_two)
+    View preview_2;
+    @Bind(R.id.repo_preivew_three)
+    View preview_3;
+
+    @Override
+    public void setItems(List<?> items) {
+
+        preview_1_holder.textKey.setText(((Repository)items.get(0)).getName());
+        preview_2_holder.textKey.setText(((Repository)items.get(1)).getName());
+        preview_3_holder.textKey.setText(((Repository)items.get(2)).getName());
+        preview_1_holder.textValue.setText("" + ((Repository) items.get(0)).getStargazers_count());
+        preview_2_holder.textValue.setText("" + ((Repository)items.get(1)).getStargazers_count());
+        preview_3_holder.textValue.setText("" + ((Repository)items.get(2)).getStargazers_count());
+
+
+
+
+    }
+
+    @Override
+    public void intoItem(int position) {
+
+    }
+
+    @Override
+    public void failToLoadMore() {
+
+    }
+
+    @Override
+    public void failToLoadFirst(String errorMsg) {
+
+    }
+
+    @Override
+    public void reLoad() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+
     public static class IconKeyValueViewHolder {
         @Bind(R.id.textIcon) public ImageView icon;
         @Bind(R.id.textKey) public TextView textKey;
+        @Bind(R.id.textValue) public TextView textValue;
+    }
+
+    public static class RepoPreviewHolder {
+        @Bind(R.id.textIcon) public ImageView icon;
+        @Bind(R.id.textKey) public TextView textKey;
+        @Bind(R.id.star) public ImageView star;
         @Bind(R.id.textValue) public TextView textValue;
     }
 
@@ -98,6 +163,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     IconKeyValueViewHolder companyHolder = new IconKeyValueViewHolder();
     IconKeyValueViewHolder joinHolder = new IconKeyValueViewHolder();
     IconKeyValueViewHolder locationHolder = new IconKeyValueViewHolder();
+
+    RepoPreviewHolder preview_1_holder = new RepoPreviewHolder();
+    RepoPreviewHolder preview_2_holder = new RepoPreviewHolder();
+    RepoPreviewHolder preview_3_holder = new RepoPreviewHolder();
 
 
     FollowState followState;
@@ -111,6 +180,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
 
     private UserInfoPresenter presenter;
+    private UserRepoPresenterImpl repoPresenter;
 
 
     public static void launch(Context context, Bundle bundle) {
@@ -125,11 +195,16 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
+
         ButterKnife.bind(joinHolder, joinLayout);
         ButterKnife.bind(emailHolder, emailLayout);
         ButterKnife.bind(companyHolder, companyLayout);
         ButterKnife.bind(blogHolder, blogLayout);
         ButterKnife.bind(locationHolder, locationLayout);
+
+        ButterKnife.bind(preview_1_holder,preview_1);
+        ButterKnife.bind(preview_2_holder,preview_2);
+        ButterKnife.bind(preview_3_holder,preview_3);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -139,7 +214,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             user = (User) savedInstanceState.getSerializable("user");
         }
         presenter = new UserInfoPresenterImpl(this, this);
+        repoPresenter = new UserRepoPresenterImpl(this, this);
         presenter.user(user.getLogin());
+        repoPresenter.onPageLoad(1, user.getLogin());
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbar.setTitle(user.getLogin());
@@ -161,6 +239,19 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         emailHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
         blogHolder.textValue.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         blogHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
+
+
+        BitmapUtils.setIconFont(this, preview_1_holder.icon, OctIcon.REPO, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_2_holder.icon, OctIcon.REPO, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_3_holder.icon, OctIcon.REPO, R.color.theme_color);
+
+        BitmapUtils.setIconFont(this, preview_1_holder.star, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_2_holder.star, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_3_holder.star, OctIcon.STAR, R.color.theme_color);
+
+
+
+
 
         emailHolder.textValue.setOnClickListener(new View.OnClickListener() {
             @Override

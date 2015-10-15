@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.CardContent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/textIcon"
+        style="@style/ListIcon"
+        android:layout_width="@dimen/user_info_icon_size"
+        android:layout_height="@dimen/user_info_icon_size" />
+
+    <TextView
+        android:id="@+id/textKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/textIcon"
+        android:text="Join"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="@dimen/item_content_textsize" />
+
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="@dimen/user_info_icon_size"
+        android:layout_height="@dimen/user_info_icon_size"
+        android:layout_alignParentRight="true" />
+
+
+    <TextView
+        android:id="@+id/textValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/star"
+        android:layout_marginRight="5dip"
+        android:text=""
+        android:textColor="@color/theme_color"
+        android:textSize="@dimen/item_content_textsize" />
+
+
+
+</RelativeLayout>
+
