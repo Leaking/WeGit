@@ -23,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageLoader imageLoader;
     protected GithubApplication app;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

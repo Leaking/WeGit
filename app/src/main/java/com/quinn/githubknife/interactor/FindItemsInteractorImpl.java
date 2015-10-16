@@ -199,7 +199,27 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
 
     @Override
     public void loadUserEvents(final String user, final int page) {
+        Call<List<Event>> call = service.publicEvent(user, String.valueOf(page));
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Response<List<Event>> response, Retrofit retrofit) {
+                RetrofitUtil.printResponse(response);
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
+                    loadUserEvents(user, page);
+                } else if (response.isSuccess()) {
+                    listener.onFinished(response.body());
+                } else {
+                    handleFailure(page);
 
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                handleFailure(page);
+
+            }
+        });
     }
 
     @Override

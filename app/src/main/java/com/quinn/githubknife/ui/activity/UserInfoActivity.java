@@ -24,23 +24,26 @@ import android.widget.TextView;
 
 import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.quinn.githubknife.R;
+import com.quinn.githubknife.presenter.RepoAndEventPreviewPresenter;
+import com.quinn.githubknife.presenter.RepoAndEventPreviewPresenterImpl;
 import com.quinn.githubknife.presenter.UserInfoPresenter;
 import com.quinn.githubknife.presenter.UserInfoPresenterImpl;
-import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
+import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.UserLabel;
 import com.quinn.githubknife.utils.BitmapUtils;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
-import com.quinn.githubknife.view.ListFragmentView;
+import com.quinn.githubknife.view.RepoAndEventPreviewView;
 import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +51,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class UserInfoActivity extends BaseActivity implements UserInfoView,ListFragmentView {
+public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoAndEventPreviewView {
 
     private static final String TAG = UserInfoActivity.class.getSimpleName();
     private User user;
@@ -99,48 +102,44 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
     @Bind(R.id.repo_preivew_three)
     View preview_3;
 
+
+    @Bind(R.id.repoCount)
+    TextView repoCount;
+
+    @Bind(R.id.repo_preview_title)
+    View repoPreviewTitle;
+
+    private List<Repository> preivewRepo = new ArrayList<Repository>();
+
+
+
+
     @Override
-    public void setItems(List<?> items) {
+    public void repoItems(List items) {
+        for(int i = 0; i < preview_holder.length; i++){
+            preview_holder[i].textKey.setText(((Repository)items.get(i)).getName());
+            preview_holder[i].textValue.setText("" + ((Repository) items.get(i)).getStargazers_count());
+            if(((Repository) items.get(0)).isFork() == false){
+                BitmapUtils.setIconFont(this, preview_holder[i].icon, OctIcon.REPO, R.color.theme_color);
+            }else{
+                BitmapUtils.setIconFont(this, preview_holder[i].icon, OctIcon.FORK, R.color.theme_color);
+            }
+            preivewRepo.add((Repository)items.get(i));
+        }
+    }
 
-        preview_1_holder.textKey.setText(((Repository)items.get(0)).getName());
-        preview_2_holder.textKey.setText(((Repository)items.get(1)).getName());
-        preview_3_holder.textKey.setText(((Repository)items.get(2)).getName());
-        preview_1_holder.textValue.setText("" + ((Repository) items.get(0)).getStargazers_count());
-        preview_2_holder.textValue.setText("" + ((Repository)items.get(1)).getStargazers_count());
-        preview_3_holder.textValue.setText("" + ((Repository)items.get(2)).getStargazers_count());
-
-
-
+    @Override
+    public void eventItems(List items) {
 
     }
 
     @Override
-    public void intoItem(int position) {
+    public void loadRepoError() {
 
     }
 
     @Override
-    public void failToLoadMore() {
-
-    }
-
-    @Override
-    public void failToLoadFirst(String errorMsg) {
-
-    }
-
-    @Override
-    public void reLoad() {
-
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
+    public void loadEventError() {
 
     }
 
@@ -164,9 +163,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
     IconKeyValueViewHolder joinHolder = new IconKeyValueViewHolder();
     IconKeyValueViewHolder locationHolder = new IconKeyValueViewHolder();
 
-    RepoPreviewHolder preview_1_holder = new RepoPreviewHolder();
-    RepoPreviewHolder preview_2_holder = new RepoPreviewHolder();
-    RepoPreviewHolder preview_3_holder = new RepoPreviewHolder();
+    RepoPreviewHolder[] preview_holder = new RepoPreviewHolder[3];
+
+
 
 
     FollowState followState;
@@ -180,7 +179,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
 
 
     private UserInfoPresenter presenter;
-    private UserRepoPresenterImpl repoPresenter;
+    private RepoAndEventPreviewPresenter previewPresenter;
 
 
     public static void launch(Context context, Bundle bundle) {
@@ -202,9 +201,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
         ButterKnife.bind(blogHolder, blogLayout);
         ButterKnife.bind(locationHolder, locationLayout);
 
-        ButterKnife.bind(preview_1_holder,preview_1);
-        ButterKnife.bind(preview_2_holder,preview_2);
-        ButterKnife.bind(preview_3_holder,preview_3);
+        preview_holder[0] = new RepoPreviewHolder();
+        preview_holder[1] = new RepoPreviewHolder();
+        preview_holder[2] = new RepoPreviewHolder();
+        ButterKnife.bind(preview_holder[0],preview_1);
+        ButterKnife.bind(preview_holder[1],preview_2);
+        ButterKnife.bind(preview_holder[2],preview_3);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -214,9 +216,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
             user = (User) savedInstanceState.getSerializable("user");
         }
         presenter = new UserInfoPresenterImpl(this, this);
-        repoPresenter = new UserRepoPresenterImpl(this, this);
+        previewPresenter = new RepoAndEventPreviewPresenterImpl(this, this);
         presenter.user(user.getLogin());
-        repoPresenter.onPageLoad(1, user.getLogin());
+        previewPresenter.previewRepo(1, user.getLogin());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -241,13 +243,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
         blogHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
 
 
-        BitmapUtils.setIconFont(this, preview_1_holder.icon, OctIcon.REPO, R.color.theme_color);
-        BitmapUtils.setIconFont(this, preview_2_holder.icon, OctIcon.REPO, R.color.theme_color);
-        BitmapUtils.setIconFont(this, preview_3_holder.icon, OctIcon.REPO, R.color.theme_color);
 
-        BitmapUtils.setIconFont(this, preview_1_holder.star, OctIcon.STAR, R.color.theme_color);
-        BitmapUtils.setIconFont(this, preview_2_holder.star, OctIcon.STAR, R.color.theme_color);
-        BitmapUtils.setIconFont(this, preview_3_holder.star, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_holder[0].star, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_holder[1].star, OctIcon.STAR, R.color.theme_color);
+        BitmapUtils.setIconFont(this, preview_holder[2].star, OctIcon.STAR, R.color.theme_color);
 
 
 
@@ -364,6 +363,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
         companyHolder.textValue.setText(user.getCompany());
         blogHolder.textValue.setText(user.getBlog());
         locationHolder.textValue.setText(user.getLocation());
+        repoCount.setText("" + user.getPublic_repos());
         Date date = user.getCreated_at();
 
         joinHolder.textValue.setText(date.toLocaleString());
@@ -408,6 +408,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
     @OnClick(R.id.starWrap)
     void viewStarred() {
         viewDetail(StarredRepoFragment.TAG);
+    }
+
+
+    @OnClick(R.id.repo_preview_title)
+    void viewAllRepo(){
+        viewDetail(UserRepoFragment.TAG);
     }
 
 
@@ -466,6 +472,20 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,ListF
         bundle.putSerializable("user", user.getLogin());
         bundle.putString("fragment", contentType);
         FoActivity.launch(this, bundle);
+    }
+
+    @OnClick(R.id.repo_preivew_one)
+    public void viewRepo1(){
+        RepoActivity.launch(this,preivewRepo.get(0));
+    }
+    @OnClick(R.id.repo_preivew_two)
+    public void viewRepo2(){
+        RepoActivity.launch(this,preivewRepo.get(1));
+
+    }
+    @OnClick(R.id.repo_preivew_three)
+    public void viewRepo3(){
+        RepoActivity.launch(this,preivewRepo.get(2));
     }
 
 

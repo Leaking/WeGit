@@ -11,6 +11,8 @@ public interface GithubConstants {
     public final static String PullRequestEvent = "PullRequestEvent";
     public final static String MemberEvent = "MemberEvent";
     public final static String IssuesEvent = "IssuesEvent";
+    public final static String PublicEvent = "PublicEvent";
+
 
 
 }

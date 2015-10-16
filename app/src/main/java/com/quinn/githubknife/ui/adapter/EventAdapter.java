@@ -32,7 +32,6 @@ public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
 
-
     private Context context;
 
     private List<Event> dataItems;
@@ -64,7 +63,7 @@ public class EventAdapter extends
         Event event = dataItems.get(position);
         imageLoader.displayImage(event.getActor().getAvatar_url(), holder.avatar, option, animateFirstListener);
         holder.happenTime.setText(TimeUtils.getRelativeTime(event.getCreated_at()));
-        getEventTypeIcon(holder.eventType, event.getType());
+        //getEventTypeIcon(holder.eventType, event.getType());
 
        // holder.event.setText(setItemTextAndIcon(position));
         setItemTextAndIcon(holder.event,holder.eventType,position);
@@ -105,8 +104,11 @@ public class EventAdapter extends
             }else if(payload.getAction().equals("closed")){
                 BitmapUtils.setIconFont(context, img, OctIcon.ISSUE_CLOSE, R.color.theme_color);
             }
+        }else if(eventType.equals(GithubConstants.PublicEvent)){
+            tv.setText( Html.fromHtml(event.getActor().getLogin() + "<strong> made </strong>" + event.getRepo().getName() +" <strong> public </strong>" ));
+            BitmapUtils.setIconFont(context, img, OctIcon.REPO, R.color.theme_color);
         }else {
-            tv.setText("XXXXX");   // I will add more eventtype later
+            tv.setText("Unknown event type");   // I will add more eventtype later
         }
     }
 

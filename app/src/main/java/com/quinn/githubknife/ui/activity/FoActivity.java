@@ -19,6 +19,7 @@ import com.quinn.githubknife.ui.fragments.ForkersFragment;
 import com.quinn.githubknife.ui.fragments.StargazersFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.TreeFragment;
+import com.quinn.githubknife.ui.fragments.UserEventFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.utils.L;
 
@@ -97,6 +98,8 @@ public class FoActivity extends BaseActivity {
             //return TreeFragment.getInstance(user,repo,branch);
         }else if(type.equals(BranchesFragment.TAG)){
             return BranchesFragment.getInstance(user,repo);
+        }else if(type.equals(UserEventFragment.TAG)){
+            return UserEventFragment.getInstance(user);
         }
 
         return null;
@@ -121,6 +124,8 @@ public class FoActivity extends BaseActivity {
             return "Code";
         }else if(type.equals(BranchesFragment.TAG)){
             return "Branch";
+        }else if(type.equals(UserEventFragment.TAG)){
+            return "Event";
         }
         return null;
     }

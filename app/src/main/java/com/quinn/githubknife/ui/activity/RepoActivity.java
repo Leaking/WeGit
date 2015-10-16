@@ -116,6 +116,12 @@ public class RepoActivity extends BaseActivity implements RepoView {
         context.startActivity(intent);
     }
 
+    public static void launch(Context context, Repository repo){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("repo", repo);
+        RepoActivity.launch(context, bundle);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
