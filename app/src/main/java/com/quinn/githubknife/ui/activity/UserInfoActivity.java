@@ -116,7 +116,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
 
     @Override
     public void repoItems(List items) {
-        for(int i = 0; i < preview_holder.length; i++){
+        for(int i = 0; i < preview_holder.length && i < items.size(); i++){
             preview_holder[i].textKey.setText(((Repository)items.get(i)).getName());
             preview_holder[i].textValue.setText("" + ((Repository) items.get(i)).getStargazers_count());
             if(((Repository) items.get(0)).isFork() == false){
@@ -126,6 +126,20 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
             }
             preivewRepo.add((Repository)items.get(i));
         }
+        if(items.size() < 3){
+            if(items.size() == 1){
+                preview_2.setVisibility(View.GONE);
+                preview_3.setVisibility(View.GONE);
+
+            }
+            if(items.size() == 2){
+                preview_3.setVisibility(View.GONE);
+            }
+            if(items.size() == 0){
+                repoPreviewTitle.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override
@@ -348,6 +362,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
     public void loadUser(User user) {
         if (user == null)
             return;
+
         /**
          * 处理返回为空的
          */
@@ -359,10 +374,34 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
         }
         followersLabel.setValue("" + user.getFollowers());
         followingsLabel.setValue("" + user.getFollowing());
-        emailHolder.textValue.setText(user.getEmail());
-        companyHolder.textValue.setText(user.getCompany());
-        blogHolder.textValue.setText(user.getBlog());
-        locationHolder.textValue.setText(user.getLocation());
+        if(TextUtils.isEmpty(user.getEmail())){
+            emailLayout.setVisibility(View.GONE);
+        }else {
+            emailHolder.textValue.setText("" + user.getEmail());
+        }
+        if(TextUtils.isEmpty(user.getCompany())){
+            companyLayout.setVisibility(View.GONE);
+        }else {
+            companyHolder.textValue.setText("" + user.getCompany());
+        }
+        if(TextUtils.isEmpty(user.getBlog())){
+            blogLayout.setVisibility(View.GONE);
+        }else {
+            try {
+                blogHolder.textValue.setText(user.getBlog().substring(0, 30) + "...");
+            }catch (StringIndexOutOfBoundsException e){
+                blogHolder.textValue.setText("" + user.getBlog());
+            }
+        }
+        if(TextUtils.isEmpty(user.getLocation())){
+            locationLayout.setVisibility(View.GONE);
+        }else {
+            try {
+                locationHolder.textValue.setText(user.getLocation().substring(0, 27) + "...");
+            }catch (StringIndexOutOfBoundsException e){
+                locationHolder.textValue.setText("" + user.getLocation());
+            }
+        }
         repoCount.setText("" + user.getPublic_repos());
         Date date = user.getCreated_at();
 

@@ -9,7 +9,9 @@ import com.quinn.githubknife.presenter.ReceivedEventPresenterImpl;
 import com.quinn.githubknife.ui.adapter.EventAdapter;
 import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
+import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.httpknife.github.Event;
+import com.quinn.httpknife.github.GithubConstants;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.User;
 
@@ -67,9 +69,13 @@ public class ReceivedEventFragment extends BaseFragment implements RecycleItemCl
     @Override
     public void intoItem(final int position) {
         Event event = (Event)dataItems.get(position);
-        User user = (User)event.getActor();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user",user);
-        UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(),bundle);
+        if(event.getOrg() != null && event.getType().equals(GithubConstants.MemberEvent)){
+            ToastUtils.showMsg(this.getActivity(),"Orgnization...");
+        }else {
+            User user = (User) event.getActor();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", user);
+            UserInfoActivity.launch(ReceivedEventFragment.this.getActivity(), bundle);
+        }
     }
 }

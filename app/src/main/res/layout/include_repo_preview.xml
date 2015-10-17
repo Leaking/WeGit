@@ -17,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/textIcon"
-        android:text="Join"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="@dimen/item_content_textsize" />
 

@@ -1,6 +1,7 @@
 package com.quinn.githubknife.interactor;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
@@ -177,12 +178,12 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
                 if (response.isSuccess()) {
                     String linkHeader = response.headers().get("Link");
                     L.i(TAG,"linkHeader = " + linkHeader);
-                    //10-14 19:36:00.327    4224-4224/? I/UserInfoInteractorImpl﹕
-                    // //linkHeader = <https://api.github.com/user/6383426/starred?per_page=1&page=2>;
-                    // //rel="next", <https://api.github.com/user/6383426/starred?per_page=1&page=86>;
-                    // //rel="last"
-                    int count = LogicUtils.parseStarredCount(linkHeader);
-                    listener.loadStarredCount(count);
+                    if(TextUtils.isEmpty(linkHeader) == false) {
+                        int count = LogicUtils.parseStarredCount(linkHeader);
+                        listener.loadStarredCount(count);
+                    }else{
+                        listener.loadStarredCount(response.body().size());
+                    }
                 } else {
                     listener.onError(context.getString(R.string.fail_unfollow) + user);
                 }
