@@ -2,9 +2,13 @@ package com.quinn.githubknife.model;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.utils.Constants;
 import com.quinn.githubknife.utils.L;
+import com.quinn.httpknife.github.Event;
+import com.quinn.httpknife.payload.EventFormatter;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -54,11 +58,14 @@ public class RetrofitUtil {
                     });
 
 
-
+                    Gson gson = new Gson();
+                    GsonBuilder builder = new GsonBuilder();
+                    builder.registerTypeAdapter(Event.class, new EventFormatter());
+                    gson = builder.create();
                     instance = new Retrofit.Builder()
                             .baseUrl(Constants.BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                             .client(client)
+                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .client(client)
                             .build();
 
                 }
