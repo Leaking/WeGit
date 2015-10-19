@@ -39,7 +39,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
 
     public FindItemsInteractorImpl(Context context, final OnLoadItemListListener listener) {
         this.context = context;
-        this.service = RetrofitUtil.getInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
         this.listener = listener;
     }

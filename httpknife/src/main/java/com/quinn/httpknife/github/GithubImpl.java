@@ -30,7 +30,7 @@ public class GithubImpl implements Github {
     public final static String API_HOST = HTTPS + HOST + URL_SPLITTER;
 
     public final static String ACCEPT_JSON = "application/vnd.github.beta+json";
-    public final static String ACCEPT_RAW = "application/vnd.github.VERSION.raw";
+    public final static String ACCEPT_RAW = "application/vnd.github.v3.raw";
     public final static String AGENT_USER = "WeGit/1.0";
     public final static String TOKEN_NOTE = "WeGit APP Token";
 

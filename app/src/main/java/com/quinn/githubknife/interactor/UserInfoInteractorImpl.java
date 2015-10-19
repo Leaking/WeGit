@@ -38,7 +38,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener) {
         this.context = context;
         this.listener = listener;
-        this.service = RetrofitUtil.getInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
 
     }
