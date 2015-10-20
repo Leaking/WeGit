@@ -134,7 +134,6 @@ public class GithubImpl implements Github {
                 .headers(configreHttpHeader())
                 .basicAuthorization(username, password).response();
         filterError(response);
-
     }
 
     @Override

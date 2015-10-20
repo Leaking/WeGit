@@ -383,7 +383,7 @@ public class RepoActivity extends BaseActivity implements RepoView {
     @Override
     public void forkResult(boolean success) {
         String result = success?"Success":"Fail";
-        ToastUtils.showMsg(this, result + "Fork");
+        ToastUtils.showMsg(this, result + " Fork");
     }
 
     @Override

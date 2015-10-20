@@ -9,11 +9,16 @@ import com.quinn.httpknife.github.Tree;
 import com.quinn.httpknife.github.User;
 import com.quinn.httpknife.github.UserSearch;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit.Call;
+import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
+import retrofit.http.Header;
+import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -23,8 +28,26 @@ import retrofit.http.Query;
  */
 public interface GithubService{
 
-    //Api about user
 
+    // Api about token
+
+    @POST("authorizations")
+    public String createToken(@Body JSONObject json,@Header("Authorization") String authorization) ;
+
+    @GET("authorizations")
+    public String listToken(@Header("Authorization") String authorization) ;
+
+    @DELETE("authorizations/{id}")
+    public String removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
+
+
+
+
+    //public void removeToken(String username, String password) throws GithubError, AuthError;
+
+
+
+    //Api about user
 
     @GET("/user")
     Call<User> authUser();
@@ -52,13 +75,13 @@ public interface GithubService{
 
 
     @GET("/user/starred/{owner}/{repo}")
-    Call<List<User>> hasStar(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
+    Call<Empty> hasStar(@Path("owner") String owner, @Path("repo") String repo);
 
     @PUT("/user/starred/{owner}/{repo}")
-    Call<List<User>> star(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
+    Call<Empty> star(@Path("owner") String owner, @Path("repo") String repo);
 
     @DELETE("/user/starred/{owner}/{repo}")
-    Call<List<User>> unStar(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
+    Call<Empty> unStar(@Path("owner") String owner, @Path("repo") String repo);
 
     //Get count of starred repo of someone
     @GET("/users/{user}/starred?&per_page=1")
@@ -76,14 +99,19 @@ public interface GithubService{
     @GET("/repos/{owner}/{repo}/collaborators?&per_page=10")
     Call<List<User>> collaborators(@Path("owner") String owner, @Path("repo") String repo,@Query("page") String page);
 
-    @GET("/repos/{owner}/{repo}/branches/")
+    @GET("/repos/{owner}/{repo}/branches")
     Call<List<Branch>> getBranches(@Path("owner") String owner, @Path("repo") String repo);
 
     @GET("/repos/{owner}/{repo}/git/trees/{sha}?&per_page=10")
     Call<Tree> getTree(@Path("owner") String owner, @Path("repo") String repo,@Path("sha") String sha);
 
+    @GET("/repos/{owner}/{repo}/forks")
+    Call<List<Repository>> fork(@Path("owner") String owner, @Path("repo") String repo);
+
     @GET("/repos/{owner}/{repo}/contents/{path}")
     Call<String> getRawContent(@Path("owner") String owner, @Path("repo") String repo,@Path("path") String path);
+
+
 
     //Api about search
     @GET("/search/users?&perpage=10")
@@ -107,6 +135,9 @@ public interface GithubService{
 
     @DELETE("/user/following/{username}")
     Call<Empty> unFollow(@Path("username") String username);
+
+
+
 
 
 }

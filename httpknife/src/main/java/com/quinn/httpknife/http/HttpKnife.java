@@ -518,7 +518,7 @@ public class HttpKnife {
 			httpResponse.setEntity(entityFromConnection());
 			headersFromConnection(httpResponse);
 			Response response = new Response(httpResponse);
-			HttpLog.i("=====Got Respose=====");
+			HttpLog.i("=====Got Response=====");
 			HttpLog.i("Response success : " + response.isSuccess());
 			HttpLog.i("Response statusCode  : " + response.statusCode());
 			HttpLog.i("Response reasonPhrase : " + response.reasonPhrase());

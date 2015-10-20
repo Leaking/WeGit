@@ -1,23 +1,22 @@
 package com.quinn.githubknife.interactor;
 
-import android.accounts.Account;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadRepoListener;
-import com.quinn.githubknife.utils.L;
-import com.quinn.githubknife.utils.PreferenceUtils;
-import com.quinn.httpknife.github.AuthError;
+import com.quinn.githubknife.model.GithubService;
+import com.quinn.githubknife.model.RetrofitUtil;
 import com.quinn.httpknife.github.Branch;
-import com.quinn.httpknife.github.Github;
-import com.quinn.httpknife.github.GithubError;
-import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.Empty;
+import com.quinn.httpknife.github.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Quinn on 8/1/15.
@@ -33,194 +32,152 @@ public class RepoInteractorImpl implements RepoInteractor{
     private Context context;
     private GitHubAccount gitHubAccount;
     private OnLoadRepoListener listener;
-    private Github github;
-    private Handler handler;
+
+    private GithubService service;
+
 
 
     public RepoInteractorImpl(Context context, final OnLoadRepoListener listener){
         this.context = context;
         this.listener = listener;
-        this.github = new GithubImpl(context);
-        String name = PreferenceUtils.getString(context, PreferenceUtils.Key.ACCOUNT);
-        if(name.isEmpty())
-            name = "NO_ACCOUNT";
-        Account account = new Account(name, GitHubAccount.ACCOUNT_TYPE);
-        this.gitHubAccount = new GitHubAccount(account,context);
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                    switch (msg.what){
-                        case STAR_STATE:
-                            boolean hasStar = (boolean) msg.obj;
-                            listener.setStarState(hasStar);
-                            break;
-                        case FAIL:
-                            String errorMsg = (String) msg.obj;
-                            listener.onError(errorMsg);
-                            break;
-                        case FORK_RESULT:
-                            boolean forkMsg = (boolean)msg.obj;
-                            listener.forkResult(forkMsg);
-                            break;
-                        case BRANCHES:
-                            List<Branch> branches = (List<Branch>)msg.obj;
-                            listener.setBranches(branches);
-                            break;
-
-                    }
-                }
-
-
-        };
-
+        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
+        this.gitHubAccount = GitHubAccount.getInstance(context);
     }
-
-
 
 
     @Override
     public void hasStar(final String owner, final String repo) {
-        new Thread(new Runnable() {
+
+        Call<Empty> call = service.hasStar(owner, repo);
+        call.enqueue(new Callback<Empty>() {
             @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                github.makeAuthRequest(token);
-                try {
-                    boolean hasStar = github.hasStarRepo(owner, repo);
-                    Message msg = new Message();
-                    msg.what = STAR_STATE;
-                    msg.obj = hasStar;
-                    handler.sendMessage(msg);
-                } catch (GithubError githubError) {
-                    githubError.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = FAIL;
-                    msg.obj = context.getResources().getString(R.string.network_error);
-                    handler.sendMessage(msg);
-                }  catch (AuthError authError) {
-                    authError.printStackTrace();
-                    gitHubAccount.invalidateToken(token);
-                    hasStar(owner,repo);
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
+                    star(owner,repo);
+                }
+                if (response.code() == 204) {
+                    listener.setStarState(true);
+                } else {
+                    listener.setStarState(false);
                 }
             }
-        }).start();
+
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError(context.getString(R.string.fail_unfollow) + repo);
+            }
+        });
+
+
     }
 
     @Override
     public void star(final String owner, final String repo) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
 
-                try {
-                    github.makeAuthRequest(token);
-                    boolean hasStar = github.starRepo(owner, repo);
-                    Message msg = new Message();
-                    msg.what = STAR_STATE;
-                    msg.obj = hasStar;
-                    handler.sendMessage(msg);
-                } catch (GithubError githubError) {
-                    githubError.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = FAIL;
-                    msg.obj = context.getResources().getString(R.string.network_error);
-                    handler.sendMessage(msg);
-                }catch (AuthError authError) {
-                    authError.printStackTrace();
-                    gitHubAccount.invalidateToken(token);
+        Call<Empty> call = service.star(owner, repo);
+        call.enqueue(new Callback<Empty>() {
+            @Override
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
                     star(owner, repo);
                 }
+                if (response.code() == 204) {
+                    listener.setStarState(true);
+                } else {
+                    listener.onError(context.getString(R.string.fail_unfollow) + repo);
+                }
             }
-        }).start();
+
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError(context.getString(R.string.fail_unfollow) + repo);
+            }
+        });
+
+
     }
 
     @Override
     public void unStar(final String owner, final String repo) {
-        new Thread(new Runnable() {
+        Call<Empty> call = service.unStar(owner, repo);
+        call.enqueue(new Callback<Empty>() {
             @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                try {
-                    github.makeAuthRequest(token);
-                    boolean unstar = github.unStarRepo(owner, repo);
-                    Message msg = new Message();
-                    msg.what = STAR_STATE;
-                    msg.obj = !unstar;
-                    handler.sendMessage(msg);
-                } catch (GithubError githubError) {
-                    githubError.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = FAIL;
-                    msg.obj = context.getResources().getString(R.string.network_error);
-                    handler.sendMessage(msg);
-                }catch (AuthError authError) {
-                    authError.printStackTrace();
-                    gitHubAccount.invalidateToken(token);
-                    unStar(owner, repo);
+            public void onResponse(Response<Empty> response, Retrofit retrofit) {
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
+                    star(owner, repo);
+                }
+                if (response.code() == 204) {
+                    listener.setStarState(false);
+                } else {
+                    listener.onError(context.getString(R.string.fail_unfollow) + repo);
                 }
             }
-        }).start();
+
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError(context.getString(R.string.fail_unfollow) + repo);
+            }
+        });
     }
 
     @Override
     public void fork(final String owner, final String repo) {
-        new Thread(new Runnable() {
+
+        Call<List<Repository>> call = service.fork(owner, repo);
+        call.enqueue(new Callback<List<Repository>>() {
             @Override
-            public void run() {
-                String token = gitHubAccount.getAuthToken();
-                try {
-                    github.makeAuthRequest(token);
-                    boolean success = github.fork(owner, repo);
-                    Message msg = new Message();
-                    msg.what = FORK_RESULT;
-                    msg.obj = success;
-                    handler.sendMessage(msg);
-                } catch (GithubError githubError) {
-                    githubError.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = FAIL;
-                    msg.obj = context.getResources().getString(R.string.network_error);
-                    handler.sendMessage(msg);
-                }catch (AuthError authError) {
-                    authError.printStackTrace();
-                    gitHubAccount.invalidateToken(token);
+            public void onResponse(Response<List<Repository>> response, Retrofit retrofit) {
+                RetrofitUtil.printResponse(response);
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
                     fork(owner, repo);
                 }
+                if (response.isSuccess()) {
+                    listener.forkResult(true);
+                } else {
+                    listener.forkResult(false);
+                }
             }
-        }).start();
+
+            @Override
+            public void onFailure(Throwable t) {
+                RetrofitUtil.printThrowable(t);
+                listener.forkResult(false);
+            }
+        });
+
     }
 
 
     @Override
     public void loadBranches(final String owner, final String repo) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                L.i(TAG, "loadBranches ");
 
-                String token = gitHubAccount.getAuthToken();
-                github.makeAuthRequest(token);
-                List<Branch> branches = new ArrayList<Branch>();
-                Message msg = new Message();
-                try {
-                    branches = github.getBranches(owner, repo);
-                    L.i(TAG,"branches = " + branches);
-                } catch (GithubError e) {
-                    msg.what = FAIL;
-                    msg.obj = e.getMessage();
-                    handler.sendMessage(msg);
-                    return;
-                } catch (AuthError authError) {
-                    authError.printStackTrace();
-                    gitHubAccount.invalidateToken(token);
+        final Call<List<Branch>> call = service.getBranches(owner, repo);
+        call.enqueue(new Callback<List<Branch>>() {
+            @Override
+            public void onResponse(Response<List<Branch>> response, Retrofit retrofit) {
+
+                RetrofitUtil.printResponse(response);
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
                     loadBranches(owner, repo);
+                } else if (response.isSuccess()) {
+                    listener.setBranches(response.body());
+                } else {
+                    listener.onError("加载分支失败");
+
                 }
-                msg.what = BRANCHES;
-                msg.obj = branches;
-                handler.sendMessage(msg);
             }
-        }).start();
+
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError("加载分支失败");
+            }
+        });
+
+
     }
 }
