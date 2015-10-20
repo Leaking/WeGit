@@ -6,8 +6,6 @@
 # How does it look like ?
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git1.pic.jpg" width="340" />
-<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git9.pic.jpg" width="340" />
-
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git2.pic.jpg" width="340" />
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git3.pic.jpg" width="340" />
@@ -17,6 +15,7 @@
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git6.pic.jpg" width="340" />
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git8.pic.jpg" width="340" />
+<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/git10.pic.jpg" width="340" />
 
 # Develop IDE
 
