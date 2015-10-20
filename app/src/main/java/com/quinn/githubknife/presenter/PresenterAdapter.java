@@ -52,7 +52,11 @@ public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListLis
     @Override
     public void onFinished(List items) {
         view.hideProgress();
-        view.setItems(items);
+        if(items.size() == 0){
+            onError(true,"Empty");
+        }else{
+            view.setItems(items);
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.quinn.githubknife.presenter.TreePresenterImpl;
 import com.quinn.githubknife.ui.activity.CodeActivity;
 import com.quinn.githubknife.ui.activity.ImageActivity;
+import com.quinn.githubknife.ui.activity.ReadmeActivity;
 import com.quinn.githubknife.ui.adapter.TreeAdapter;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.githubknife.utils.FileUtils;
@@ -113,9 +114,11 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
                 bundle.putString("path",path);
                 bundle.putString("repo",repo);
                 bundle.putString("user",user);
-                bundle.putString("branch","master");
+                bundle.putString("branch", "master");
                 ImageActivity.launch(this.getActivity(),bundle);
-            }else {
+            } else if(treeItem.getPath().endsWith("README.md")){
+                ReadmeActivity.launch(this.getActivity(),"https://github.com/Leaking/WeGit/blob/master/README.md");
+            } else {
                 Bundle bundle = new Bundle();
                 bundle.putString("owner", user);
                 bundle.putString("repo", repo);

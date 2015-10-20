@@ -87,6 +87,10 @@
             android:name=".ui.activity.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity
+            android:name=".ui.activity.ReadmeActivity"
+            android:label="@string/title_activity_readme" >
+        </activity>
     </application>
 
 </manifest>

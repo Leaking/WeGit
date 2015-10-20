@@ -34,6 +34,7 @@ import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
 import com.quinn.githubknife.ui.fragments.StarredRepoFragment;
 import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
+import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.view.MainAuthView;
 import com.quinn.httpknife.github.User;
 
@@ -200,6 +201,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
 
     @Override
     public void onError(String msg) {
+        L.i(TAG,"show error dialog ");
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
         builder.setTitle(R.string.fail_init_warning);
@@ -216,12 +218,12 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
 
     @Override
     public void showProgress() {
-        progressDialog = builder.show();
+       progressDialog = builder.show();
     }
 
     @Override
     public void hideProgress() {
-        progressDialog.dismiss();
+       progressDialog.dismiss();
     }
 
 

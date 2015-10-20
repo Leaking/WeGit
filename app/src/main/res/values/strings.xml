@@ -63,6 +63,8 @@
         <item>Search User</item>
         <item>Search Repository</item>
     </string-array>
+
+    <string name="search">Search</string>
     <string name="search_user">Search User</string>
     <string name="search_repository">Search Repository</string>
     <string name="search_result_count"> search results</string>
@@ -107,5 +109,8 @@
     <string name="blog">Blog</string>
     <string name="join">Join</string>
     <string name="company">Company</string>
+    <string name="title_activity_readme">ReadmeActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

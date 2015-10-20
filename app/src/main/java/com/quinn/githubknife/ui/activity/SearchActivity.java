@@ -193,7 +193,7 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         }
 
         new MaterialDialog.Builder(this)
-                .title(R.string.branches)
+                .title(R.string.search)
                 .items(R.array.search_type)
                 .itemsCallbackSingleChoice(currentIndex, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override

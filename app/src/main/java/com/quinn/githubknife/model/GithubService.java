@@ -5,6 +5,7 @@ import com.quinn.httpknife.github.Empty;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.RepoSearch;
 import com.quinn.httpknife.github.Repository;
+import com.quinn.httpknife.github.Token;
 import com.quinn.httpknife.github.Tree;
 import com.quinn.httpknife.github.User;
 import com.quinn.httpknife.github.UserSearch;
@@ -32,13 +33,13 @@ public interface GithubService{
     // Api about token
 
     @POST("authorizations")
-    public String createToken(@Body JSONObject json,@Header("Authorization") String authorization) ;
+    Call<Token> createToken(@Body JSONObject json,@Header("Authorization") String authorization) ;
 
     @GET("authorizations")
-    public String listToken(@Header("Authorization") String authorization) ;
+    Call<List<Token>>listToken(@Header("Authorization") String authorization) ;
 
     @DELETE("authorizations/{id}")
-    public String removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
+    Call<Empty> removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
 
 
 

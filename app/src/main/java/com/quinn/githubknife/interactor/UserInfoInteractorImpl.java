@@ -1,6 +1,8 @@
 package com.quinn.githubknife.interactor;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 
 import com.quinn.githubknife.R;
@@ -11,6 +13,8 @@ import com.quinn.githubknife.model.RetrofitUtil;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.LogicUtils;
 import com.quinn.httpknife.github.Empty;
+import com.quinn.httpknife.github.Github;
+import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
 
@@ -27,11 +31,17 @@ import retrofit.Retrofit;
 public class UserInfoInteractorImpl implements UserInfoInteractor {
 
     private final static String TAG = UserInfoInteractorImpl.class.getSimpleName();
+    private final static int USER_MSG = 1;
+    private final static int FOLLOW_STATE_MSG = 2;
+    private final static int FAIL_MSG = 3;
 
     private Context context;
     private GitHubAccount gitHubAccount;
     private OnLoadUserInfoListener listener;
     private GithubService service;
+    private Handler handler;
+
+    private Github github;
 
 
 
@@ -40,7 +50,30 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
         this.listener = listener;
         this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
+        this.github = new GithubImpl(context);
 
+
+        this.handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case USER_MSG:
+                        User user = (User) msg.obj;
+                        listener.onFinish(user);
+                        break;
+                    case FOLLOW_STATE_MSG:
+                        boolean isFollow = (boolean) msg.obj;
+                        listener.updateFollowState(isFollow);
+                        break;
+                    case FAIL_MSG:
+                        listener.onError((String) msg.obj);
+                        break;
+
+                }
+
+            }
+        };
     }
 
     @Override
@@ -61,6 +94,8 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
             @Override
             public void onFailure(Throwable t) {
                 L.i(TAG,"onFailure = " + t.toString());
+                RetrofitUtil.printThrowable(t);
+
                 listener.onError(context.getString(R.string.fail_auth_user));
             }
         });
@@ -69,10 +104,40 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
     @Override
     public void userInfo(final String username) {
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String token = gitHubAccount.getAuthToken();
+//                github.makeAuthRequest(token);
+//                User user = null;
+//                try {
+//                    user = github.user(username);
+//                    L.i(TAG, user.toString());
+//                } catch (GithubError e) {
+//                    L.i(TAG, "userinfo fail");//f
+//                    Message msg = new Message();
+//                    msg.what = FAIL_MSG;
+//                    msg.obj = context.getString(R.string.fail_load_userInfo) + username;
+//                    handler.sendMessage(msg);
+//                    return;
+//                } catch (AuthError authError) {
+//                    authError.printStackTrace();
+//                    gitHubAccount.invalidateToken(token);
+//                    userInfo(username);
+//                }
+//                Message msg = new Message();
+//                msg.what = USER_MSG;
+//                msg.obj = user;
+//                handler.sendMessage(msg);
+//            }
+//        }).start();
         Call<User> call = service.user(username);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
+                RetrofitUtil.printResponse(response);
                 if (response.code() == 401) {
                     gitHubAccount.invalidateToken(RetrofitUtil.token);
                     userInfo(username);
@@ -83,6 +148,8 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
             @Override
             public void onFailure(Throwable t) {
+                RetrofitUtil.printThrowable(t);
+
                 listener.onError(context.getString(R.string.fail_load_userInfo) + username);
             }
         });

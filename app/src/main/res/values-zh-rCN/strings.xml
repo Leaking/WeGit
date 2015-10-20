@@ -70,6 +70,7 @@
         <item>搜索用户</item>
         <item>搜索项目</item>
     </string-array>
+    <string name="search">搜索</string>
     <string name="search_user">搜索用户</string>
     <string name="search_repository">搜索项目</string>
     <string name="search_result_count">个搜索结果</string>

@@ -43,7 +43,6 @@ public class RetrofitUtil {
 
                             token = gitHubAccount.getAuthToken();
                             request = request.newBuilder()
-                                    .removeHeader("User-Agent")
                                     .addHeader("Authorization", "Token " + token)
                                     .addHeader("User-Agent", "Leaking/1.0")
                                             //.addHeader("Accept", "application/vnd.github.beta+json")
@@ -87,8 +86,11 @@ public class RetrofitUtil {
                         public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
                             Request request = chain.request();
                             GitHubAccount gitHubAccount = GitHubAccount.getInstance(context);
+                            L.i(TAG, "Interceptor token = pre ");
 
                             token = gitHubAccount.getAuthToken();
+                            L.i(TAG, "Interceptor token = " + token);
+
                             request = request.newBuilder()
                                     .removeHeader("User-Agent")
                                     .addHeader("Authorization", "Token " + token)
@@ -133,7 +135,6 @@ public class RetrofitUtil {
 
     public static void printThrowable(Throwable throwable){
         L.i(TAG,"response Throwable " + throwable.toString());
-
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -35,12 +34,7 @@ public class CodeActivity extends BaseActivity implements CodeView {
     private String owner;
     private String repo;
     private String path;
-
-
     private String content;
-
-
-
 
     public static void launch(Context context, Bundle bundle){
         Intent intent = new Intent(context, CodeActivity.class);
@@ -64,18 +58,10 @@ public class CodeActivity extends BaseActivity implements CodeView {
         toolbar.setSubtitle(path);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         presenter = new CodePresenterImpl(this,this);
         presenter.getContent(owner,repo,path);
 
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_code, menu);
-        return true;
     }
 
     @Override

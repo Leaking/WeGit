@@ -156,7 +156,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         }else {
             currPage++;
         }
-
     }
 
     @Override
