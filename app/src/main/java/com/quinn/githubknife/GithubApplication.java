@@ -18,6 +18,8 @@ public class GithubApplication extends Application {
 
     private User user;
 
+    private String token = "";
+
 
     @Override
     public void onCreate() {
@@ -57,5 +59,13 @@ public class GithubApplication extends Application {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

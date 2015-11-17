@@ -82,6 +82,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
+                L.i(TAG,"auth onResponse");
                 RetrofitUtil.printResponse(response);
                 if (response.code() == 401) {
                     gitHubAccount.invalidateToken(RetrofitUtil.token);

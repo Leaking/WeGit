@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.Authenticator;
 import com.quinn.githubknife.presenter.CreateTokenPresenter;
@@ -72,6 +73,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         accountType = intent.getStringExtra(Authenticator.ARG_ACCOUNT_TYPE);
 
         mAuthTokenType = Authenticator.AUTHTOKEN_TYPE_FULL_ACCESS;
+
         builder = new MaterialDialog.Builder(this)
                 .content(R.string.login)
                 .cancelable(false)
@@ -150,6 +152,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         } else {
             mAccountManager.setPassword(account, accountPassword);
         }
+        ((GithubApplication)this.getApplication()).setToken(token);
         Bundle bundle = new Bundle();
         bundle.putString(AccountManager.KEY_ACCOUNT_NAME, accountName);
         bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, accountType);
