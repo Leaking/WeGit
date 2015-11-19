@@ -48,7 +48,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener) {
         this.context = context;
         this.listener = listener;
-        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getJsonRetrofitInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
         this.github = new GithubImpl(context);
 
@@ -96,7 +96,6 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
             public void onFailure(Throwable t) {
                 L.i(TAG,"onFailure = " + t.toString());
                 RetrofitUtil.printThrowable(t);
-
                 listener.onError(context.getString(R.string.fail_auth_user));
             }
         });

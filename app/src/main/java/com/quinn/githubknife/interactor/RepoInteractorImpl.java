@@ -40,7 +40,7 @@ public class RepoInteractorImpl implements RepoInteractor{
     public RepoInteractorImpl(Context context, final OnLoadRepoListener listener){
         this.context = context;
         this.listener = listener;
-        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getJsonRetrofitInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
     }
 

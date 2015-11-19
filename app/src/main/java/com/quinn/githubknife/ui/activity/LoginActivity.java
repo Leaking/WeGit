@@ -78,6 +78,8 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
                 .content(R.string.login)
                 .cancelable(false)
                 .progress(true, 0);
+        username.setText("Leaking");
+        password.setText("3982895898github");
     }
 
 
@@ -152,6 +154,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
         } else {
             mAccountManager.setPassword(account, accountPassword);
         }
+        //Save token created from loginActivity
         ((GithubApplication)this.getApplication()).setToken(token);
         Bundle bundle = new Bundle();
         bundle.putString(AccountManager.KEY_ACCOUNT_NAME, accountName);

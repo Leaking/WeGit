@@ -95,7 +95,7 @@ public class FoActivity extends BaseActivity {
         }else if(type.equals(CollaboratorsFragment.TAG)){
             return CollaboratorsFragment.getInstance(user, repo);
         }else if(type.equals(TreeFragment.TAG)){
-            //return TreeFragment.getJsonInstance(user,repo,branch);
+            //return TreeFragment.getJsonRetrofitInstance(user,repo,branch);
         }else if(type.equals(BranchesFragment.TAG)){
             return BranchesFragment.getInstance(user,repo);
         }else if(type.equals(UserEventFragment.TAG)){

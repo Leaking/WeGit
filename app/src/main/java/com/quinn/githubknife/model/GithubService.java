@@ -10,8 +10,6 @@ import com.quinn.httpknife.github.Tree;
 import com.quinn.httpknife.github.User;
 import com.quinn.httpknife.github.UserSearch;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import retrofit.Call;
@@ -30,10 +28,11 @@ import retrofit.http.Query;
 public interface GithubService{
 
 
+
     // Api about token
 
     @POST("authorizations")
-    Call<Token> createToken(@Body JSONObject json,@Header("Authorization") String authorization) ;
+    Call<Token> createToken(@Body Token token,@Header("Authorization") String authorization) ;
 
     @GET("authorizations")
     Call<List<Token>>listToken(@Header("Authorization") String authorization) ;

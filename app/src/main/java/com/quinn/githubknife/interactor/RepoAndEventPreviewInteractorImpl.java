@@ -29,7 +29,7 @@ public class RepoAndEventPreviewInteractorImpl implements  RepoAndEventPreviewIn
     public RepoAndEventPreviewInteractorImpl(final Context context, final OnLoadRepoAndEventPreviewListener listener){
         this.context = context;
         this.listener = listener;
-        this.service = RetrofitUtil.getJsonInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getJsonRetrofitInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
     }
 

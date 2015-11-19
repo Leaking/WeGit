@@ -9,15 +9,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.quinn.githubknife.GithubApplication;
+import com.quinn.githubknife.model.GithubService;
+import com.quinn.githubknife.model.RetrofitUtil;
 import com.quinn.githubknife.ui.activity.LoginActivity;
 import com.quinn.httpknife.github.AuthError;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubError;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.OverAuthError;
+
+import retrofit.Retrofit;
 
 
 /**
@@ -34,9 +37,17 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
     public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Full access";
 
+    private GithubApplication app;
+    private Retrofit retrofit;
+    private GithubService service;
+
+
     public Authenticator(Context context) {
         super(context);
         this.context = context;
+        this.app = (GithubApplication) context.getApplicationContext();
+        this.retrofit = RetrofitUtil.getRetrofitWithoutTokenInstance(context);
+        this.service = retrofit.create(GithubService.class);
     }
 
     @Override
@@ -83,8 +94,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
                     authToken = "";
                 }
             }else {
-                Log.i(TAG, "Try to get AuthToken password is empty");
-                GithubApplication app = (GithubApplication) context.getApplicationContext();
+                //If u fail to get local token,check if there is a token saved in application.
                 if(!app.getToken().isEmpty()){
                     final Bundle result = new Bundle();
                     result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
@@ -96,7 +106,8 @@ public class Authenticator extends AbstractAccountAuthenticator {
         }
 
         if (!TextUtils.isEmpty(authToken)) {
-
+            //After generating
+            app.setToken(authToken);
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
@@ -131,4 +142,8 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
         return null;
     }
+
+
+
+
 }

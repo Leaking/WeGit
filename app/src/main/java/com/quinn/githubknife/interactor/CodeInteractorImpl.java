@@ -29,7 +29,7 @@ public class CodeInteractorImpl implements CodeInteractor{
     public CodeInteractorImpl(final Context context, final OnCodeListener listener){
         this.listener = listener;
         this.context = context;
-        this.service = RetrofitUtil.getStringInstance(context).create(GithubService.class);
+        this.service = RetrofitUtil.getStringRetrofitInstance(context).create(GithubService.class);
         this.gitHubAccount = GitHubAccount.getInstance(context);
     }
 
