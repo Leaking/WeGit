@@ -78,8 +78,6 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
                 .content(R.string.login)
                 .cancelable(false)
                 .progress(true, 0);
-        username.setText("Leaking");
-        password.setText("3982895898github");
     }
 
 
