@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quinn.githubknife"
-    android:versionCode="4"
-    android:versionName="0.8" >
+    android:versionCode="6"
+    android:versionName="1.1" >
 
     <!-- client -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"  />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"  />
+    <uses-permission android:name="android.permission.GET_TASKS"  />
 
     <application
         android:name=".GithubApplication"
@@ -91,6 +94,10 @@
             android:name=".ui.activity.ReadmeActivity"
             android:label="@string/title_activity_readme" >
         </activity>
+
+
+        <meta-data android:name="TD_APP_ID" android:value="C7208C73204D6DDF67AA2227D9C06174" />
+
     </application>
 
 </manifest>

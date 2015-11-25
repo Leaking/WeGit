@@ -8,8 +8,8 @@ android {
         applicationId "com.quinn.githubknife"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 4
-        versionName "0.8"
+        versionCode 6
+        versionName "1.1"
     }
     buildTypes {
         release {
@@ -40,6 +40,7 @@ dependencies {
     compile project(':iconlibrary')
     compile project(':breadcrumbs')
     compile project(':MaterialSearch')
+    compile files('libs/TalkingDataAnalytics_V2.0.4.jar')
 }
 
 

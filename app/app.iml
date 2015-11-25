@@ -113,6 +113,7 @@
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="TalkingDataAnalytics_V2.0.4" level="project" />
     <orderEntry type="module" module-name="breadcrumbs" exported="" />
     <orderEntry type="module" module-name="MaterialSearch" exported="" />
     <orderEntry type="module" module-name="httpknife" exported="" />
