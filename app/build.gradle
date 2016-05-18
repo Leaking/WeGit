@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.quinn.githubknife"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 6
         versionName "1.1"
     }
@@ -23,13 +23,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:palette-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:palette-v7:23.3.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.afollestad:material-dialogs:0.7.8.1'

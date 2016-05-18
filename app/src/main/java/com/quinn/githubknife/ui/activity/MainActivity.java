@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
     @Bind(R.id.toolbar_main)
     Toolbar toolbar;
     @Bind(R.id.nav_view)
-    NavigationView navigationVIew;
+    NavigationView navigationView;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.viewpager)
@@ -80,9 +80,9 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //UI
-        img_avatar = (CircleImageView) navigationVIew.findViewById(R.id.avatar);
-        txt_user = (TextView) navigationVIew.findViewById(R.id.headerText);
-        headerView = (View) navigationVIew.findViewById(R.id.nav_header);
+        headerView = navigationView.inflateHeaderView(R.layout.nav_header);
+        img_avatar = (CircleImageView) headerView.findViewById(R.id.avatar);
+        txt_user = (TextView) headerView.findViewById(R.id.headerText);
         imageLoader = ImageLoader.getInstance();
         option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
                 .considerExifParams(true).build();
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
                 R.string.app_name);
         toggle.syncState();
         mDrawerLayout.setDrawerListener(toggle);
-        navigationVIew.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
         adapter = new Adapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
         builder = new MaterialDialog.Builder(this)
