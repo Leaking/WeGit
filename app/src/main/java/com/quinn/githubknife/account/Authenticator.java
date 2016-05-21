@@ -29,13 +29,14 @@ import retrofit.Retrofit;
 public class Authenticator extends AbstractAccountAuthenticator {
 
     private static final String TAG = Authenticator.class.getSimpleName();
+
     private Context context;
     public final static String PARAM_USER_PASS = "USER_PASS";
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
-    public static final String AUTHTOKEN_TYPE_FULL_ACCESS = "Full access";
+    public final static String AUTHTOKEN_TYPE_FULL_ACCESS = "Full access";
 
     private GithubApplication app;
     private Retrofit retrofit;

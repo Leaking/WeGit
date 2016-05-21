@@ -39,29 +39,26 @@ public class RetrofitUtil {
                     client.networkInterceptors().add(new Interceptor() {
                         @Override
                         public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+
+                            L.i(TAG,"------getStringRetrofitInstance intercept start-------");
                             Request request = chain.request();
                             GitHubAccount gitHubAccount = GitHubAccount.getInstance(context);
-
                             token = gitHubAccount.getAuthToken();
+                            //此处build之后要返回request覆盖
                             request = request.newBuilder()
                                     .addHeader("Authorization", "Token " + token)
                                     .addHeader("User-Agent", "Leaking/1.0")
                                             //.addHeader("Accept", "application/vnd.github.beta+json")
                                     .addHeader("Accept", "application/vnd.github.v3.raw")
                                     .build();
-                            //此处build之后要返回request覆盖
-                           // L.i(TAG, "Interceptor header = " + request.headers());
-                            L.i(TAG, "Interceptor method = " + request.method());
-                            L.i(TAG, "Interceptor urlString = " + request.urlString());
+                            // L.i(TAG, "Interceptor header = " + request.headers());
+                            L.i(TAG, "Interceptor token = " + token);
+                            L.i(TAG, "Interceptor request = " + request.toString());
+                            L.i(TAG,"------getStringRetrofitInstance intercept end-------");
                             return chain.proceed(request);
                         }
                     });
 
-
-                    Gson gson = new Gson();
-                    GsonBuilder builder = new GsonBuilder();
-                    builder.registerTypeAdapter(Event.class, new EventFormatter());
-                    gson = builder.create();
                     stringInstance = new Retrofit.Builder()
                             .baseUrl(Constants.BASE_URL)
                             .addConverterFactory(new ToStringConverter())
@@ -85,13 +82,10 @@ public class RetrofitUtil {
                     client.networkInterceptors().add(new Interceptor() {
                         @Override
                         public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                            L.i(TAG,"------getJsonRetrofitInstance intercept start-------");
                             Request request = chain.request();
                             GitHubAccount gitHubAccount = GitHubAccount.getInstance(context);
-                            L.i(TAG, "Try to get token in Interceptor");
-
                             token = gitHubAccount.getAuthToken();
-                            L.i(TAG, "Interceptor token = " + token);
-
                             request = request.newBuilder()
                                     .removeHeader("User-Agent")
                                     .addHeader("Authorization", "Token " + token)
@@ -99,16 +93,14 @@ public class RetrofitUtil {
                                     //.addHeader("Accept", "application/vnd.github.beta+json")
                                     .addHeader("Accept", "application/vnd.github.v3.raw")
                                             .build();
-                            //此处build之后要返回request覆盖
-                            //L.i(TAG, "Interceptor header = " + request.headers());
-                            L.i(TAG, "Interceptor method = " + request.method());
-                            L.i(TAG, "Interceptor urlString = " + request.urlString());
+                            L.i(TAG, "Interceptor token = " + token);
+                            L.i(TAG, "Interceptor request = " + request.toString());
+                            L.i(TAG,"------getJsonRetrofitInstance intercept end-------");
                             return chain.proceed(request);
                         }
                     });
 
-
-                    Gson gson = new Gson();
+                    Gson gson = null;
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Event.class, new EventFormatter());
                     gson = builder.create();
@@ -133,6 +125,8 @@ public class RetrofitUtil {
                     client.networkInterceptors().add(new Interceptor() {
                         @Override
                         public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                            L.i(TAG,"------getRetrofitWithoutTokenInstance intercept start-------");
+
                             Request request = chain.request();
                             request = request.newBuilder()
                                     .removeHeader("User-Agent")
@@ -142,14 +136,14 @@ public class RetrofitUtil {
                                     .build();
                             //此处build之后要返回request覆盖
                             L.i(TAG, "Interceptor header = " + request.headers());
-                            L.i(TAG, "Interceptor method = " + request.method());
-                            L.i(TAG, "Interceptor urlString = " + request.urlString());
+                            L.i(TAG, "Interceptor request = " + request.toString());
+                            L.i(TAG,"------getRetrofitWithoutTokenInstance intercept end-------");
                             return chain.proceed(request);
                         }
                     });
 
 
-                    Gson gson = new Gson();
+                    Gson gson = null;
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(Event.class, new EventFormatter());
                     gson = builder.create();
@@ -165,17 +159,8 @@ public class RetrofitUtil {
         return jsonInstance_withoutToken;
     }
 
-
-
-
-
-
     public static void printResponse(Response response){
-       // L.i(TAG,"response headers " + response.headers());
-        L.i(TAG,"response code " + response.code());
-        L.i(TAG,"response isSuccess " + response.isSuccess());
-        L.i(TAG,"response message " + response.message());
-        L.i(TAG,"response body " + response.body());
+        L.i(TAG,"response = " + response.raw().toString());
     }
 
     public static void printThrowable(Throwable throwable){

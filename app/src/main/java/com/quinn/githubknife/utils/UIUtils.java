@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -72,4 +74,12 @@ public class UIUtils {
         return (int) (spValue * fontScale + 0.5f);
     }
 
+
+    public static int getColorWrap(Context context, int colorRsid) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ActivityCompat.getColor(context, colorRsid);
+        }else{
+            return context.getResources().getColor(colorRsid);
+        }
+    }
 }

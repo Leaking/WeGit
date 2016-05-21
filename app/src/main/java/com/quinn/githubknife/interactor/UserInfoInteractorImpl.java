@@ -94,7 +94,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
             @Override
             public void onFailure(Throwable t) {
-                L.i(TAG,"onFailure = " + t.toString());
+                L.i(TAG,"auth onFailure = " + t.toString());
                 RetrofitUtil.printThrowable(t);
                 listener.onError(context.getString(R.string.fail_auth_user));
             }

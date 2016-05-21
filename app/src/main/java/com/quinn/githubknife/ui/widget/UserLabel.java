@@ -66,13 +66,9 @@ public class UserLabel extends View{
 
         L.i(TAG, "valueRect.width() = " + valueRect.width());
 
-
-
         namePaint.getTextBounds(label_name, 0, label_name.length(), nameRect);
 
         valuePaint.getTextBounds(label_value, 0, label_value.length(), valueRect);
-
-
 
         int valueX = getMeasuredWidth() / 2 - valueRect.width() / 2;
         int valueY = getMeasuredWidth() / 2 - (valueRect.height() + nameRect.height())/2;

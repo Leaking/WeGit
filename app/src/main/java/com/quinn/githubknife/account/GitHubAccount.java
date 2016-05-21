@@ -101,6 +101,8 @@ public class GitHubAccount {
      */
     public String getAuthToken() {
 
+        Log.i(TAG, "getAuthToken");
+
         final AccountManagerFuture<Bundle> future = manager.getAuthToken(
                 account,
                 ACCOUNT_TYPE,
@@ -108,8 +110,6 @@ public class GitHubAccount {
                 (BaseActivity)context,
                 null,
                 null);
-
-
 
         try {
             Bundle result = future.getResult();

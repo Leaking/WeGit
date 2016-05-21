@@ -2,8 +2,11 @@ package com.quinn.githubknife.ui;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -11,6 +14,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
+import com.quinn.githubknife.utils.UIUtils;
 
 
 /**
@@ -31,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
         option = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
                 .considerExifParams(true).build();
         app = (GithubApplication) getApplication();
-        // github = new GithubImpl(this);
+
 
     }
 

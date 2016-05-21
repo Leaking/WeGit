@@ -88,8 +88,6 @@ public class TokenInteractorImpl implements TokenInteractor {
         token.setScopes(Arrays.asList(SCOPES));
 
 
-
-
         Call<Token> call = service.createToken(token,"Basic " + Base64.encode(username + ':' + password));
         call.enqueue(new Callback<Token>() {
             @Override

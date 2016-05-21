@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -38,6 +42,7 @@ import com.quinn.githubknife.ui.widget.UserLabel;
 import com.quinn.githubknife.utils.BitmapUtils;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
+import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.RepoAndEventPreviewView;
 import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.httpknife.github.Repository;
@@ -63,11 +68,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
     ImageView backDrop;
 
 
-
-
     @Bind(R.id.relation)
     FloatingActionButton relationBtn;
-
 
     @Bind(R.id.starLabel)
     UserLabel starLabel;
@@ -110,8 +112,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
     View repoPreviewTitle;
 
     private List<Repository> preivewRepo = new ArrayList<Repository>();
-
-
 
 
     @Override
@@ -257,13 +257,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
         blogHolder.textValue.getPaint().setAntiAlias(true);//抗锯齿
 
 
-
         BitmapUtils.setIconFont(this, preview_holder[0].star, OctIcon.STAR, R.color.theme_color);
         BitmapUtils.setIconFont(this, preview_holder[1].star, OctIcon.STAR, R.color.theme_color);
         BitmapUtils.setIconFont(this, preview_holder[2].star, OctIcon.STAR, R.color.theme_color);
-
-
-
 
 
         emailHolder.textValue.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +292,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(android.R.color.transparent));
+            window.setStatusBarColor(Color.TRANSPARENT);
         }
 
     }
@@ -309,30 +305,25 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);
 
-//                Palette.generateAsync(loadedImage, 24, new Palette.PaletteAsyncListener() {
-//                    @Override
-//                    public void onGenerated(Palette palette) {
-//
-//                        Palette.Swatch vibrant = palette.getVibrantSwatch();
-//                        Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
-//                        Palette.Swatch lightVibrant = palette.getLightVibrantSwatch();
-//                        Palette.Swatch muted = palette.getMutedSwatch();
-//                        Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
-//                        Palette.Swatch lightMuted = palette.getLightMutedSwatch();
-//                        Palette.Swatch swatch = vibrant;
-//                        swatch = (swatch == null) ? muted : swatch;
-//                        swatch = (swatch == null) ? darkVibrant : swatch;
-//                        swatch = (swatch == null) ? darkMuted : swatch;
-//                        swatch = (swatch == null) ? lightVibrant : swatch;
-//                        swatch = (swatch == null) ? lightMuted : swatch;
-//                        collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
-//                        // 使用颜色
-//
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                            getWindow().setStatusBarColor(swatch.getRgb());
-//                        }
-//                    }
-//                });
+                Palette.generateAsync(loadedImage, 24, new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+
+                        Palette.Swatch vibrant = palette.getVibrantSwatch();
+                        Palette.Swatch darkVibrant = palette.getDarkVibrantSwatch();
+                        Palette.Swatch lightVibrant = palette.getLightVibrantSwatch();
+                        Palette.Swatch muted = palette.getMutedSwatch();
+                        Palette.Swatch darkMuted = palette.getDarkMutedSwatch();
+                        Palette.Swatch lightMuted = palette.getLightMutedSwatch();
+                        Palette.Swatch swatch = vibrant;
+                        swatch = (swatch == null) ? muted : swatch;
+                        swatch = (swatch == null) ? darkVibrant : swatch;
+                        swatch = (swatch == null) ? darkMuted : swatch;
+                        swatch = (swatch == null) ? lightVibrant : swatch;
+                        swatch = (swatch == null) ? lightMuted : swatch;
+                        collapsingToolbar.setContentScrim(new ColorDrawable(swatch.getRgb()));
+                    }
+                });
             }
         });
     }
