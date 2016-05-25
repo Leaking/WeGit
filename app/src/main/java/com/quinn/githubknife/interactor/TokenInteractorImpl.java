@@ -52,7 +52,6 @@ public class TokenInteractorImpl implements TokenInteractor {
         this.context = context;
         this.listener = listener;
         this.service = RetrofitUtil.getRetrofitWithoutTokenInstance(context).create(GithubService.class);
-
     }
 
     public void createToken(final String username,final String password){

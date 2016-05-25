@@ -127,4 +127,10 @@ public class CodeActivity extends BaseActivity implements CodeView {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webview.removeAllViews();
+        webview.destroy();
+    }
 }
