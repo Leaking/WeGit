@@ -26,6 +26,9 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Quinn on 8/1/15.
@@ -83,69 +86,68 @@ public class TokenInteractorImpl implements TokenInteractor {
             e.printStackTrace();
         }
 
-        Token token = new Token();
+        final Token token = new Token();
         token.setNote(TOKEN_NOTE);
         token.setScopes(Arrays.asList(SCOPES));
 
+        service.createToken(token,"Basic " + Base64.encode(username + ':' + password))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Token>>() {
+                    @Override
+                    public void onCompleted() {
 
-        Call<Token> call = service.createToken(token,"Basic " + Base64.encode(username + ':' + password));
-        call.enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(Response<Token> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if(response.isSuccess()){
-                    L.i(TAG, "Token created sucessfully-(new)");
-                    listener.onTokenCreated(response.body().getToken());
-                }else if(response.code() == 401){
-                    L.i(TAG,"Token created fail: username or password is incorrect");
-                    listener.onError(context.getResources().getString(R.string.auth_error));
-                }else if(response.code() == 403){
-                    L.i(TAG,"Token created fail: auth over-try");
-                    listener.onError(context.getResources().getString(R.string.over_auth_error));
-                }else if(response.code() == 422){
-                    L.i(TAG,"Token created fail: try to delete existing token");
-                    findCertainTokenID(username,password);
-                }
-            }
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                RetrofitUtil.printThrowable(t);
-                listener.onError(context.getResources().getString(R.string.network_error));
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getResources().getString(R.string.network_error));
+                    }
 
-//        new Thread(new Runnable() {
+                    @Override
+                    public void onNext(Response<Token> tokenResponse) {
+                        RetrofitUtil.printResponse(tokenResponse);
+                        if(tokenResponse.isSuccess()){
+                            L.i(TAG, "Token created sucessfully-(new)");
+                            listener.onTokenCreated(tokenResponse.body().getToken());
+                        }else if(tokenResponse.code() == 401){
+                            L.i(TAG,"Token created fail: username or password is incorrect");
+                            listener.onError(context.getResources().getString(R.string.auth_error));
+                        }else if(tokenResponse.code() == 403){
+                            L.i(TAG,"Token created fail: auth over-try");
+                            listener.onError(context.getResources().getString(R.string.over_auth_error));
+                        }else if(tokenResponse.code() == 422){
+                            L.i(TAG,"Token created fail: try to delete existing token");
+                            findCertainTokenID(username,password);
+                        }
+                    }
+                });
+//        call.enqueue(new Callback<Token>() {
 //            @Override
-//            public void run() {
-//                try {
-//                    String token = github.createToken(username,password);
-//                    Message msg = new Message();
-//                    msg.what = TOKEN_CREATED;
-//                    msg.obj = token;
-//                    handler.sendMessage(msg);
-//                } catch (GithubError githubError) {
-//                    githubError.printStackTrace();
-//                    Message msg = new Message();
-//                    msg.what = ERROR;
-//                    msg.obj = context.getResources().getString(R.string.network_error);
-//                    handler.sendMessage(msg);
-//                } catch (AuthError authError) {
-//                    authError.printStackTrace();
-//                    Message msg = new Message();
-//                    msg.what = ERROR;
-//                    msg.obj = context.getResources().getString(R.string.auth_error);
-//                    handler.sendMessage(msg);
-//                } catch (OverAuthError overAuthError) {
-//                    overAuthError.printStackTrace();
-//                    Message msg = new Message();
-//                    msg.what = ERROR;
-//                    msg.obj = context.getResources().getString(R.string.over_auth_error);
-//                    handler.sendMessage(msg);
+//            public void onResponse(Response<Token> response, Retrofit retrofit) {
+//                RetrofitUtil.printResponse(response);
+//                if(response.isSuccess()){
+//                    L.i(TAG, "Token created sucessfully-(new)");
+//                    listener.onTokenCreated(response.body().getToken());
+//                }else if(response.code() == 401){
+//                    L.i(TAG,"Token created fail: username or password is incorrect");
+//                    listener.onError(context.getResources().getString(R.string.auth_error));
+//                }else if(response.code() == 403){
+//                    L.i(TAG,"Token created fail: auth over-try");
+//                    listener.onError(context.getResources().getString(R.string.over_auth_error));
+//                }else if(response.code() == 422){
+//                    L.i(TAG,"Token created fail: try to delete existing token");
+//                    findCertainTokenID(username,password);
 //                }
 //            }
-//        }).start();
-
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                RetrofitUtil.printThrowable(t);
+//                listener.onError(context.getResources().getString(R.string.network_error));
+//            }
+//        });
 
     }
 
@@ -184,7 +186,6 @@ public class TokenInteractorImpl implements TokenInteractor {
                 if(response.code() == 204){
                     L.i(TAG,"Deteled token successfully");
                     L.i(TAG,"Try to get an entirely new token");
-
                     createToken(username, password);
                 }else{
                     listener.onError(context.getResources().getString(R.string.network_error));

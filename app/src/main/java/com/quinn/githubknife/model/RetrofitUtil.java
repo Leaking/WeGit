@@ -18,6 +18,7 @@ import java.io.IOException;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /**
  * Created by Quinn on 10/12/15.
@@ -149,6 +150,7 @@ public class RetrofitUtil {
                     gson = builder.create();
                     jsonInstance_withoutToken = new Retrofit.Builder()
                             .baseUrl(Constants.BASE_URL)
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(client)
                             .build();

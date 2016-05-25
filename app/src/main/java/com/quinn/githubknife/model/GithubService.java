@@ -13,6 +13,7 @@ import com.quinn.httpknife.github.UserSearch;
 import java.util.List;
 
 import retrofit.Call;
+import retrofit.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
@@ -21,6 +22,7 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import rx.Observable;
 
 /**
  * Created by Quinn on 10/10/15.
@@ -28,24 +30,16 @@ import retrofit.http.Query;
 public interface GithubService{
 
 
-
     // Api about token
 
     @POST("authorizations")
-    Call<Token> createToken(@Body Token token,@Header("Authorization") String authorization) ;
+    Observable<Response<Token>> createToken(@Body Token token, @Header("Authorization") String authorization) ;
 
     @GET("authorizations")
     Call<List<Token>>listToken(@Header("Authorization") String authorization) ;
 
     @DELETE("authorizations/{id}")
     Call<Empty> removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
-
-
-
-
-    //public void removeToken(String username, String password) throws GithubError, AuthError;
-
-
 
     //Api about user
 
