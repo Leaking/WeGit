@@ -26,8 +26,10 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -44,35 +46,13 @@ public class TokenInteractorImpl implements TokenInteractor {
 
     private OnTokenCreatedListener listener;
     private Context context;
-    private Github github;
-    private Handler handler;
-
     private GithubService service;
-
-
 
     public TokenInteractorImpl(Context context, final OnTokenCreatedListener listener){
         this.context = context;
         this.listener = listener;
         this.service = RetrofitUtil.getRetrofitWithoutTokenInstance(context).create(GithubService.class);
-        github = new GithubImpl(context);
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what){
-                    case TOKEN_CREATED:
-                        String token = (String)msg.obj;
-                        listener.onTokenCreated(token);
-                        break;
-                    case ERROR:
-                        String errorMsg = (String)msg.obj;
-                        listener.onError(errorMsg);
-                        break;
-                }
 
-            }
-        };
     }
 
     public void createToken(final String username,final String password){
@@ -123,83 +103,51 @@ public class TokenInteractorImpl implements TokenInteractor {
                         }
                     }
                 });
-//        call.enqueue(new Callback<Token>() {
-//            @Override
-//            public void onResponse(Response<Token> response, Retrofit retrofit) {
-//                RetrofitUtil.printResponse(response);
-//                if(response.isSuccess()){
-//                    L.i(TAG, "Token created sucessfully-(new)");
-//                    listener.onTokenCreated(response.body().getToken());
-//                }else if(response.code() == 401){
-//                    L.i(TAG,"Token created fail: username or password is incorrect");
-//                    listener.onError(context.getResources().getString(R.string.auth_error));
-//                }else if(response.code() == 403){
-//                    L.i(TAG,"Token created fail: auth over-try");
-//                    listener.onError(context.getResources().getString(R.string.over_auth_error));
-//                }else if(response.code() == 422){
-//                    L.i(TAG,"Token created fail: try to delete existing token");
-//                    findCertainTokenID(username,password);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                RetrofitUtil.printThrowable(t);
-//                listener.onError(context.getResources().getString(R.string.network_error));
-//            }
-//        });
 
     }
 
-    public String findCertainTokenID(final String username, final String password){
+    public void findCertainTokenID(final String username, final String password){
         L.i(TAG,"Find certain token in existing tokens");
-        Call<List<Token>> call = service.listToken("Basic " + Base64.encode(username + ':' + password));
-        call.enqueue(new Callback<List<Token>>() {
-            @Override
-            public void onResponse(Response<List<Token>> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                for(Token token : response.body()){
-                    L.i(TAG,"Find certain token in existing tokens : " +token.getNote() );
-                    if(TOKEN_NOTE.equals(token.getNote())){
-                        removeToken(username,password,String.valueOf(token.getId()));
+        service.listToken("Basic " + Base64.encode(username + ':' + password))
+                .flatMap(new Func1<Response<List<Token>>, Observable<Response<Empty>>>() {
+                    @Override
+                    public Observable<Response<Empty>> call(Response<List<Token>> listResponse) {
+                        RetrofitUtil.printResponse(listResponse);
+                        for(Token token : listResponse.body()){
+                            L.i(TAG,"Find certain token in existing tokens : " +token.getNote() );
+                            if(TOKEN_NOTE.equals(token.getNote())){
+                                return service.removeToken("Basic " + Base64.encode(username + ':' + password), String.valueOf(token.getId()));
+                            }
+                        }
+                        return Observable.empty();
                     }
-                }
-            }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Empty>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                RetrofitUtil.printThrowable(t);
-                listener.onError(context.getResources().getString(R.string.network_error));
-            }
-        });
+                    }
 
-        return "";
-    }
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getResources().getString(R.string.network_error));
+                    }
 
-    public void removeToken(final String username, final String password,String id){
-        L.i(TAG,"Try to delete token : id = " + id);
-        Call<Empty> call = service.removeToken("Basic " + Base64.encode(username + ':' + password), id);
-        call.enqueue(new Callback<Empty>() {
-            @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if(response.code() == 204){
-                    L.i(TAG,"Deteled token successfully");
-                    L.i(TAG,"Try to get an entirely new token");
-                    createToken(username, password);
-                }else{
-                    listener.onError(context.getResources().getString(R.string.network_error));
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                RetrofitUtil.printThrowable(t);
-                listener.onError(context.getResources().getString(R.string.network_error));
-
-            }
-        });
-
+                    @Override
+                    public void onNext(Response<Empty> listResponse) {
+                        RetrofitUtil.printResponse(listResponse);
+                        if(listResponse.code() == 204){
+                            L.i(TAG,"Deteled token successfully");
+                            L.i(TAG,"Try to get an entirely new token");
+                            createToken(username, password);
+                        }else{
+                            listener.onError(context.getResources().getString(R.string.network_error));
+                        }
+                    }
+                });
     }
 
 

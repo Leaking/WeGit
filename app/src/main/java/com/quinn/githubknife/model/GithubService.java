@@ -36,10 +36,10 @@ public interface GithubService{
     Observable<Response<Token>> createToken(@Body Token token, @Header("Authorization") String authorization) ;
 
     @GET("authorizations")
-    Call<List<Token>>listToken(@Header("Authorization") String authorization) ;
+    Observable<Response<List<Token>>> listToken(@Header("Authorization") String authorization) ;
 
     @DELETE("authorizations/{id}")
-    Call<Empty> removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
+    Observable<Response<Empty>> removeToken(@Header("Authorization") String authorization, @Path("id") String id) ;
 
     //Api about user
 
