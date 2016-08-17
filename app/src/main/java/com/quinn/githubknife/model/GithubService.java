@@ -44,16 +44,16 @@ public interface GithubService{
     //Api about user
 
     @GET("/user")
-    Call<User> authUser();
+    Observable<Response<User>> authUser();
 
     @GET("/users/{username}")
-    Call<User> user(@Path("username") String username);
+    Observable<Response<User>> user(@Path("username") String username);
 
     @GET("/users/{user}/following?per_page=10")
-    Call<List<User>> follwerings(@Path("user") String user,@Query("page") String page);
+    Observable<Response<List<User>>> follwerings(@Path("user") String user,@Query("page") String page);
 
     @GET("/users/{user}/followers?per_page=10")
-    Call<List<User>> followers(@Path("user") String user,@Query("page") String page);
+    Observable<Response<List<User>>> followers(@Path("user") String user,@Query("page") String page);
 
     @GET("/users/{user}/repos?sort=pushed&per_page=10")
     Call<List<Repository>> userRepo(@Path("user") String user,@Query("page") String page);
@@ -79,7 +79,7 @@ public interface GithubService{
 
     //Get count of starred repo of someone
     @GET("/users/{user}/starred?&per_page=1")
-    Call<List<Repository>> starredCount(@Path("user") String user);
+    Observable<Response<List<Repository>>> starredCount(@Path("user") String user);
 
 
     //Api about repo
@@ -122,13 +122,13 @@ public interface GithubService{
     //==========
 
     @GET("/user/following/{username}")
-    Call<Empty> hasFollow(@Path("username") String username);
+    Observable<Response<Empty>> hasFollow(@Path("username") String username);
 
     @PUT("/user/following/{username}")
-    Call<Empty> follow(@Path("username") String username);
+    Observable<Response<Empty>> follow(@Path("username") String username);
 
     @DELETE("/user/following/{username}")
-    Call<Empty> unFollow(@Path("username") String username);
+    Observable<Response<Empty>> unFollow(@Path("username") String username);
 
 
 

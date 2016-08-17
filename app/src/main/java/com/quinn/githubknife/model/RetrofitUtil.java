@@ -63,9 +63,9 @@ public class RetrofitUtil {
                     stringInstance = new Retrofit.Builder()
                             .baseUrl(Constants.BASE_URL)
                             .addConverterFactory(new ToStringConverter())
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .client(client)
                             .build();
-
                 }
             }
         }
@@ -107,6 +107,7 @@ public class RetrofitUtil {
                     gson = builder.create();
                     jsonInstance = new Retrofit.Builder()
                             .baseUrl(Constants.BASE_URL)
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .client(client)
                             .build();

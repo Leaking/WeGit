@@ -24,6 +24,10 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Quinn on 7/22/15.
@@ -42,7 +46,6 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
     private Handler handler;
 
     private Github github;
-
 
 
     public UserInfoInteractorImpl(Context context, final OnLoadUserInfoListener listener) {
@@ -78,189 +81,204 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
     @Override
     public void auth() {
-        Call<User> call = service.authUser();
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                L.i(TAG,"auth onResponse");
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    auth();
-                } else if(response.isSuccess()) {
-                    listener.onFinish(response.body());
-                }
-            }
+        service.authUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<User>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                L.i(TAG,"auth onFailure = " + t.toString());
-                RetrofitUtil.printThrowable(t);
-                listener.onError(context.getString(R.string.fail_auth_user));
-            }
-        });
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        L.i(TAG,"auth onFailure = " + e.toString());
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getString(R.string.fail_auth_user));
+                    }
+
+                    @Override
+                    public void onNext(Response<User> userResponse) {
+                        L.i(TAG,"auth onResponse");
+                        RetrofitUtil.printResponse(userResponse);
+                        if (userResponse.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            auth();
+                        } else if(userResponse.isSuccess()) {
+                            listener.onFinish(userResponse.body());
+                        }
+                    }
+                });
     }
 
     @Override
     public void userInfo(final String username) {
+        service.user(username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<User>>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                String token = gitHubAccount.getAuthToken();
-//                github.makeAuthRequest(token);
-//                User user = null;
-//                try {
-//                    user = github.user(username);
-//                    L.i(TAG, user.toString());
-//                } catch (GithubError e) {
-//                    L.i(TAG, "userinfo fail");//f
-//                    Message msg = new Message();
-//                    msg.what = FAIL_MSG;
-//                    msg.obj = context.getString(R.string.fail_load_userInfo) + username;
-//                    handler.sendMessage(msg);
-//                    return;
-//                } catch (AuthError authError) {
-//                    authError.printStackTrace();
-//                    gitHubAccount.invalidateToken(token);
-//                    userInfo(username);
-//                }
-//                Message msg = new Message();
-//                msg.what = USER_MSG;
-//                msg.obj = user;
-//                handler.sendMessage(msg);
-//            }
-//        }).start();
-        Call<User> call = service.user(username);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    userInfo(username);
-                }else if(response.isSuccess()) {
-                    listener.onFinish(response.body());
-                }
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getString(R.string.fail_load_userInfo) + username);
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                RetrofitUtil.printThrowable(t);
-
-                listener.onError(context.getString(R.string.fail_load_userInfo) + username);
-            }
-        });
-
+                    @Override
+                    public void onNext(Response<User> userResponse) {
+                        RetrofitUtil.printResponse(userResponse);
+                        if (userResponse.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            userInfo(username);
+                        }else if(userResponse.isSuccess()) {
+                            listener.onFinish(userResponse.body());
+                        }
+                    }
+                });
     }
 
     @Override
     public void hasFollow(final String targetUser) {
-        Call<Empty> call = service.hasFollow(targetUser);
-        call.enqueue(new Callback<Empty>() {
-            @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    hasFollow(targetUser);
-                } else if(response.code() == 204){
-                    listener.updateFollowState(true);
-                } else if(response.code() == 404){
-                    listener.updateFollowState(false);
-                } else {
-                    listener.onError(context.getString(R.string.fail_load_relation));
-                }
-            }
+        service.hasFollow(targetUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Empty>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                listener.onError(context.getString(R.string.fail_load_relation));
-            }
-        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getString(R.string.fail_load_relation));
+                    }
+
+                    @Override
+                    public void onNext(Response<Empty> response) {
+                        RetrofitUtil.printResponse(response);
+                        if (response.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            hasFollow(targetUser);
+                        } else if(response.code() == 204){
+                            listener.updateFollowState(true);
+                        } else if(response.code() == 404){
+                            listener.updateFollowState(false);
+                        } else {
+                            listener.onError(context.getString(R.string.fail_load_relation));
+                        }
+                    }
+                });
 
     }
 
     @Override
     public void follow(final String targetUser) {
-        Call<Empty> call = service.follow(targetUser);
-        call.enqueue(new Callback<Empty>() {
-            @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    follow(targetUser);
-                } if(response.code() == 204){
-                    listener.updateFollowState(true);
-                }else{
-                    listener.onError(context.getString(R.string.fail_follow) + targetUser);
-                }
-            }
+        service.follow(targetUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Empty>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                listener.onError(context.getString(R.string.fail_follow) + targetUser);
-            }
-        });
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getString(R.string.fail_follow) + targetUser);
+                    }
+
+                    @Override
+                    public void onNext(Response<Empty> response) {
+                        if (response.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            follow(targetUser);
+                        } if(response.code() == 204){
+                            listener.updateFollowState(true);
+                        }else{
+                            listener.onError(context.getString(R.string.fail_follow) + targetUser);
+                        }
+                    }
+                });
     }
 
     @Override
     public void unFollow(final String targetUser) {
-        Call<Empty> call = service.unFollow(targetUser);
-        call.enqueue(new Callback<Empty>() {
-            @Override
-            public void onResponse(Response<Empty> response, Retrofit retrofit) {
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    unFollow(targetUser);
-                }
-                if (response.code() == 204) {
-                    listener.updateFollowState(false);
-                } else {
-                    listener.onError(context.getString(R.string.fail_unfollow) + targetUser);
-                }
-            }
+        service.unFollow(targetUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<Empty>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                listener.onError(context.getString(R.string.fail_unfollow) + targetUser);
-            }
-        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        RetrofitUtil.printThrowable(e);
+                        listener.onError(context.getString(R.string.fail_unfollow) + targetUser);
+                    }
+
+                    @Override
+                    public void onNext(Response<Empty> response) {
+                        if (response.code() == 401) {
+                            if (response.code() == 401) {
+                                gitHubAccount.invalidateToken(RetrofitUtil.token);
+                                unFollow(targetUser);
+                            }
+                            if (response.code() == 204) {
+                                listener.updateFollowState(false);
+                            } else {
+                                listener.onError(context.getString(R.string.fail_unfollow) + targetUser);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
     public void starredCount(final String user) {
-        Call<List<Repository>> call = service.starredCount(user);
-        call.enqueue(new Callback<List<Repository>>() {
-            @Override
-            public void onResponse(Response<List<Repository>> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    starredCount(user);
-                }
-                if (response.isSuccess()) {
-                    String linkHeader = response.headers().get("Link");
-                    L.i(TAG,"linkHeader = " + linkHeader);
-                    if(TextUtils.isEmpty(linkHeader) == false) {
-                        int count = LogicUtils.parseStarredCount(linkHeader);
-                        listener.loadStarredCount(count);
-                    }else{
-                        listener.loadStarredCount(response.body().size());
-                    }
-                } else {
-                    listener.onError(context.getString(R.string.fail_unfollow) + user);
-                }
-            }
+        service.starredCount(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<List<Repository>>>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void onFailure(Throwable t) {
-                listener.onError(context.getString(R.string.fail_unfollow) + user);
-            }
-        });
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        listener.onError(context.getString(R.string.fail_unfollow) + user);
+
+                    }
+
+                    @Override
+                    public void onNext(Response<List<Repository>> response) {
+                        RetrofitUtil.printResponse(response);
+                        if (response.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            starredCount(user);
+                        }
+                        if (response.isSuccess()) {
+                            String linkHeader = response.headers().get("Link");
+                            L.i(TAG,"linkHeader = " + linkHeader);
+                            if(TextUtils.isEmpty(linkHeader) == false) {
+                                int count = LogicUtils.parseStarredCount(linkHeader);
+                                listener.loadStarredCount(count);
+                            }else{
+                                listener.loadStarredCount(response.body().size());
+                            }
+                        } else {
+                            listener.onError(context.getString(R.string.fail_unfollow) + user);
+                        }
+                    }
+                });
     }
 
 

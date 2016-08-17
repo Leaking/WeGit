@@ -7,6 +7,7 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.model.GithubService;
 import com.quinn.githubknife.model.RetrofitUtil;
+import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.RepoSearch;
@@ -21,6 +22,9 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Quinn on 7/20/15.
@@ -48,58 +52,67 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
     @Override
     public void loadFollowerings(final String user, final int page) {
 
-        final Call<List<User>> call = service.follwerings(user, String.valueOf(page));
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Response<List<User>> response, Retrofit retrofit) {
+        service.follwerings(user, String.valueOf(page))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<List<User>>>() {
+                    @Override
+                    public void onCompleted() {
 
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    loadFollowerings(user,page);
-                } else if (response.isSuccess()) {
-                    listener.onFinished(response.body());
-                } else {
-                    handleFailure(page);
-                }
-            }
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                handleFailure(page);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        handleFailure(page);
+                    }
 
-
-
+                    @Override
+                    public void onNext(Response<List<User>> response) {
+                        RetrofitUtil.printResponse(response);
+                        if (response.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            loadFollowerings(user,page);
+                        } else if (response.isSuccess()) {
+                            listener.onFinished(response.body());
+                        } else {
+                            handleFailure(page);
+                        }
+                    }
+                });
     }
 
     @Override
     public void loadFollwers(final String user, final int page) {
 
-        final Call<List<User>> call = service.followers(user, String.valueOf(page));
+        service.followers(user, String.valueOf(page))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Response<List<User>>>() {
+                    @Override
+                    public void onCompleted() {
 
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Response<List<User>> response, Retrofit retrofit) {
-                RetrofitUtil.printResponse(response);
-                if (response.code() == 401) {
-                    gitHubAccount.invalidateToken(RetrofitUtil.token);
-                    loadFollwers(user, page);
-                } else if (response.isSuccess()) {
-                    listener.onFinished(response.body());
-                } else {
-                    handleFailure(page);
+                    }
 
-                }
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        handleFailure(page);
+                    }
 
-            @Override
-            public void onFailure(Throwable t) {
-                handleFailure(page);
+                    @Override
+                    public void onNext(Response<List<User>> response) {
+                        RetrofitUtil.printResponse(response);
+                        if (response.code() == 401) {
+                            gitHubAccount.invalidateToken(RetrofitUtil.token);
+                            loadFollwers(user, page);
+                        } else if (response.isSuccess()) {
+                            listener.onFinished(response.body());
+                        } else {
+                            handleFailure(page);
 
-            }
-        });
+                        }
+                    }
+                });
+
     }
 
     @Override

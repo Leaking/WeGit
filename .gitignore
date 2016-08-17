@@ -1,7 +1,15 @@
 .gradle
 /local.properties
 /.idea/workspace.xml
+WeGit.iml
 /.idea/libraries
 .DS_Store
 /build
 /captures
+.idea/encodings.xml
+/.gitignore
+/.idea/encodings.xml
+
+httpknife.iml
+app.iml
+iconlibrary.iml
