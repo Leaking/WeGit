@@ -113,4 +113,13 @@
 
     <string name="hello_world">Hello world!</string>
 
+    <!-- Taking-Data event-->
+    <string name="td_click_login">“点击登录”</string>
+    <string name="td_event_login_success">“登录成功”</string>
+    <string name="td_event_login_fail">“登录失败”</string>
+    <string name="td_event_token_existed">“擦除更新Token”</string>
+    <string name="td_event_token_created">“新建Token”</string>
+    <string name="td_event_token_overtry">“登录失败超过次数”</string>
+
+
 </resources>
