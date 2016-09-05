@@ -9,6 +9,7 @@ import com.quinn.githubknife.listener.OnTokenCreatedListener;
 import com.quinn.githubknife.model.GithubService;
 import com.quinn.githubknife.model.RetrofitUtil;
 import com.quinn.githubknife.utils.L;
+import com.quinn.githubknife.utils.TDUtils;
 import com.quinn.httpknife.github.Empty;
 import com.quinn.httpknife.github.Github;
 import com.quinn.httpknife.github.GithubImpl;
@@ -89,20 +90,22 @@ public class TokenInteractorImpl implements TokenInteractor {
                         RetrofitUtil.printResponse(tokenResponse);
                         if(tokenResponse.isSuccess()){
                             L.i(TAG, "Token created sucessfully-(new)");
+                            TDUtils.event(R.string.td_event_token_created);
                             listener.onTokenCreated(tokenResponse.body().getToken());
                         }else if(tokenResponse.code() == 401){
                             L.i(TAG,"Token created fail: username or password is incorrect");
                             listener.onError(context.getResources().getString(R.string.auth_error));
                         }else if(tokenResponse.code() == 403){
                             L.i(TAG,"Token created fail: auth over-try");
+                            TDUtils.event(R.string.td_event_token_overtry);
                             listener.onError(context.getResources().getString(R.string.over_auth_error));
                         }else if(tokenResponse.code() == 422){
                             L.i(TAG,"Token created fail: try to delete existing token");
+                            TDUtils.event(R.string.td_event_token_existed);
                             findCertainTokenID(username,password);
                         }
                     }
                 });
-
     }
 
     public void findCertainTokenID(final String username, final String password){

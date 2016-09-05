@@ -19,8 +19,10 @@ import com.quinn.githubknife.presenter.CreateTokenPresenter;
 import com.quinn.githubknife.presenter.CreateTokenPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.utils.PreferenceUtils;
+import com.quinn.githubknife.utils.TDUtils;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.view.TokenLoginView;
+import com.tendcloud.tenddata.TCAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,6 +85,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
 
     @OnClick(R.id.submit)
     void sumbit() {
+        TDUtils.event(R.string.td_click_login);
         if (username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
             ToastUtils.showMsg(this, R.string.input_complete);
             return;
@@ -142,6 +145,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
 
     @Override
     public void tokenCreated(String token) {
+        TDUtils.event(R.string.td_event_login_success);
         String accountName = username.getText().toString();
         String accountPassword = password.getText().toString();
         PreferenceUtils.putString(this, PreferenceUtils.Key.ACCOUNT, accountName);
@@ -167,6 +171,7 @@ public class LoginActivity extends BaseActivity implements TokenLoginView {
     @Override
     public void onError(String msg) {
         ToastUtils.showMsg(this, msg);
+        TDUtils.event(R.string.td_event_login_fail);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.quinn.githubknife;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
@@ -10,11 +11,22 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.quinn.githubknife.model.APKVersion;
 import com.quinn.httpknife.github.User;
+import com.tendcloud.tenddata.TCAgent;
 
 /**
  * Created by Quinn on 7/20/15.
  */
 public class GithubApplication extends Application {
+
+    private final static String TD_APP_ID = "C7208C73204D6DDF67AA2227D9C06174";
+
+    public static Context instance;
+
+    /**
+     * @// TODO: 9/6/16
+     * 暂时默认100，后续打多渠道此处得动态获取
+     */
+    private final static String TD_CHANNEL_ID = "100";
 
     private User user;
 
@@ -24,6 +36,14 @@ public class GithubApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+        /**
+         * 初始化Taking-data
+         */
+        TCAgent.LOG_ON=true;
+        TCAgent.init(this, TD_APP_ID, TD_CHANNEL_ID);
+        TCAgent.setReportUncaughtExceptions(true);
+        // Initialize ImageLoader with configuration.
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 getApplicationContext())
                 .threadPriority(Thread.NORM_PRIORITY - 2)
@@ -34,7 +54,7 @@ public class GithubApplication extends Application {
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .writeDebugLogs() // Remove for release app
                 .build();
-        // Initialize ImageLoader with configuration.
+
         ImageLoader.getInstance().init(config);
     }
 
