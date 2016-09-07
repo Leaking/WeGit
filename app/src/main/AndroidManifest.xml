@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quinn.githubknife"
     android:versionCode="6"
-    android:versionName="1.1" >
+    android:versionName="1.1">
 
     <!-- client -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -12,26 +12,25 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"  />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"  />
-    <uses-permission android:name="android.permission.GET_TASKS"  />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".GithubApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_login" >
-        </activity>
+            android:label="@string/title_activity_login"></activity>
 
         <service
             android:name=".account.AccountService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -43,7 +42,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,52 +51,43 @@
         </activity>
         <activity
             android:name=".ui.activity.UserInfoActivity"
-            android:label="@string/title_activity_user_info" >
-        </activity>
+            android:label="@string/title_activity_user_info"></activity>
         <activity
             android:name=".ui.activity.FoActivity"
-            android:label="@string/title_activity_fo" >
-        </activity>
+            android:label="@string/title_activity_fo"></activity>
         <activity
             android:name=".ui.activity.RepoActivity"
-            android:label="@string/title_activity_reop" >
-        </activity>
+            android:label="@string/title_activity_reop"></activity>
         <activity
             android:name=".ui.activity.TreeActivity"
-            android:label="@string/title_activity_file_tree" >
-        </activity>
+            android:label="@string/title_activity_file_tree"></activity>
         <activity
             android:name=".ui.activity.CodeActivity"
-            android:label="@string/title_activity_code" >
-        </activity>
+            android:label="@string/title_activity_code"></activity>
         <activity
             android:name=".ui.activity.AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
+            android:label="@string/title_activity_about"></activity>
         <activity
             android:name=".ui.activity.ImageActivity"
-            android:label="@string/title_activity_image" >
-        </activity>
+            android:label="@string/title_activity_image"></activity>
         <activity
             android:name=".ui.activity.SearchActivity"
-            android:label="@string/title_activity_search" >
-        </activity>
+            android:label="@string/title_activity_search"></activity>
         <activity
             android:name=".ui.activity.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
-        </activity>
+            android:label="@string/title_activity_search_result"></activity>
         <activity
             android:name=".ui.activity.SettingActivity"
-            android:label="@string/title_activity_setting" >
-        </activity>
+            android:label="@string/title_activity_setting"></activity>
         <activity
             android:name=".ui.activity.ReadmeActivity"
-            android:label="@string/title_activity_readme" >
-        </activity>
+            android:label="@string/title_activity_readme"></activity>
 
+        <meta-data
+            android:name="TD_APP_ID"
+            android:value="C7208C73204D6DDF67AA2227D9C06174" />
 
-        <meta-data android:name="TD_APP_ID" android:value="C7208C73204D6DDF67AA2227D9C06174" />
-
+        <activity android:name=".ui.activity.TrendingActivity"></activity>
     </application>
 
 </manifest>

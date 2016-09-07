@@ -17,7 +17,6 @@
     <string name="title_activity_setting">Setting</string>
 
 
-
     <!--menuitem name-->
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
@@ -70,12 +69,9 @@
     <string name="search_result_count"> search results</string>
 
 
-
     <!--Email-->
     <string name="email_body">This is Content</string>
     <string name="email_title">This is Titl</string>
-
-
 
 
     <!-- TTF fonts-->
@@ -102,7 +98,6 @@
     <string name="cancel">CANCEL</string>
 
 
-
     <!-- USER INFO -->
     <string name="email">Email</string>
     <string name="location">Location</string>
@@ -120,6 +115,11 @@
     <string name="td_event_token_existed">“擦除更新Token”</string>
     <string name="td_event_token_created">“新建Token”</string>
     <string name="td_event_token_overtry">“登录失败超过次数”</string>
+
+    <string name="Trending">Trending</string>
+    <string name="Search">Search</string>
+    <string name="Friends">Friends</string>
+    <string name="Home">Home</string>
 
 
 </resources>

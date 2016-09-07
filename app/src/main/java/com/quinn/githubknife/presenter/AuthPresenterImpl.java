@@ -1,6 +1,7 @@
 package com.quinn.githubknife.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.quinn.githubknife.interactor.UserInfoInteractor;
 import com.quinn.githubknife.interactor.UserInfoInteractorImpl;
@@ -12,6 +13,8 @@ import com.quinn.httpknife.github.User;
  * Created by Quinn on 7/22/15.
  */
 public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
+
+    public static final String TAG = "AuthPresenterImpl";
 
     private Context context;
     private MainAuthView view;
@@ -52,6 +55,7 @@ public class AuthPresenterImpl implements AuthPresenter,OnLoadUserInfoListener {
 
     @Override
     public void onError(String msg) {
+        Log.i(TAG,"onError " + msg);
         view.hideProgress();
         view.onError(msg);
     }

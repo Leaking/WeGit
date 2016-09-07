@@ -30,7 +30,7 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Leaking"
             android:hint="@string/username_or_email" />
 
     </android.support.design.widget.TextInputLayout>
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:text=""
+            android:text="3982895898github"
             android:hint="@string/password" />
 
     </android.support.design.widget.TextInputLayout>

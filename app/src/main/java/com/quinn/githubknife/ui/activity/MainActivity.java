@@ -164,6 +164,11 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
                 this.startActivity(intent);
                 break;
             }
+            case R.id.nav_trending: {
+                Intent intent = TrendingActivity.createIntent(this);
+                this.startActivity(intent);
+                break;
+            }
             case R.id.nav_setting:
                 SettingActivity.launch(this);
                 return;

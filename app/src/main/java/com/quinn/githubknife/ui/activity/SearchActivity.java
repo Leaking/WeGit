@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class SearchActivity extends BaseActivity implements SearchUserFragment.TotalCountCallback, AdapterView.OnItemClickListener {
 
-    private final static  String TAG = SearchActivity.class.getSimpleName();
+    private final static String TAG = SearchActivity.class.getSimpleName();
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,7 +64,7 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        toolbar.setTitle("Search");
+        toolbar.setTitle(R.string.search);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,7 +76,6 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
         suggestListview.setAdapter(adapter);
         suggestListview.setVisibility(View.GONE);
         suggestListview.setOnItemClickListener(this);
-
 
 
 

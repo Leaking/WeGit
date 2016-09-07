@@ -20,15 +20,20 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@mipmap/home"
-            android:title="Home" />
+            android:title="@string/Home" />
         <item
             android:id="@+id/nav_friends"
             android:icon="@mipmap/friends"
-            android:title="Friends" />
+            android:title="@string/Friends" />
         <item
             android:id="@+id/nav_search"
             android:icon="@mipmap/search"
-            android:title="Search" />
+            android:title="@string/Search" />
+        <item
+            android:id="@+id/nav_trending"
+            android:icon="@mipmap/trending"
+            android:title="@string/Trending"
+            />
     </group>
 
     <item android:title="More">

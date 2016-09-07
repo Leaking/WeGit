@@ -1,6 +1,7 @@
 package com.quinn.githubknife.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.quinn.githubknife.listener.OnLoadUserInfoListener;
 import com.quinn.githubknife.interactor.UserInfoInteractor;
@@ -13,6 +14,7 @@ import com.quinn.httpknife.github.User;
  */
 public class UserInfoPresenterImpl implements UserInfoPresenter ,OnLoadUserInfoListener{
 
+    public static final String TAG = "UserInfoPresenterImpl";
 
     private UserInfoView view;
     private UserInfoInteractor interactor;
@@ -66,6 +68,7 @@ public class UserInfoPresenterImpl implements UserInfoPresenter ,OnLoadUserInfoL
 
     @Override
     public void onError(String errorMsg) {
+        Log.i(TAG,"onError " + errorMsg);
         view.onError(errorMsg);
     }
 }

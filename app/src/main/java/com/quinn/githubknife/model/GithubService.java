@@ -29,7 +29,6 @@ import rx.Observable;
  */
 public interface GithubService{
 
-
     // Api about token
 
     @POST("authorizations")

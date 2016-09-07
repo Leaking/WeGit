@@ -81,6 +81,7 @@ public class UserInfoInteractorImpl implements UserInfoInteractor {
 
     @Override
     public void auth() {
+        L.i(TAG, "begin to auth");
         service.authUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

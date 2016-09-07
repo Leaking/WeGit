@@ -25,7 +25,10 @@ public enum OctIcon implements Icon {
 	TAG(0xf015),
 	PERSON(0xf018),
 	ISSUE_CLOSE(0xf028),
-	ISSUE_OPNE(0xf026);
+	ISSUE_OPNE(0xf026),
+	TRENDING(0xf0d2);
+
+
 
 
 

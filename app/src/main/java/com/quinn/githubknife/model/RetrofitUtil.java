@@ -25,12 +25,13 @@ import retrofit.RxJavaCallAdapterFactory;
  */
 public class RetrofitUtil {
 
+    private final static String TAG = "RetrofitUtil";
+
     private volatile static Retrofit jsonInstance;
     private volatile static Retrofit stringInstance;
     private volatile static Retrofit jsonInstance_withoutToken;
-    public static String token;
-    private final static String TAG = RetrofitUtil.class.getSimpleName();
 
+    public static String token;
 
     public static Retrofit getStringRetrofitInstance(final Context context){
         if (stringInstance == null) {
