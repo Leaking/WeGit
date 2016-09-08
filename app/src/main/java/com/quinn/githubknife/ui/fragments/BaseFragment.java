@@ -136,9 +136,6 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
         if(currPage == 1) {
             L.i(TAG,"show Progress");
             UIUtils.crossfade(swipeRefreshLayout,progress);
-//            progress.setVisibility(View.VISIBLE);
-//            swipeRefreshLayout.setVisibility(View.GONE);
-            //failTxt.setVisibility(View.GONE);
         }
     }
 

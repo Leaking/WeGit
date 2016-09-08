@@ -11,4 +11,11 @@ public class TrendingRepo extends Repository {
      */
     private int addStars;
 
+    public int getAddStars() {
+        return addStars;
+    }
+
+    public void setAddStars(int addStars) {
+        this.addStars = addStars;
+    }
 }
