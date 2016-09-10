@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/iconType"
             style="@style/ListIcon"
-            android:textSize="40sp"
+            android:textSize="@dimen/repo_icon_size"
             android:layout_marginTop="2dip"
             android:layout_marginRight="12dip"
             android:layout_width="wrap_content"
@@ -33,15 +33,17 @@
         <LinearLayout
             android:layout_toRightOf="@id/iconType"
             android:layout_marginRight="15dip"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/repoName"
-                android:textSize="20sp"
+                android:textSize="@dimen/repo_name_size"
                 android:textStyle="bold"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:layout_marginBottom="3dip"
                 />
             <LinearLayout
@@ -74,7 +76,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/icon_fork"
                     android:layout_marginRight="5dip"
-
                     />
                 <TextView
                     android:id="@+id/forkSum"
@@ -90,9 +91,10 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:text="Java"
             />
-    </RelativeLayout>
+    </LinearLayout>
 
         <TextView
             android:id="@+id/description"

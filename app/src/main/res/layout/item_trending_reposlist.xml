@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/iconType"
             style="@style/ListIcon"
-            android:textSize="40sp"
+            android:textSize="@dimen/repo_icon_size"
             android:layout_marginTop="2dip"
             android:layout_marginRight="12dip"
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/repoFullName"
-                android:textSize="20sp"
+                android:textSize="@dimen/repo_name_size"
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:layout_width="wrap_content"

@@ -17,6 +17,10 @@
     <dimen name="three_userlabel_wrap_height">90dip</dimen>
     <dimen name="user_info_icon_size">25dip</dimen>
 
+    <!-- repo -->
+    <dimen name="repo_icon_size">35dp</dimen>
+    <dimen name="repo_name_size">18sp</dimen>
+
 
     <!-- http://developer.android.com/design/style/metrics-grids.html -->
     <dimen name="gapMicro">2dp</dimen>
