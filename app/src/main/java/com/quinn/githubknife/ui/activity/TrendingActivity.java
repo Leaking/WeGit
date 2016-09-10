@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Xml;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
@@ -16,6 +17,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,6 +61,27 @@ public class TrendingActivity extends BaseActivity {
                         String stars = newStarsElement.text();
 
                         Log.i(TAG, "stars = " + stars);
+                        Pattern patternStarNum = Pattern.compile("[0-9]{1,}");
+                        Pattern patternLanguage = Pattern.compile("[A-Za-z]{1,}");
+
+                        Matcher matcherStarNum = patternStarNum.matcher(stars);
+                        Matcher matcherLanguage = patternLanguage.matcher(stars);
+
+
+                        if(matcherStarNum.find()) {
+                            Log.i(TAG, "pattern mattch matcherStarNum" + matcherStarNum.group());
+                        } else {
+                            Log.i(TAG, "match fail");
+                        }
+
+                        if(matcherLanguage.find()) {
+                            Log.i(TAG, "pattern mattch matcherLanguage" + matcherLanguage.group());
+                        } else {
+                            Log.i(TAG, "match fail");
+                        }
+
+//                        Log.i(TAG, "" + );
+//                          ^[0-9]*
 
                     }
                     Log.i(TAG, "title = " + title);

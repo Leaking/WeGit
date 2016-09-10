@@ -14,6 +14,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import rx.Observable;
 import rx.Observer;
@@ -78,6 +80,25 @@ public class TrendingInteractorImpl implements TrendingInteractor {
                         String stars = newStarsElement.text();
                         repo.setAddStars(100);
                         Log.i(TAG, "stars = " + stars);
+
+                        //正则解析语言、Star数量
+                        Pattern patternLanguage = Pattern.compile("[A-Za-z]{1,}"); //头个单词就是语言类别
+                        Pattern patternStarNum = Pattern.compile("[0-9]{1,}"); //头个数字就是Star数量
+                        Matcher matcherLanguage = patternLanguage.matcher(stars);
+                        Matcher matcherStarNum = patternStarNum.matcher(stars);
+
+                        if(matcherStarNum.find()) {
+                            try {
+                                repo.setAddStars(Integer.parseInt(matcherStarNum.group()));
+                            }catch (NumberFormatException e) {
+                                e.printStackTrace();;
+                            }
+                        }
+
+                        if(matcherLanguage.find()) {
+                            repo.setLanguage(matcherLanguage.group());
+                        }
+
                     }
                     subscriber.onNext(repos);
                     subscriber.onCompleted();
