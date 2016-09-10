@@ -1,6 +1,7 @@
 package com.quinn.githubknife.listener;
 
 import com.quinn.httpknife.github.Branch;
+import com.quinn.httpknife.github.Repository;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface OnLoadRepoListener {
     public void onError(String errorMsg);
     public void forkResult(boolean success);
     public void setBranches(List<Branch> branches);
+    public void setRepo(Repository repository);
 }

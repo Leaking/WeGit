@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.TrendingRepoPresenterImpl;
 import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
+import com.quinn.githubknife.ui.activity.RepoActivity;
+import com.quinn.githubknife.ui.activity.UserInfoActivity;
 import com.quinn.githubknife.ui.adapter.RepoAdapter;
 import com.quinn.githubknife.ui.adapter.TrendingRepoAdapter;
+import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.TrendingRepo;
+import com.quinn.httpknife.github.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Quinn on 9/10/16.
  */
-public class TrendingReposFragment extends BaseFragment {
+public class TrendingReposFragment extends BaseFragment implements RecycleItemClickListener {
 
     private String url;
     private TrendingRepoAdapter adapter;
@@ -51,6 +55,7 @@ public class TrendingReposFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater,container,savedInstanceState);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
         return view;
     }
 
@@ -65,4 +70,14 @@ public class TrendingReposFragment extends BaseFragment {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void intoItem(int position) {
+        super.intoItem(position);
+        RepoActivity.launch(this.getContext(), (Repository) dataItems.get(position));
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        intoItem(position);
+    }
 }

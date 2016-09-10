@@ -7,6 +7,7 @@ import com.quinn.githubknife.interactor.RepoInteractorImpl;
 import com.quinn.githubknife.listener.OnLoadRepoListener;
 import com.quinn.githubknife.view.RepoView;
 import com.quinn.httpknife.github.Branch;
+import com.quinn.httpknife.github.Repository;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
 
     @Override
     public void loadRepo(String owner, String repo) {
-
+        this.interactor.loadRepo(owner, repo);
     }
 
     @Override
@@ -77,5 +78,10 @@ public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
         //在最后一个任务隐藏进度条
         this.view.hideProgress();
         this.view.setBranches(branches);
+    }
+
+    @Override
+    public void setRepo(Repository repository) {
+        this.view.setRepo(repository);
     }
 }

@@ -1,6 +1,7 @@
 package com.quinn.githubknife.view;
 
 import com.quinn.httpknife.github.Branch;
+import com.quinn.httpknife.github.Repository;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface RepoView extends ErrorView,ProgressView{
     public void forkResult(boolean success);
     public void reLoad();
     public void setBranches(List<Branch> branches);
-
+    public void setRepo(Repository repository);
 
 }

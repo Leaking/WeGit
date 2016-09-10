@@ -483,6 +483,9 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         repo.setFull_name(href.substring(1));
                         String[] splits = href.split("/");
                         repo.setName(splits[2]);
+                        User owner = new User();
+                        owner.setLogin(splits[1]);
+                        repo.setOwner(owner);
 
 
                         Element despElement = element.nextElementSibling();

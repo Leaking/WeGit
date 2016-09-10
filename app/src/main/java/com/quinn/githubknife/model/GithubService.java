@@ -66,7 +66,6 @@ public interface GithubService{
     @GET("/users/{user}/received_events?per_page=10")
     Call<List<Event>> receivedEvent(@Path("user") String user,@Query("page") String page);
 
-
     @GET("/user/starred/{owner}/{repo}")
     Call<Empty> hasStar(@Path("owner") String owner, @Path("repo") String repo);
 
@@ -104,7 +103,8 @@ public interface GithubService{
     @GET("/repos/{owner}/{repo}/contents/{path}")
     Call<String> getRawContent(@Path("owner") String owner, @Path("repo") String repo,@Path("path") String path);
 
-
+    @GET("/repos/{owner}/{repo}")
+    Call<Repository> repo(@Path("owner") String owner, @Path("repo") String repo);
 
     //Api about search
     @GET("/search/users?&perpage=10")

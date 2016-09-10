@@ -40,7 +40,7 @@ public class GithubApplication extends Application {
         /**
          * 初始化Taking-data
          */
-        TCAgent.LOG_ON=true;
+        TCAgent.LOG_ON = false;
         TCAgent.init(this, TD_APP_ID, TD_CHANNEL_ID);
         TCAgent.setReportUncaughtExceptions(true);
         // Initialize ImageLoader with configuration.

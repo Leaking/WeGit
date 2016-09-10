@@ -1,6 +1,7 @@
 package com.quinn.githubknife.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
@@ -180,7 +181,23 @@ public class RepoInteractorImpl implements RepoInteractor{
     }
 
     @Override
-    public void loadRepo(String owner, String repo) {
+    public void loadRepo(final String owner, final String repo) {
+        Call<Repository> call = service.repo(owner, repo);
+        call.enqueue(new Callback<Repository>() {
+            @Override
+            public void onResponse(Response<Repository> response, Retrofit retrofit) {
+                if (response.code() == 401) {
+                    gitHubAccount.invalidateToken(RetrofitUtil.token);
+                    loadRepo(owner,repo);
+                }
+                Log.i(TAG, "loadRepo " + response.body());
+                listener.setRepo(response.body());
+            }
 
+            @Override
+            public void onFailure(Throwable t) {
+                listener.onError(context.getString(R.string.network_error) + repo);
+            }
+        });
     }
 }

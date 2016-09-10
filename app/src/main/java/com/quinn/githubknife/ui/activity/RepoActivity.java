@@ -29,6 +29,7 @@ import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.RepoView;
 import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Repository;
+import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,10 +127,10 @@ public class RepoActivity extends BaseActivity implements RepoView {
         setContentView(R.layout.activity_repo);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         repo = (Repository) bundle.getSerializable("repo");
         toolbar.setTitle(repo.getName());
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "octicons.ttf");
         starIcon.setTypeface(typeface);
@@ -154,9 +155,11 @@ public class RepoActivity extends BaseActivity implements RepoView {
 
         starState = StarState.UNKNOWN;
         presenter = new RepoPresenterImpl(this, this);
-        presenter.hasStar(repo.getOwner().getLogin(), repo.getName());
         branches = new ArrayList<Branch>();
         currentBranch = new Branch();
+
+        presenter.hasStar(repo.getOwner().getLogin(), repo.getName());
+
     }
 
 
@@ -360,18 +363,7 @@ public class RepoActivity extends BaseActivity implements RepoView {
         //ToastUtils.showMsg(this, msg);
     }
 
-    @Override
-    public void setStarState(boolean isStar) {
-        if (isStar) {
-            //starIcon.setText(getResources().getString(R.string.icon_star) + " unStar");
-            starState = StarState.STARRED;
-        } else {
-            //starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
-            starState = StarState.UNSTARRED;
-        }
-        updateStarMenuItem();
-        presenter.branches(repo.getOwner().getLogin(), repo.getName());
-    }
+
 
     @Override
     public void forkResult(boolean success) {
@@ -389,6 +381,27 @@ public class RepoActivity extends BaseActivity implements RepoView {
         L.i(TAG,"click the fail text");
         reLoad();
     }
+
+
+    @Override
+    public void setStarState(boolean isStar) {
+        if (isStar) {
+            //starIcon.setText(getResources().getString(R.string.icon_star) + " unStar");
+            starState = StarState.STARRED;
+        } else {
+            //starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
+            starState = StarState.UNSTARRED;
+        }
+        updateStarMenuItem();
+        presenter.loadRepo(repo.getOwner().getLogin(), repo.getName());
+    }
+
+    @Override
+    public void setRepo(Repository repository) {
+        repo = repository;
+        presenter.branches(repo.getOwner().getLogin(), repo.getName());
+    }
+
     @Override
     public void setBranches(List<Branch> branches) {
         this.branches = branches;
@@ -397,12 +410,12 @@ public class RepoActivity extends BaseActivity implements RepoView {
         updateUIAfterRequest();
     }
 
+
     public void updateUIAfterRequest() {
+        toolbar.setTitle(repo.getName());
         toolbar.setSubtitle(repo.getOwner().getLogin());
         description.setText(repo.getDescription());
         starNum.setText("" + repo.getStargazers_count());
         forkNum.setText("" + repo.getForks_count());
     }
-
-
 }
