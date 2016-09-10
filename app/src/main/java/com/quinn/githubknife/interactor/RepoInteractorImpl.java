@@ -177,7 +177,10 @@ public class RepoInteractorImpl implements RepoInteractor{
                 listener.onError("加载分支失败");
             }
         });
+    }
 
+    @Override
+    public void loadRepo(String owner, String repo) {
 
     }
 }

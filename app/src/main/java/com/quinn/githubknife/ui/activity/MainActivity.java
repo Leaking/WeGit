@@ -28,6 +28,7 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.presenter.AuthPresenter;
 import com.quinn.githubknife.presenter.AuthPresenterImpl;
 import com.quinn.githubknife.ui.BaseActivity;
+import com.quinn.githubknife.ui.adapter.FragmentPagerAdapter;
 import com.quinn.githubknife.ui.fragments.FollowerFragment;
 import com.quinn.githubknife.ui.fragments.FollowingFragment;
 import com.quinn.githubknife.ui.fragments.ReceivedEventFragment;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
     private View headerView;
     private TextView txt_user;
     private CircleImageView img_avatar;
-    private Adapter adapter;
+    private FragmentPagerAdapter adapter;
     private ImageLoader imageLoader;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
@@ -96,7 +97,7 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
         toggle.syncState();
         mDrawerLayout.setDrawerListener(toggle);
         navigationView.setNavigationItemSelectedListener(this);
-        adapter = new Adapter(getSupportFragmentManager());
+        adapter = new FragmentPagerAdapter(getSupportFragmentManager());
         viewpager.setAdapter(adapter);
         builder = new MaterialDialog.Builder(this)
                 .content(R.string.initial)
@@ -233,54 +234,6 @@ public class MainActivity extends BaseActivity implements MainAuthView, Navigati
 
 
 
-    static class Adapter extends FragmentStatePagerAdapter {
-
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
-        private FragmentManager fm;
-
-
-        public Adapter(FragmentManager fm) {
-            super(fm);
-            this.fm = fm;
-            this.saveState();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragments.add(fragment);
-
-
-            mFragmentTitles.add(title);
-        }
-
-        public void clear() {
-            mFragmentTitles.clear();
-            ;
-            mFragments.clear();
-            notifyDataSetChanged();
-        }
-
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return PagerAdapter.POSITION_NONE;
-        }
-    }
 
 
 }

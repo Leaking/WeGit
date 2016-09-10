@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Quinn on 8/19/15.
  */
-public class SearchRepoPresenterImpl extends  PresenterAdapter {
+public class SearchRepoPresenterImpl extends PresenterAdapter {
 
 
     public SearchRepoPresenterImpl(Context context, ListFragmentView view) {

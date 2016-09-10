@@ -1,5 +1,7 @@
 package com.quinn.githubknife.interactor;
 
+import com.quinn.httpknife.github.TrendingRepo;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,10 @@ public interface FindItemsInteractor {
     public void loadForkers(String owner,String repo, int page);
     public void loadCollaborators(String owner,String repo, int page);
     public void loadTree(String owner,String repo,String sha);
+    public void loadBranches(String owner,String repo);
     public void searchUsers(List<String> keywords,int page);
     public void searchRepos(List<String> keywords,int page);
-    public void loadBranches(String owner,String repo);
+    public void trendingRepos(String url, TrendingRepo.SINCE_TYPE sinceType);
+    public void trendingUsers(String url, TrendingRepo.SINCE_TYPE sinceType);
+
 }

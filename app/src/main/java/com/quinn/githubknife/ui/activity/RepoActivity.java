@@ -53,8 +53,6 @@ public class RepoActivity extends BaseActivity implements RepoView {
     TextView tv_branch;
 
 
-
-
     @Bind(R.id.iconStar)
     TextView starIcon;
     @Bind(R.id.iconFork)
@@ -128,15 +126,11 @@ public class RepoActivity extends BaseActivity implements RepoView {
         setContentView(R.layout.activity_repo);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        repo = (Repository) bundle.getSerializable("repo");
-        toolbar.setTitle(repo.getName());
-        toolbar.setSubtitle(repo.getOwner().getLogin());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        repo = (Repository) bundle.getSerializable("repo");
+        toolbar.setTitle(repo.getName());
 
-        description.setText(repo.getDescription());
-        starNum.setText("" + repo.getStargazers_count());
-        forkNum.setText("" + repo.getForks_count());
         Typeface typeface = Typeface.createFromAsset(getAssets(), "octicons.ttf");
         starIcon.setTypeface(typeface);
         forkIcon.setTypeface(typeface);
@@ -147,7 +141,6 @@ public class RepoActivity extends BaseActivity implements RepoView {
         issueIcon.setTypeface(typeface);
         pullRequestIcon.setTypeface(typeface);
         contributeIcon.setTypeface(typeface);
-
 
         forkIcon.setText(getResources().getString(R.string.icon_fork) + " Fork");
         starIcon.setText(getResources().getString(R.string.icon_star) + " Star");
@@ -401,7 +394,14 @@ public class RepoActivity extends BaseActivity implements RepoView {
         this.branches = branches;
         this.currentBranch = LogicUtils.defaultBranch(this.branches);
         tv_branch.setText(this.currentBranch.getName());
+        updateUIAfterRequest();
+    }
 
+    public void updateUIAfterRequest() {
+        toolbar.setSubtitle(repo.getOwner().getLogin());
+        description.setText(repo.getDescription());
+        starNum.setText("" + repo.getStargazers_count());
+        forkNum.setText("" + repo.getForks_count());
     }
 
 

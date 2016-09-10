@@ -6,6 +6,7 @@ import com.quinn.githubknife.interactor.FindItemsInteractor;
 import com.quinn.githubknife.interactor.FindItemsInteractorImpl;
 import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.view.ListFragmentView;
+import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.List;
 
@@ -43,6 +44,10 @@ public class PresenterAdapter implements ListFragmentPresenter,OnLoadItemListLis
         view.showProgress();
     }
 
+    @Override
+    public void onPageLoad(String url) {
+        view.showProgress();
+    }
 
     @Override
     public void onTreeLoad(String owner, String repo, String sha) {

@@ -11,5 +11,6 @@ public interface RepoPresenter {
     public void star(String owner,String repo);
     public void unStar(String owner,String repo);
     public void branches(String owner,String repo);
+    public void loadRepo(String owner, String repo);
 
 }

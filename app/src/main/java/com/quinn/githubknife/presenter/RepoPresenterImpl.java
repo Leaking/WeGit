@@ -53,6 +53,11 @@ public class RepoPresenterImpl implements RepoPresenter,OnLoadRepoListener{
     }
 
     @Override
+    public void loadRepo(String owner, String repo) {
+
+    }
+
+    @Override
     public void setStarState(boolean isStar) {
         this.view.setStarState(isStar);
     }

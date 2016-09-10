@@ -38,7 +38,6 @@ public class FoActivity extends BaseActivity {
     private String contentType;
 
 
-
     public static void launch(Context context, Bundle bundle){
         Intent intent = new Intent(context,FoActivity.class);
         intent.putExtras(bundle);

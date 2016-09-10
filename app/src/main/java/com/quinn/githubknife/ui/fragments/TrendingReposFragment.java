@@ -1,0 +1,68 @@
+package com.quinn.githubknife.ui.fragments;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.quinn.githubknife.R;
+import com.quinn.githubknife.presenter.TrendingRepoPresenterImpl;
+import com.quinn.githubknife.presenter.UserRepoPresenterImpl;
+import com.quinn.githubknife.ui.adapter.RepoAdapter;
+import com.quinn.githubknife.ui.adapter.TrendingRepoAdapter;
+import com.quinn.httpknife.github.GithubImpl;
+import com.quinn.httpknife.github.Repository;
+import com.quinn.httpknife.github.TrendingRepo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.ButterKnife;
+
+/**
+ * Created by Quinn on 9/10/16.
+ */
+public class TrendingReposFragment extends BaseFragment {
+
+    private String url;
+    private TrendingRepoAdapter adapter;
+
+
+    public static TrendingReposFragment getInstance(String url){
+        TrendingReposFragment trendingReposFragment = new TrendingReposFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("url", url);
+        trendingReposFragment.setArguments(bundle);
+        return trendingReposFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dataItems = new ArrayList<Repository>();
+        presenter = new TrendingRepoPresenterImpl(this.getActivity(),this);
+        adapter = new TrendingRepoAdapter(dataItems);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater,container,savedInstanceState);
+        recyclerView.setAdapter(adapter);
+        return view;
+    }
+
+    @Override
+    public void setItems(List<?> items) {
+        super.setItems(items);
+        for(Object repo:items){
+            dataItems.add((TrendingRepo) repo);
+        }
+        loading = false;
+        haveMore = false;
+        adapter.notifyDataSetChanged();
+    }
+
+}

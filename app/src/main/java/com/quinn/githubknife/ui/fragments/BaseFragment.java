@@ -21,11 +21,14 @@ import com.quinn.githubknife.presenter.SearchRepoPresenterImpl;
 import com.quinn.githubknife.presenter.SearchUserPresenterImpl;
 import com.quinn.githubknife.presenter.StargazersPresenterImpl;
 import com.quinn.githubknife.presenter.TreePresenterImpl;
+import com.quinn.githubknife.presenter.TrendingRepoPresenterImpl;
+import com.quinn.githubknife.presenter.TrendingUserPresenterImpl;
 import com.quinn.githubknife.ui.widget.onLoadMoreListener;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.ListFragmentView;
+import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,15 +64,16 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     protected String user;
     protected String repo;
     protected String branch = "master";
+    protected String trendingUrl;
     protected String presenterType;
-    protected List<String>  keywords;
+    protected List<String> keywords;
     protected ListFragmentPresenter presenter;
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if(dataItems.isEmpty())
+        if(dataItems != null && dataItems.isEmpty())
            loadPage();
     }
 
@@ -85,6 +89,7 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
             repo = bundle.getString("repo");
             branch = bundle.getString("branch");
             presenterType = bundle.getString("presenter");
+            trendingUrl = bundle.getString("url");
             String keywordsStr = bundle.getString("keywords");
             if(keywordsStr != null)
                 keywords = Arrays.asList(keywordsStr.split(" "));
@@ -192,8 +197,10 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
     public void loadPage(){
         if(presenter instanceof BranchesPresenterImpl || presenter instanceof StargazersPresenterImpl || presenter instanceof ForkersPresenterImpl || presenter instanceof CollaboratorsPresenterImpl){
             presenter.onPageLoad(user, repo, currPage);
-        }else if(presenter instanceof SearchUserPresenterImpl || presenter instanceof SearchRepoPresenterImpl){
+        } else if(presenter instanceof SearchUserPresenterImpl || presenter instanceof SearchRepoPresenterImpl){
             presenter.onPageLoad(keywords, currPage);
+        } else if(presenter instanceof TrendingRepoPresenterImpl || presenter instanceof TrendingUserPresenterImpl) {
+            presenter.onPageLoad(trendingUrl);
         } else if(presenter instanceof TreePresenterImpl){
             presenter.onTreeLoad(user, repo, branch);
         }else{

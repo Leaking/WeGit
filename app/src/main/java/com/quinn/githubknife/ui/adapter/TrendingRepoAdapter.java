@@ -7,27 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
-import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.RecycleItemClickListener;
 import com.quinn.httpknife.github.Repository;
+import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.List;
 
 /**
- * Created by Quinn on 7/23/15.
+ * Created by Quinn on 9/10/16.
  */
-public class RepoAdapter extends
-        RecyclerView.Adapter<RepoAdapter.ViewHolder>{
-    private List<Repository> dataItems;
+public class TrendingRepoAdapter extends
+        RecyclerView.Adapter<TrendingRepoAdapter.ViewHolder>{
+    private List<TrendingRepo> dataItems;
 
     private RecycleItemClickListener itemClickListener;
 
 
-    public RepoAdapter(List<Repository> dataItems){
+    public TrendingRepoAdapter(List<TrendingRepo> dataItems){
         this.dataItems = dataItems;
     }
 
@@ -35,23 +32,30 @@ public class RepoAdapter extends
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from(parent
                 .getContext());
-        final View sView = mInflater.inflate(R.layout.item_reposlist, parent,
+        final View sView = mInflater.inflate(R.layout.item_trending_reposlist, parent,
                 false);
         return new ViewHolder(sView,itemClickListener);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Repository repo = dataItems.get(position);
+        TrendingRepo repo = dataItems.get(position);
         holder.name.setText(repo.getName());
-        holder.starSum.setText(""+repo.getStargazers_count());
-        holder.forkSum.setText(""+repo.getForks_count());
-        holder.language.setText(repo.getLanguage());
-        if(repo.isFork()){
-            holder.iconType.setText(R.string.icon_fork);
-        }else{
-            holder.iconType.setText(R.string.icon_repo);
+        int rsid = R.string.since_today;
+        switch (repo.getSince_type()) {
+            case SINCE_DAY:
+                rsid = R.string.since_today;
+                break;
+            case SINCE_WEEK:
+                rsid = R.string.since_weekly;
+                break;
+            case SINCE_MONTH:
+                rsid = R.string.since_month;
+                break;
         }
+        holder.addStar.setText(repo.getAddStars() + " "+  holder.addStar.getContext().getString(rsid));
+        holder.language.setText(repo.getLanguage());
+        holder.iconType.setText(R.string.icon_repo);
         holder.description.setText(repo.getDescription());
     }
 
@@ -66,10 +70,7 @@ public class RepoAdapter extends
 
         public TextView name;
         public TextView iconType;
-        public TextView iconFork;
-        public TextView forkSum;
-        public TextView iconStar;
-        public TextView starSum;
+        public TextView addStar;
         public TextView description;
         public TextView language;
 
@@ -77,21 +78,15 @@ public class RepoAdapter extends
         public ViewHolder(View view,RecycleItemClickListener itemClickListener){
             super(view);
             this.mItemClickListener = itemClickListener;
-            name = (TextView) view.findViewById(R.id.repoName);
+            name = (TextView) view.findViewById(R.id.repoFullName);
             iconType = (TextView) view.findViewById(R.id.iconType);
-            iconFork = (TextView) view.findViewById(R.id.iconFork);
-            forkSum = (TextView) view.findViewById(R.id.forkSum);
-            iconStar = (TextView) view.findViewById(R.id.iconStar);
-            starSum = (TextView) view.findViewById(R.id.starSum);
+            addStar = (TextView) view.findViewById(R.id.addStar);
             description = (TextView) view.findViewById(R.id.description);
             language = (TextView) view.findViewById(R.id.language);
 
             Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(),"octicons.ttf");
             iconType.setTypeface(typeface);
-            iconStar.setTypeface(typeface);
-            iconFork.setTypeface(typeface);
             view.setOnClickListener(this);
-
         }
 
         @Override

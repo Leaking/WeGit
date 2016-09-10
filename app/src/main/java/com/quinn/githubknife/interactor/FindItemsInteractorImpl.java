@@ -1,27 +1,41 @@
 package com.quinn.githubknife.interactor;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.model.GithubService;
 import com.quinn.githubknife.model.RetrofitUtil;
+import com.quinn.githubknife.utils.Constants;
 import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.RepoSearch;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.Tree;
+import com.quinn.httpknife.github.TrendingRepo;
 import com.quinn.httpknife.github.User;
 import com.quinn.httpknife.github.UserSearch;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -448,6 +462,99 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 handleFailure();
             }
         });
+    }
+
+    public void trendingRepos(final String url, final TrendingRepo.SINCE_TYPE sinceType){
+        Observable.create(new Observable.OnSubscribe<List<TrendingRepo>>() {
+            @Override
+            public void call(Subscriber<? super List<TrendingRepo>> subscriber) {
+                // request
+                ArrayList<TrendingRepo> repos = new ArrayList<>();
+                try {
+                    Log.i(TAG, "trendingRepos URL " + url);
+                    Document doc = Jsoup.connect(url).get();
+                    Elements elements = doc.getElementsByClass("repo-list-name");
+                    TrendingRepo repo;
+                    for (Element element : elements) {
+                        repo = new TrendingRepo();
+                        Element hrefElement = element.child(0);
+                        String href = hrefElement.attr("href");
+                        Log.i(TAG, "href = " + href);
+                        repo.setFull_name(href.substring(1));
+                        String[] splits = href.split("/");
+                        repo.setName(splits[2]);
+
+
+                        Element despElement = element.nextElementSibling();
+                        String desp = despElement.text();
+                        Log.i(TAG, "desp = " + desp);
+                        repo.setDescription(desp);
+
+                        Element newStarsElement = despElement.nextElementSibling();
+                        String starsDetail = newStarsElement.text();
+                        Log.i(TAG, "starsDetial = " + starsDetail);
+
+
+
+                        //正则解析语言、Star数量
+                        Pattern patternLanguage = Pattern.compile("[A-Za-z]{1,}"); //头个单词就是语言类别
+                        Pattern patternStarNum = Pattern.compile("[0-9]{1,}"); //头个数字就是Star数量
+                        Matcher matcherLanguage = patternLanguage.matcher(starsDetail);
+                        Matcher matcherStarNum = patternStarNum.matcher(starsDetail);
+
+                        repo.setSince_type(sinceType);
+
+                        if (matcherStarNum.find()) {
+                            repo.setAddStars(Integer.parseInt(matcherStarNum.group().trim()));
+                        } else {
+                            Log.i(TAG, "matcherStarNum.find fail" + starsDetail);
+                        }
+
+                        if (matcherLanguage.find()) {
+                            repo.setLanguage(matcherLanguage.group());
+                            if(!starsDetail.startsWith(repo.getLanguage())){
+                                repo.setLanguage("");
+                            }
+                        } else {
+                            Log.i(TAG, "matcherLanguage.find fail" + starsDetail);
+                        }
+
+                        repos.add(repo);
+                    }
+                    subscriber.onNext(repos);
+                    subscriber.onCompleted();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "error = " + e.toString());
+                    subscriber.onError(e);
+                }
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<TrendingRepo>>() {
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        listener.onError(true, context.getString(R.string.network_error));
+                    }
+
+                    @Override
+                    public void onNext(List<TrendingRepo> trendingRepos) {
+                        listener.onFinished(trendingRepos);
+                    }
+                });
+    }
+
+    @Override
+    public void trendingUsers(String keywords, TrendingRepo.SINCE_TYPE sinceType){
+
     }
 
 

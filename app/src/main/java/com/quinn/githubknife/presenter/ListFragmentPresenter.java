@@ -1,5 +1,7 @@
 package com.quinn.githubknife.presenter;
 
+import com.quinn.httpknife.github.TrendingRepo;
+
 import java.util.List;
 
 /**
@@ -14,6 +16,8 @@ public interface ListFragmentPresenter {
     public void onPageLoad(String user, String repo, int page);
 
     public void onPageLoad(List<String> keywords,int page);
+
+    public void onPageLoad(String url);
 
     public void onTreeLoad(String owner, String repo, String sha);
 }

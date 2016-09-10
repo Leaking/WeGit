@@ -121,5 +121,13 @@
     <string name="Friends">Friends</string>
     <string name="Home">Home</string>
 
+    <string name="repository">Repository</string>
+    <string name="user">User</string>
+
+
+    <string name="since_today">  stars today</string>
+    <string name="since_weekly"> stars this week</string>
+    <string name="since_month"> stars this month</string>
+
 
 </resources>
