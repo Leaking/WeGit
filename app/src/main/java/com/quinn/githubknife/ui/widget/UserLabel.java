@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.quinn.githubknife.R;
@@ -14,6 +15,8 @@ import com.quinn.githubknife.utils.UIUtils;
 
 /**
  * Created by Quinn on 9/21/15.
+ *
+ * 一个绘制KEY-VALUE的组件，上方绘制VAUE，下方绘制NAME
  */
 public class UserLabel extends View{
 
@@ -40,11 +43,11 @@ public class UserLabel extends View{
 
     public UserLabel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //Init attr
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.user_verical_label);
         label_name = a.getString(R.styleable.user_verical_label_name);
         label_value = a.getString(R.styleable.user_verical_label_value);
-
         a.recycle();
 
         nameRect = new Rect();
@@ -64,18 +67,21 @@ public class UserLabel extends View{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        L.i(TAG, "valueRect.width() = " + valueRect.width());
-
         namePaint.getTextBounds(label_name, 0, label_name.length(), nameRect);
-
         valuePaint.getTextBounds(label_value, 0, label_value.length(), valueRect);
 
-        int valueX = getMeasuredWidth() / 2 - valueRect.width() / 2;
-        int valueY = getMeasuredWidth() / 2 - (valueRect.height() + nameRect.height())/2;
+        Paint.FontMetrics nameFontMatrics = namePaint.getFontMetrics();
+        Paint.FontMetrics valueFontMatrics = valuePaint.getFontMetrics();
 
-        int nameX = getMeasuredWidth() / 2 - nameRect.width() / 2;
-        int nameY = valueY + nameRect.height()+ UIUtils.sp2px(this.getContext(), 3);
+        float nameHeigth = nameFontMatrics.descent - nameFontMatrics.ascent;
+        float valueHeigth = valueFontMatrics.descent - valueFontMatrics.ascent;
 
+        float viewWidth = getMeasuredWidth();
+        float viewHeight = getMeasuredHeight();
+        float valueX = viewWidth / 2 - valueRect.width() / 2;
+        float nameX = viewWidth / 2 - nameRect.width() / 2;
+        float valueY = viewHeight / 2 ;
+        float nameY = viewHeight / 2 + nameHeigth;
 
         canvas.drawText(label_value, valueX, valueY, valuePaint);
         canvas.drawText(label_name, nameX, nameY, namePaint);

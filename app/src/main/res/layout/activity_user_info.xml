@@ -116,7 +116,6 @@
                         userlabel:name="Followings"
                         userlabel:value=" " />
 
-
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
