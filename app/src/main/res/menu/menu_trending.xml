@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.quinn.githubknife.ui.activity.SearchActivity">
+
+    <item
+        android:id="@+id/action_set"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        app:showAsAction="always"
+        android:title="Setting"/>
+
+
+</menu>

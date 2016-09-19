@@ -63,6 +63,18 @@
         <item>Search Repository</item>
     </string-array>
 
+    <!--Language-->
+    <string-array name="language">
+        <item>All language</item>
+        <item>Javascript</item>
+        <item>Java</item>
+        <item>CSS</item>
+        <item>C++</item>
+        <item>Python</item>
+        <item>Html</item>
+        <item>Go</item>
+    </string-array>
+
     <string name="search">Search</string>
     <string name="search_user">Search User</string>
     <string name="search_repository">Search Repository</string>

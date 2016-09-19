@@ -1,8 +1,10 @@
 package com.quinn.githubknife.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.github.quinn.iconlibrary.icons.OctIcon;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
@@ -31,14 +34,14 @@ import java.util.List;
 public class EventAdapter extends
         RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
+    private static final String TAG = "EventAdapter";
 
     private Context context;
-
     private List<Event> dataItems;
     private ImageLoader imageLoader;
-    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions option;
     private RecycleItemClickListener itemClickListener;
+    private ImageLoadingListener imageLoadingListener = new AdapterImageLoaderListener();
 
 
     public EventAdapter(Context context,List<Event> dataItems){
@@ -59,16 +62,20 @@ public class EventAdapter extends
     }
 
     @Override
+    public void onViewRecycled(ViewHolder holder) {
+        super.onViewRecycled(holder);
+        Log.i(TAG, "onViewRecycled");
+//        imageLoader.cancelDisplayTask(holder.avatar);
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = dataItems.get(position);
-        imageLoader.displayImage(event.getActor().getAvatar_url(), holder.avatar, option, animateFirstListener);
+        holder.avatar.setTag(event.getActor().getAvatar_url());
+        imageLoader.displayImage(event.getActor().getAvatar_url(), holder.avatar, option, imageLoadingListener);
+
         holder.happenTime.setText(TimeUtils.getRelativeTime(event.getCreated_at()));
-        //getEventTypeIcon(holder.eventType, event.getType());
-
-       // holder.event.setText(setItemTextAndIcon(position));
         setItemTextAndIcon(holder.event,holder.eventType,position);
-
-
     }
 
     @Override
@@ -112,23 +119,6 @@ public class EventAdapter extends
         }
     }
 
-    public void getEventTypeIcon(ImageView img,String eventType) {
-        if (eventType.equals(GithubConstants.WATCH_EVENT)) {
-            BitmapUtils.setIconFont(context,img, OctIcon.STAR,R.color.theme_color);
-        } else if (eventType.equals(GithubConstants.ForkEvent)) {
-            BitmapUtils.setIconFont(context,img, OctIcon.FORK,R.color.theme_color);
-        } else if (eventType.equals(GithubConstants.CreateEvent)) {
-            BitmapUtils.setIconFont(context,img, OctIcon.REPO,R.color.theme_color);
-        } else if(eventType.equals(GithubConstants.PullRequestEvent)){
-            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
-        } else if(eventType.equals(GithubConstants.MemberEvent)){
-            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
-        }else if(eventType.equals(GithubConstants.IssuesEvent)){
-            BitmapUtils.setIconFont(context,img, OctIcon.PUSH,R.color.theme_color);
-        }else {
-            BitmapUtils.setIconFont(context,img, OctIcon.STAR,R.color.theme_color);
-        }
-    }
 
 
 
