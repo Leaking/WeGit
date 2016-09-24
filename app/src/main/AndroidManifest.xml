@@ -42,6 +42,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,43 +52,57 @@
         </activity>
         <activity
             android:name=".ui.activity.UserInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_user_info"></activity>
         <activity
             android:name=".ui.activity.FoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_fo"></activity>
         <activity
             android:name=".ui.activity.RepoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_reop"></activity>
         <activity
             android:name=".ui.activity.TreeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_file_tree"></activity>
         <activity
             android:name=".ui.activity.CodeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_code"></activity>
         <activity
             android:name=".ui.activity.AboutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_about"></activity>
         <activity
             android:name=".ui.activity.ImageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_image"></activity>
         <activity
             android:name=".ui.activity.SearchActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_search"></activity>
         <activity
             android:name=".ui.activity.SearchResultActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_search_result"></activity>
         <activity
             android:name=".ui.activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_setting"></activity>
         <activity
             android:name=".ui.activity.ReadmeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_readme"></activity>
+        <activity
+            android:name=".ui.activity.TrendingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
 
         <meta-data
             android:name="TD_APP_ID"
             android:value="C7208C73204D6DDF67AA2227D9C06174" />
 
-        <activity android:name=".ui.activity.TrendingActivity"></activity>
     </application>
 
 </manifest>

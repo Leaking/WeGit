@@ -48,7 +48,13 @@ public class TrendingReposFragment extends BaseFragment implements RecycleItemCl
         dataItems = new ArrayList<Repository>();
         presenter = new TrendingRepoPresenterImpl(this.getActivity(),this);
         adapter = new TrendingRepoAdapter(dataItems);
+    }
 
+    public void reload(String url) {
+        this.trendingUrl = url;
+        dataItems.clear();
+        adapter.notifyDataSetChanged();
+        presenter.onPageLoad(url);
     }
 
     @Override
