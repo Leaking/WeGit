@@ -2,14 +2,9 @@ package com.quinn.githubknife.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,7 +18,6 @@ import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.adapter.FragmentPagerAdapter;
 import com.quinn.githubknife.ui.fragments.TrendingReposFragment;
-import com.quinn.githubknife.ui.fragments.TrendingUsersFragment;
 import com.quinn.githubknife.utils.Constants;
 
 import java.io.File;
@@ -44,11 +38,10 @@ public class TrendingActivity extends BaseActivity {
     private String trendingRepoUrl = Constants.TRENDING_BASE_URL;
     private String trendingUserUrl = "";
     private TrendingReposFragment fragment;
-    private final String[] languages = getResources().getStringArray(R.array.language);
-    private final String[] urlParams = getResources().getStringArray(R.array.language_param);
+
     private static final HashMap<String, String> languageUrlMap = new HashMap<>();
-
-
+    private String[] languages;
+    private String[] urlParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +54,8 @@ public class TrendingActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        languages = getResources().getStringArray(R.array.language);
+        urlParams = getResources().getStringArray(R.array.language_param);
         initialLanguages();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -72,6 +66,7 @@ public class TrendingActivity extends BaseActivity {
     }
 
     private void initialLanguages() {
+
         if(languages == null || urlParams == null || languages.length != urlParams.length || languages.length == 0) {
             throw new IllegalStateException("You have not define languages");
         }
