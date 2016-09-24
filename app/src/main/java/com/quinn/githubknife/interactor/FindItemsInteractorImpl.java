@@ -8,8 +8,6 @@ import com.quinn.githubknife.account.GitHubAccount;
 import com.quinn.githubknife.listener.OnLoadItemListListener;
 import com.quinn.githubknife.model.GithubService;
 import com.quinn.githubknife.model.RetrofitUtil;
-import com.quinn.githubknife.utils.Constants;
-import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Event;
 import com.quinn.httpknife.github.RepoSearch;
@@ -500,7 +498,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
 
 
                         //正则解析语言、Star数量
-                        Pattern patternLanguage = Pattern.compile("[A-Za-z]{1,}"); //头个单词就是语言类别
+                        Pattern patternLanguage = Pattern.compile("[A-Za-z|+]{1,}"); //头个单词就是语言类别
                         Pattern patternStarNum = Pattern.compile("[0-9]{1,}"); //头个数字就是Star数量
                         Matcher matcherLanguage = patternLanguage.matcher(starsDetail);
                         Matcher matcherStarNum = patternStarNum.matcher(starsDetail);

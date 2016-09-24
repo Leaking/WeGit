@@ -42,6 +42,8 @@ public class TrendingActivity extends BaseActivity {
     private static final HashMap<String, String> languageUrlMap = new HashMap<>();
     private String[] languages;
     private String[] urlParams;
+    private String currentLanguage;
+    private int currentIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class TrendingActivity extends BaseActivity {
         for(int i = 0, count = languages.length; i < count; i++) {
             languageUrlMap.put(languages[i], urlParams[i]);
         }
+
+        currentLanguage = languages[0];
     }
 
     @Override
@@ -99,25 +103,27 @@ public class TrendingActivity extends BaseActivity {
     public void showPreferenceDialog(){
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(this);
-        int currentIndex = 0;
-
+        int lastIndex = currentIndex;
         new MaterialDialog.Builder(this)
                 .title(R.string.search)
                 .items(languages)
-                .itemsCallbackSingleChoice(currentIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                .itemsCallbackSingleChoice(lastIndex, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         Log.i(TAG, "onSelection " + text);
-                        if(languageUrlMap.get(text).length() != 0) {
+                        currentLanguage = text.toString();
+                        toolbar.setSubtitle(currentLanguage);
+                        currentIndex = which;
+                        if (languageUrlMap.get(text).length() != 0) {
                             trendingRepoUrl = Constants.TRENDING_BASE_URL + File.separator + languageUrlMap.get(text);
+                        } else {
+                            trendingRepoUrl = Constants.TRENDING_BASE_URL;
                         }
                         Log.i(TAG, "onSelection trendingRepoUrl " + trendingRepoUrl);
                         fragment.reload(trendingRepoUrl);
                         return true;
                     }
                 })
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
                 .cancelable(true)
                 .show();
     }

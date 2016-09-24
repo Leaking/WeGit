@@ -28,7 +28,6 @@ import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
 import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.ListFragmentView;
-import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +41,7 @@ import butterknife.OnClick;
  */
 public abstract class BaseFragment extends Fragment implements ListFragmentView, onLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
 
-    public final static String TAG = BaseFragment.class.getSimpleName();
+    public final static String TAG = "BaseFragment";
     protected List dataItems;
 
     @Bind(R.id.recyclerview)
@@ -138,8 +137,8 @@ public abstract class BaseFragment extends Fragment implements ListFragmentView,
 
     @Override
     public void showProgress() {
+        L.i(TAG,"show Progress currPage= " + currPage);
         if(currPage == 1) {
-            L.i(TAG,"show Progress");
             UIUtils.crossfade(swipeRefreshLayout,progress);
         }
     }

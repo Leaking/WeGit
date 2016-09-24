@@ -202,7 +202,6 @@ public class SearchActivity extends BaseActivity implements SearchUserFragment.T
                             search_type = SEARCH_TYPE.SEARCH_USER;
                         }else if(which == 1){
                             searchView.setQueryHint(getResources().getString(R.string.search_repository));
-
                             search_type = SEARCH_TYPE.SEARCH_REPO;
                         }
                         return true;
