@@ -40,11 +40,11 @@
         <menu>
             <item
                 android:id="@+id/nav_setting"
-                android:icon="@mipmap/ic_action_setting"
+                android:icon="@mipmap/setting"
                 android:title="Setting" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@mipmap/ic_action_about"
+                android:icon="@mipmap/about"
                 android:title="About" />
         </menu>
     </item>
