@@ -485,17 +485,21 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         owner.setLogin(splits[1]);
                         repo.setOwner(owner);
 
-
+                        //可能没有despElement而直接紧接着newStarsElement
                         Element despElement = element.nextElementSibling();
-                        String desp = despElement.text();
-                        Log.i(TAG, "desp = " + desp);
-                        repo.setDescription(desp);
-
-                        Element newStarsElement = despElement.nextElementSibling();
-                        String starsDetail = newStarsElement.text();
-                        Log.i(TAG, "starsDetial = " + starsDetail);
-
-
+                        String starsDetail;
+                        Log.i(TAG, "despElement.className() = " + despElement.className());
+                        if(despElement.className().equals("repo-list-description")) {
+                            String desp = despElement.text();
+                            Log.i(TAG, "desp = " + desp);
+                            repo.setDescription(desp);
+                            Element newStarsElement = despElement.nextElementSibling();
+                            starsDetail = newStarsElement.text();
+                            Log.i(TAG, "starsDetial = " + starsDetail);
+                        } else {
+                            starsDetail = despElement.text();
+                            Log.i(TAG, "starsDetial = " + starsDetail);
+                        }
 
                         //正则解析语言、Star数量
                         Pattern patternLanguage = Pattern.compile("[A-Za-z|+]{1,}"); //头个单词就是语言类别
