@@ -57,7 +57,7 @@ public class SuggestAdapter extends BaseAdapter{
             viewholder = (ViewHolder) convertView.getTag();
         }
         viewholder.text.setText(dataItems.get(position));
-        viewholder.img.setBackgroundResource(R.mipmap.ic_up);
+        viewholder.img.setBackgroundResource(R.drawable.ic_up);
         return convertView;
     }
 

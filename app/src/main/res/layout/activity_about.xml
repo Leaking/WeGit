@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dip"
-                android:src="@mipmap/wechatpay" />
+                android:src="@drawable/wechatpay" />
 
 
             <TextView

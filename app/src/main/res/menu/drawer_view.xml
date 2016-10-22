@@ -19,19 +19,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@mipmap/home"
+            android:icon="@drawable/home"
             android:title="@string/Home" />
         <item
             android:id="@+id/nav_friends"
-            android:icon="@mipmap/friends"
+            android:icon="@drawable/friends"
             android:title="@string/Friends" />
         <item
             android:id="@+id/nav_search"
-            android:icon="@mipmap/search"
+            android:icon="@drawable/search"
             android:title="@string/Search" />
         <item
             android:id="@+id/nav_trending"
-            android:icon="@mipmap/trending"
+            android:icon="@drawable/trending"
             android:title="@string/Trending"
             />
     </group>
@@ -40,11 +40,11 @@
         <menu>
             <item
                 android:id="@+id/nav_setting"
-                android:icon="@mipmap/setting"
+                android:icon="@drawable/setting"
                 android:title="Setting" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@mipmap/about"
+                android:icon="@drawable/about"
                 android:title="About" />
         </menu>
     </item>

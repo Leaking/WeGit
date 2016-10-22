@@ -404,11 +404,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
     public void setFollowState(boolean isFollow) {
 
         if (isFollow) {
-            relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.unfollow));
+            relationBtn.setImageDrawable(getResources().getDrawable(R.drawable.unfollow));
             followState = FollowState.FOLLOWED;
 
         } else {
-            relationBtn.setImageDrawable(getResources().getDrawable(R.mipmap.follow));
+            relationBtn.setImageDrawable(getResources().getDrawable(R.drawable.follow));
             followState = FollowState.UNFOLLOWED;
         }
 

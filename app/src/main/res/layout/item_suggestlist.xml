@@ -20,7 +20,7 @@
         android:id="@+id/img"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
-        android:src="@mipmap/ic_up"
+        android:src="@drawable/ic_up"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         />

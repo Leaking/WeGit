@@ -50,7 +50,7 @@ public class UsersAdapter extends
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(dataItems.get(position).getLogin());
-        holder.avatar.setImageResource(R.mipmap.ic_headset);
+        holder.avatar.setImageResource(R.drawable.ic_headset);
         imageLoader.displayImage(dataItems.get(position).getAvatar_url(),holder.avatar,option,animateFirstListener);
     }
 

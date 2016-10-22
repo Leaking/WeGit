@@ -4,14 +4,14 @@
     tools:context="com.quinn.githubknife.ui.activity.SearchActivity">
     <item
         android:id="@+id/action_search"
-        android:icon="@mipmap/search"
+        android:icon="@drawable/search"
         app:showAsAction="always"
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="Search"/>
 
     <item
         android:id="@+id/action_set"
-        android:icon="@mipmap/sort"
+        android:icon="@drawable/sort"
         app:showAsAction="always"
         android:title="Setting"/>
 

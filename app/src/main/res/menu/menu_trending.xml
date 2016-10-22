@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_set"
-        android:icon="@mipmap/sort"
+        android:icon="@drawable/sort"
         app:showAsAction="always"
         android:title="Setting"/>
 
