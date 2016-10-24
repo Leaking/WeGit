@@ -20,11 +20,17 @@
 # Feature
 
 1、Last Events
+
 2、Repository Detail
+
 3、User Detail
+
 4、Read formatted code
+
 5、Star repository, follow people
+
 6、Search user, search repository
+
 7、Trending repository
 
 
@@ -32,13 +38,6 @@
 
 Android Studio
 
-# APK
-
-1. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/wegit_v0.5.apk)
-
-2. You can also scan the below QR code to download apk in your mobile phone.(Ps：Don't use WeChat to scan,it doesn't support)
-
-<img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
 
 # TODO
 
