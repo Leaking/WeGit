@@ -19,19 +19,19 @@
 
 # Feature
 
-1、Last Events
+- Last Events
 
-2、Repository Detail
+- Repository Detail
 
-3、User Detail
+- User Detail
 
-4、Read formatted code
+- Read formatted code
 
-5、Star repository, follow people
+- Star repository, follow people
 
-6、Search user, search repository
+- Search user, search repository
 
-7、Trending repository
+- Trending repository
 
 
 # Develop IDE
@@ -43,13 +43,13 @@ Android Studio
 
 - Setting Module
 
-# APK
+# How to get a APK
 
-1. Download WeGit from 腾讯应用宝、Google play、360应用商店
+- Download WeGit from 腾讯应用宝、Google play、360应用商店
 
-2. You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/WeGit_v2.0.apk)
+- You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/WeGit_v2.0.apk)
 
-3. You can also scan the below QR code to download apk in your mobile phone.
+- You can also scan the below QR code to download apk in your mobile phone.
 
 <img src="https://github.com/Leaking/GithubKnife/blob/master/screenshot/apk.jpg" width="340" />
 
@@ -74,16 +74,20 @@ Use WeChat to scan the below QR Code to tip me.(拿出你的手机，打开微�
 
 # LICENSE
 
-   Copyright 2015 Quinn Chen
+-------
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+    Copyright 2015 Quinn Chen
 
-   http://www.apache.org/licenses/LICENSE-2.0
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
