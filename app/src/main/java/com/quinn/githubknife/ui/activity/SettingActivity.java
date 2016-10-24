@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.quinn.githubknife.GithubApplication;
 import com.quinn.githubknife.R;
 import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.widget.SettingLabel;
+import com.quinn.githubknife.utils.ChannelUtils;
+import com.quinn.githubknife.utils.ToastUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,16 +24,12 @@ import butterknife.OnClick;
  */
 public class SettingActivity extends BaseActivity {
 
-
     //feature branch
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-
     @Bind(R.id.version)
     SettingLabel version;
-
-
 
     public static void launch(Context context){
         Intent intent = new Intent(context,SettingActivity.class);
@@ -46,6 +46,14 @@ public class SettingActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         version.setValue(((GithubApplication) getApplication()).getAPKVersion().getVersionName());
+        version.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                String channelName = ChannelUtils.getChannelName(getApplicationContext());
+                ToastUtils.showMsg(getApplicationContext(), channelName, Toast.LENGTH_LONG);
+                return true;
+            }
+        });
     }
 
 
@@ -70,12 +78,6 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.repo)
     void repo(){
 
-
-
     }
-
-
-
-
 
 }

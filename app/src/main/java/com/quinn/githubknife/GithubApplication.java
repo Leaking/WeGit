@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.quinn.githubknife.model.APKVersion;
+import com.quinn.githubknife.utils.ChannelUtils;
 import com.quinn.httpknife.github.User;
 import com.tendcloud.tenddata.TCAgent;
 
@@ -26,7 +27,7 @@ public class GithubApplication extends Application {
      * @// TODO: 9/6/16
      * 暂时默认100，后续打多渠道此处得动态获取
      */
-    private final static String TD_CHANNEL_ID = "100";
+    private String channel = "100";
 
     private User user;
 
@@ -38,10 +39,11 @@ public class GithubApplication extends Application {
         super.onCreate();
         instance = this;
         /**
-         * 初始化Taking-data
+         * 初始化Talking-data
          */
         TCAgent.LOG_ON = false;
-        TCAgent.init(this, TD_APP_ID, TD_CHANNEL_ID);
+        channel = ChannelUtils.getChannel(this);
+        TCAgent.init(this, TD_APP_ID, channel);
         TCAgent.setReportUncaughtExceptions(true);
         // Initialize ImageLoader with configuration.
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(

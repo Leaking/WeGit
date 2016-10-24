@@ -43,7 +43,7 @@ import rx.schedulers.Schedulers;
  */
 public class FindItemsInteractorImpl implements FindItemsInteractor {
 
-    private final static String TAG = FindItemsInteractor.class.getSimpleName();
+    private final static String TAG = "FindItemsInteractor";
     private final static int LOAD_MORE_FAIL = 3;
     private final static int LOAD_FIRST_FAIL = 2;
     private final static int LOAD_SUCCESS = 1;
@@ -501,6 +501,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                             Log.i(TAG, "starsDetial = " + starsDetail);
                         }
 
+                        starsDetail = starsDetail.replace(",", "");
                         //正则解析语言、Star数量
                         Pattern patternLanguage = Pattern.compile("[A-Za-z|+]{1,}"); //头个单词就是语言类别
                         Pattern patternStarNum = Pattern.compile("[0-9]{1,}"); //头个数字就是Star数量
