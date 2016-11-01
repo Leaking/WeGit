@@ -45,7 +45,7 @@ Android Studio
 
 # How to get a APK
 
-- Download WeGit from 腾讯应用宝、Google play、360应用商店
+- Download WeGit from 腾讯应用宝、[Google play](https://play.google.com/store/apps/details?id=com.quinn.githubknife)
 
 - You can download an apk from [here](https://github.com/Leaking/WeGit/raw/master/screenshot/WeGit_v2.0.apk)
 
