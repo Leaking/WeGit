@@ -77,6 +77,12 @@
         <item>Go</item>
     </string-array>
 
+    <string-array name="Time">
+        <item>Today</item>
+        <item>This Week </item>
+        <item>This Month</item>
+    </string-array>
+
     <string-array name="language_param">
         <item></item>
         <item>unknown</item>
@@ -151,6 +157,8 @@
 
     <string name="repository">Repository</string>
     <string name="user">User</string>
+    <string name="language">Lauguage</string>
+    <string name="since">Since</string>
 
 
     <string name="since_today">  stars today</string>

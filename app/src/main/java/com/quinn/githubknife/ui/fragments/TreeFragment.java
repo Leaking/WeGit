@@ -17,6 +17,7 @@ import com.quinn.githubknife.utils.L;
 import com.quinn.httpknife.github.GithubImpl;
 import com.quinn.httpknife.github.TreeItem;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,8 @@ public class TreeFragment extends BaseFragment implements RecycleItemClickListen
                 bundle.putString("branch", "master");
                 ImageActivity.launch(this.getActivity(),bundle);
             } else if(treeItem.getPath().endsWith("README.md")){
-                ReadmeActivity.launch(this.getActivity(),"https://github.com/Leaking/WeGit/blob/master/README.md");
+                String url = "https://github.com" + File.separator + user + File.separator + repo + File.separator + "blob/" + branch +  "/README.md";
+                ReadmeActivity.launch(this.getActivity(),url);
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putString("owner", user);

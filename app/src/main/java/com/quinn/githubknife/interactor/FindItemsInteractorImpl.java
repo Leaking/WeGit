@@ -471,7 +471,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                 try {
                     Log.i(TAG, "trendingRepos URL " + url);
                     Document doc = Jsoup.connect(url).get();
-                    Elements elements = doc.getElementsByClass("repo-list-name");
+                    Elements elements = doc.getElementsByClass("repo-list");
                     TrendingRepo repo;
                     for (Element element : elements) {
                         repo = new TrendingRepo();

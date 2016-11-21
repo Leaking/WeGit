@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +19,7 @@ import com.quinn.githubknife.ui.BaseActivity;
 import com.quinn.githubknife.ui.adapter.FragmentPagerAdapter;
 import com.quinn.githubknife.ui.fragments.TrendingReposFragment;
 import com.quinn.githubknife.utils.Constants;
+import com.quinn.httpknife.github.TrendingRepo;
 
 import java.io.File;
 import java.util.HashMap;
@@ -39,16 +40,22 @@ public class TrendingActivity extends BaseActivity {
     private String trendingUserUrl = "";
     private TrendingReposFragment fragment;
 
+    private String SINCE_TYPE_TODOY = "";
+    private String SINCE_TYPE_WEEK = "?since=weekly";
+    private String SINCE_TYPE_YEAR = "?since=monthly";
+    private String[] SINCE_TYPES = {SINCE_TYPE_TODOY, SINCE_TYPE_WEEK, SINCE_TYPE_YEAR};
+    private String currentSinceType = SINCE_TYPES[0];
+
     private static final HashMap<String, String> languageUrlMap = new HashMap<>();
     private String[] languages;
     private String[] urlParams;
     private String currentLanguage;
-    private int currentIndex;
+    private int lastLanguageDialogSelected = 0;
+    private int lastTimeDialogSelected = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_fo);
         ButterKnife.bind(this);
@@ -93,39 +100,73 @@ public class TrendingActivity extends BaseActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_time:
+                showTimeSelectDialog();
+                return true;
             case R.id.action_set:
-                showPreferenceDialog();
+                showLanguageSelectDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void showPreferenceDialog(){
-        final AlertDialog.Builder builder =
-                new AlertDialog.Builder(this);
-        int lastIndex = currentIndex;
+
+    public void showTimeSelectDialog() {
         new MaterialDialog.Builder(this)
-                .title(R.string.search)
-                .items(languages)
-                .itemsCallbackSingleChoice(lastIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                .title(R.string.since)
+                .items(R.array.Time)
+                .itemsCallbackSingleChoice(lastTimeDialogSelected, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         Log.i(TAG, "onSelection " + text);
-                        currentLanguage = text.toString();
-                        toolbar.setSubtitle(currentLanguage);
-                        currentIndex = which;
-                        if (languageUrlMap.get(text).length() != 0) {
-                            trendingRepoUrl = Constants.TRENDING_BASE_URL + File.separator + languageUrlMap.get(text);
-                        } else {
-                            trendingRepoUrl = Constants.TRENDING_BASE_URL;
+                        lastTimeDialogSelected = which;
+                        currentSinceType = SINCE_TYPES[which];
+                        updateUrl(currentSinceType, languageUrlMap.get(currentLanguage));
+                        switch (which) {
+                            case 0:
+                                fragment.setSinceType(TrendingRepo.SINCE_TYPE.SINCE_DAY);
+                                break;
+                            case 1:
+                                fragment.setSinceType(TrendingRepo.SINCE_TYPE.SINCE_WEEK);
+                                break;
+                            case 2:
+                                fragment.setSinceType(TrendingRepo.SINCE_TYPE.SINCE_MONTH);
+                                break;
                         }
-                        Log.i(TAG, "onSelection trendingRepoUrl " + trendingRepoUrl);
                         fragment.reload(trendingRepoUrl);
                         return true;
                     }
                 })
                 .cancelable(true)
                 .show();
+    }
+
+    public void showLanguageSelectDialog(){
+        new MaterialDialog.Builder(this)
+                .title(R.string.language)
+                .items(languages)
+                .itemsCallbackSingleChoice(lastLanguageDialogSelected, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        Log.i(TAG, "onSelection " + text);
+                        currentLanguage = text.toString();
+                        toolbar.setSubtitle(currentLanguage);
+                        lastLanguageDialogSelected = which;
+                        updateUrl(currentSinceType, languageUrlMap.get(currentLanguage));
+                        fragment.reload(trendingRepoUrl);
+                        return true;
+                    }
+                })
+                .cancelable(true)
+                .show();
+    }
+
+    private void updateUrl(String sinceString, String languageString) {
+        if(TextUtils.isEmpty(languageString)) {
+            trendingRepoUrl = Constants.TRENDING_BASE_URL + sinceString;
+        } else {
+            trendingRepoUrl = Constants.TRENDING_BASE_URL + File.separator + languageString + sinceString;
+        }
     }
 
 

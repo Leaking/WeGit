@@ -4,6 +4,12 @@
     tools:context="com.quinn.githubknife.ui.activity.SearchActivity">
 
     <item
+        android:id="@+id/action_time"
+        android:icon="@drawable/time"
+        app:showAsAction="always"
+        android:title="Setting"/>
+
+    <item
         android:id="@+id/action_set"
         android:icon="@drawable/sort"
         app:showAsAction="always"

@@ -29,7 +29,6 @@ import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.RepoView;
 import com.quinn.httpknife.github.Branch;
 import com.quinn.httpknife.github.Repository;
-import com.quinn.httpknife.github.TrendingRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,8 @@ public class RepoActivity extends BaseActivity implements RepoView {
     private List<Branch> branches;
     private Branch currentBranch;
     private boolean hasFinishedInitial = false;
-    StarState starState;
+    private boolean repoLoaded; //repo 是否已经load过
+    private StarState starState;
 
     @Override
     public void showProgress() {
@@ -393,7 +393,10 @@ public class RepoActivity extends BaseActivity implements RepoView {
             starState = StarState.UNSTARRED;
         }
         updateStarMenuItem();
-        presenter.loadRepo(repo.getOwner().getLogin(), repo.getName());
+        if(!repoLoaded) {
+            presenter.loadRepo(repo.getOwner().getLogin(), repo.getName());
+            repoLoaded = true;
+        }
     }
 
     @Override

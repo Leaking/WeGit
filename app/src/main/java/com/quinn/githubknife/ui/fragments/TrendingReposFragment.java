@@ -40,6 +40,10 @@ public class TrendingReposFragment extends BaseFragment implements RecycleItemCl
         adapter = new TrendingRepoAdapter(dataItems);
     }
 
+    public void setSinceType(TrendingRepo.SINCE_TYPE sinceType) {
+        ((TrendingRepoPresenterImpl)presenter).setSinceType(sinceType);
+    }
+
     public void reload(String url) {
         this.trendingUrl = url;
         dataItems.clear();

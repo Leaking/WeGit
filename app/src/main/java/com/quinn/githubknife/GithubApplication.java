@@ -41,10 +41,15 @@ public class GithubApplication extends Application {
         /**
          * 初始化Talking-data
          */
-        TCAgent.LOG_ON = false;
-        channel = ChannelUtils.getChannel(this);
-        TCAgent.init(this, TD_APP_ID, channel);
-        TCAgent.setReportUncaughtExceptions(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TCAgent.LOG_ON = false;
+                channel = ChannelUtils.getChannel(GithubApplication.this);
+                TCAgent.init(GithubApplication.this, TD_APP_ID, channel);
+                TCAgent.setReportUncaughtExceptions(true);
+            }
+        }).start();
         // Initialize ImageLoader with configuration.
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
                 getApplicationContext())
