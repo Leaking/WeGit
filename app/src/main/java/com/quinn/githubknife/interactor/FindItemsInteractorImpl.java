@@ -472,11 +472,17 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                     Log.i(TAG, "trendingRepos URL " + url);
                     Document doc = Jsoup.connect(url).get();
                     Elements elements = doc.getElementsByClass("repo-list");
+                    Log.i(TAG, "elements" + elements.size());
+                    Log.i(TAG, "childNodeSize" + elements.get(0).childNodeSize());
+                    Log.i(TAG, "children" + elements.get(0).children().size());
+                    elements = elements.get(0).children();
                     TrendingRepo repo;
                     for (Element element : elements) {
+                        Log.i(TAG, "elements = " + element);
                         repo = new TrendingRepo();
                         Element hrefElement = element.child(0);
-                        String href = hrefElement.attr("href");
+
+                        String href = hrefElement.getElementsByAttribute("href").get(0).attr("href");
                         Log.i(TAG, "href = " + href);
                         repo.setFull_name(href.substring(1));
                         String[] splits = href.split("/");
@@ -486,22 +492,31 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                         repo.setOwner(owner);
 
                         //可能没有despElement而直接紧接着newStarsElement
-                        Element despElement = element.nextElementSibling();
-                        String starsDetail;
-                        Log.i(TAG, "despElement.className() = " + despElement.className());
-                        if(despElement.className().equals("repo-list-description")) {
-                            String desp = despElement.text();
-                            Log.i(TAG, "desp = " + desp);
-                            repo.setDescription(desp);
-                            Element newStarsElement = despElement.nextElementSibling();
-                            starsDetail = newStarsElement.text();
-                            Log.i(TAG, "starsDetial = " + starsDetail);
-                        } else {
-                            starsDetail = despElement.text();
-                            Log.i(TAG, "starsDetial = " + starsDetail);
-                        }
+                        Element despElement = element.child(2);
+                        String desp = despElement.text();
+                        Log.i(TAG, "desp = " + desp);
+                        repo.setDescription(desp);
 
+//                        if(despElement.className().equals("repo-list-description")) {
+//
+//                            Element newStarsElement = despElement.nextElementSibling();
+//                            starsDetail = newStarsElement.text();
+//                            Log.i(TAG, "starsDetial = " + starsDetail);
+//                        } else {
+//                            starsDetail = despElement.text();
+//                            Log.i(TAG, "starsDetial = " + starsDetail);
+//                        }
+//                        Element langElement = element.child(3).child(2);
+                        Element starElement = element.child(3).children().last();
+                        Log.i(TAG, "starElement " + starElement.text());
+//                        Log.i(TAG, "langElement " + langElement.text());
+                        String starsDetail= starElement.text();
                         starsDetail = starsDetail.replace(",", "");
+                        String lang = "";
+                        if(element.child(3).children().size() > 4) {
+                            Element langElement = element.child(3).children().get(1);
+                            lang = langElement.text();
+                        }
                         //正则解析语言、Star数量
                         Pattern patternLanguage = Pattern.compile("[A-Za-z|+]{1,}"); //头个单词就是语言类别
                         Pattern patternStarNum = Pattern.compile("[0-9]{1,}"); //头个数字就是Star数量
@@ -516,14 +531,7 @@ public class FindItemsInteractorImpl implements FindItemsInteractor {
                             Log.i(TAG, "matcherStarNum.find fail" + starsDetail);
                         }
 
-                        if (matcherLanguage.find()) {
-                            repo.setLanguage(matcherLanguage.group());
-                            if(!starsDetail.startsWith(repo.getLanguage())){
-                                repo.setLanguage("");
-                            }
-                        } else {
-                            Log.i(TAG, "matcherLanguage.find fail" + starsDetail);
-                        }
+                        repo.setLanguage(lang);
 
                         repos.add(repo);
                     }
