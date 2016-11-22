@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
@@ -40,13 +40,18 @@ import com.quinn.githubknife.ui.fragments.UserRepoFragment;
 import com.quinn.githubknife.ui.widget.AnimateFirstDisplayListener;
 import com.quinn.githubknife.ui.widget.UserLabel;
 import com.quinn.githubknife.utils.BitmapUtils;
+import com.quinn.githubknife.utils.Constants;
 import com.quinn.githubknife.utils.L;
 import com.quinn.githubknife.utils.ToastUtils;
-import com.quinn.githubknife.utils.UIUtils;
 import com.quinn.githubknife.view.RepoAndEventPreviewView;
 import com.quinn.githubknife.view.UserInfoView;
 import com.quinn.httpknife.github.Repository;
 import com.quinn.httpknife.github.User;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXImageObject;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -203,6 +208,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
         context.startActivity(intent);
     }
 
+    private IWXAPI api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -294,7 +301,26 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
+        api = WXAPIFactory.createWXAPI(this, null);
+        api.registerApp(Constants.WECHAT_SDK_APPID);
+    }
 
+    private void test() {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        WXImageObject imgObj = new WXImageObject(bmp);
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = imgObj;
+
+        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 200, 200, true);
+        bmp.recycle();
+        msg.thumbData = BitmapUtils.bmpToByteArray(thumbBmp, true);  // ��������ͼ
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = System.currentTimeMillis() + "";
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        api.sendReq(req);
     }
 
 
