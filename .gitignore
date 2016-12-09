@@ -8,8 +8,11 @@ WeGit.iml
 /captures
 .idea/encodings.xml
 /.gitignore
-/.idea/encodings.xml
 
 httpknife.iml
 app.iml
 iconlibrary.iml
+
+.idea/
+MaterialSearch/MaterialSearch.iml
+breadcrumbs/breadcrumbs.iml
