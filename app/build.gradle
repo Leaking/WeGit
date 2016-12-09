@@ -4,6 +4,23 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
 
+    signingConfigs {
+        debug {
+            keyAlias 'wegit'
+            keyPassword '123456789'
+            storeFile file('wegit_debug.jks')
+            storePassword '123456789'
+        }
+        release {
+            keyAlias 'wegit'
+            keyPassword '3982895898'
+            storeFile file('wegit_release.jks')
+            storePassword '3982895898'
+            v2SigningEnabled false
+        }
+    }
+
+
     defaultConfig {
         applicationId "com.quinn.githubknife"
         minSdkVersion 15
@@ -11,16 +28,23 @@ android {
         versionCode 123
         versionName "2.3"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
     lintOptions{
         checkReleaseBuilds false
         abortOnError false
+    }
+
+
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
 

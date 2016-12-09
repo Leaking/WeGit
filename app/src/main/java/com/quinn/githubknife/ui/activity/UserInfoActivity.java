@@ -185,8 +185,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
     RepoPreviewHolder[] preview_holder = new RepoPreviewHolder[3];
 
 
-
-
     FollowState followState;
 
 
@@ -314,7 +312,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView,RepoA
 
         Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, 200, 200, true);
         bmp.recycle();
-        msg.thumbData = BitmapUtils.bmpToByteArray(thumbBmp, true);  // ��������ͼ
+        msg.thumbData = BitmapUtils.bmpToByteArray(thumbBmp, true);  //
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = System.currentTimeMillis() + "";
